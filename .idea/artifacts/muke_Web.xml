@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="muke:Web">
+    <output-path>$PROJECT_DIR$/out/artifacts</output-path>
+    <root id="archive" name="muke_Web.war">
+      <element id="artifact" artifact-name="muke:Web exploded" />
+    </root>
+  </artifact>
+</component>
