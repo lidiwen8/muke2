@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <environments default="development">
+
+        <environment id="development">
+
+            <transactionManager type="JDBC"/>
+
+            <dataSource type="com.oraro.cec.DruidDataSourceFactory">
+
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+
+                <!--本机数据库 -->
+
+                <property name="url" value="jdbc:mysql://localhost:3306/muke"/>
+
+                <property name="username" value="root"/>
+
+                <property name="password" value=""/>
+
+
+                <property name="initialSize" value="1"/>
+
+                <property name="minIdle" value="10"/>
+
+                <property name="maxActive" value="20"/>
+
+                <property name="maxWait" value="60000"/>
+
+                <property name="filters" value="stat,wall"/>
+
+                <!-- 超过时间限制是否回收 -->
+
+                <property name="removeAbandoned" value="true"/>
+
+                <!-- 超过时间限制多长； -->
+
+                <property name="removeAbandonedTimeout" value="31536000"/>
+
+                <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+
+                <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+
+                <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+
+                <property name="minEvictableIdleTimeMillis" value="300000"/>
+
+                <!-- 用来检测连接是否有效的sql，要求是一个查询语句 -->
+
+                <property name="validationQuery" value="SELECT 1"/>
+
+                <!-- 申请连接的时候检测 -->
+
+                <property name="testWhileIdle" value="true"/>
+
+                <!-- 申请连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->
+
+                <property name="testOnBorrow" value="false"/>
+
+                <!-- 归还连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->
+
+                <property name="testOnReturn" value="false"/>
+
+            </dataSource>
+
+        </environment>
+
+    </environments>
+
+    <mappers>
+        <!--这个文件下面将创建 -->
+        <mapper resource="com/oraro/cec/mapper/UserMapper.xml"/>
+    </mappers>
+</configuration> 
