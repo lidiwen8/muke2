@@ -23,4 +23,6 @@ public interface IAdminService {
 	 * @return
 	 */
 	int updatepwd(Admin admin);
+
+
 }

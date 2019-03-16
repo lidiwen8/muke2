@@ -210,7 +210,7 @@
         <div class="form-group">
             <label for="mail" class="col-sm-2 control-label">邮箱：</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" name="mail" id="mail" placeholder="请输入你注册时的邮箱">
+                <input type="text" class="form-control" name="mail" id="mail" placeholder="请输入你注册时的邮箱" autofocus="autofocus">
             </div>
         </div>
         <%--<div class="form-group">--%>

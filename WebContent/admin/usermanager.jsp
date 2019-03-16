@@ -27,7 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	function getUser(pageNum){
 		$.ajax({
-			url : "adminUserServlet",
+			url : "admin/adminUserServlet",
 			type : "post",
 			async : "true",
 			data : {"action" : "getUser", "pageNum" : pageNum, "username" : username},
@@ -83,7 +83,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	function deleteUser(userid) {
         if (confirm("确认禁用吗？")) {
             $.ajax({
-                url: "adminUserServlet",
+                url: "admin/adminUserServlet",
                 type: "post",
                 async: "true",
                 data: {"action": "deleteUser", "userid": userid},
@@ -103,7 +103,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	function restoreUser(userid){
 		$.ajax({
-			url : "adminUserServlet",
+			url : "admin/adminUserServlet",
 			type : "post",
 			async : "true",
 			data : {"action" : "restoreUser", "userid" : userid},
@@ -123,7 +123,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     function deleteuser(userid){
         if (confirm("确认删除【"+userid+"】吗？")) {
             $.ajax({
-                url: "adminUserServlet",
+                url: "admin/adminUserServlet",
                 type: "post",
                 async: "true",
                 data: {"action": "delete", "userid": userid},
@@ -132,7 +132,68 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     if (data.res == 1) {
                         alert("删除成功");
                         getUser(page);
-                    }
+                    }else if(data.res==2){
+                        if (confirm(data.info)) {
+                            $.ajax({
+                                url: "admin/adminUserServlet",
+                                type: "post",
+                                async: "true",
+                                data: {"action": "cascadelete2", "userid":userid},
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data.res == 1) {
+                                        alert(data.info);
+                                        getUser(page);
+                                    } else {
+                                        alert(data.info);
+                                    }
+                                }
+                            });
+                        }else {
+                            getUser(page);
+						}
+
+					}else if(data.res==3){
+                        if (confirm(data.info)) {
+                            $.ajax({
+                                url: "admin/adminUserServlet",
+                                type: "post",
+                                async: "true",
+                                data: {"action": "cascadelete3", "userid":userid},
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data.res == 1) {
+                                        alert(data.info);
+                                        getUser(page);
+                                    } else {
+                                        alert(data.info);
+                                    }
+                                }
+                            });
+                        }else {
+                            getUser(page);
+                        }
+					}else if(data.res==4){
+                        if (confirm(data.info)) {
+                            $.ajax({
+                                url: "admin/adminUserServlet",
+                                type: "post",
+                                async: "true",
+                                data: {"action": "cascadelete4", "userid":userid},
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data.res == 1) {
+                                        alert(data.info);
+                                        getUser(page);
+                                    } else {
+                                        alert(data.info);
+                                    }
+                                }
+                            });
+                        }else {
+                            getUser(page);
+                        }
+					}
                     else {
                         alert(data.info);
                     }
@@ -194,10 +255,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					class="userinfo text-limit email tooltip-test"
 					data-toggle="tooltip" title="zhuangzhuangzhuang@foxmail.com">zhuangzhuangzhuang@foxmail.com</td>
 				<td class=" userinfo time">2017-01-01</td>
-				<td>
+			    <td>
 					<button class="btn btn-primary primary">禁用</button>
-					<button class="btn btn-danger delete">删除</button>
 					<button class="btn btn-warning restore">恢复</button>
+				</td>
+				<td>
+					<button class="btn btn-danger delete">删除</button>
 				</td>
 		</tr>
 		</table>

@@ -33,7 +33,7 @@
         });
 
         function getAdvise(){
-            $.get("adminUserServlet",
+            $.get("admin/adminUserServlet",
                 {
                     "action":"getAdvisedetails",
                     "id":id

@@ -26,7 +26,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	function getMsg(pageNum){
 		$.ajax({
-			url : "adminMessageServlet", 
+			url : "admin/adminMessageServlet",
 			type : "POST",
 			async : "true",
 			data : {"action" : "searchMsg", "pageNum": pageNum, "key" : key, "username" : username, "theid" : theid},
@@ -43,20 +43,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						msg.show();
 						msg.removeClass("template");
 						msg.find(".num").text(index+1);
-						msg.find(".tit").text(msgItem.msgtopic);
+                        if(msgItem.state == 3){
+                            msg.find(".tit").text(msgItem.msgtopic+"<用户自屏>");
+                        }else{
+                            msg.find(".tit").text(msgItem.msgtopic);
+						}
 						msg.find(".tit").attr("href", "message.jsp?msgid="+msgItem.msgid);
 						msg.find(".author").text(msgItem.realname);
 						msg.find(".time").text(msgItem.msgtime);
 						
 						msg.find(".delete").attr("onclick", "deleteMsg("+msgItem.msgid+")");
 						msg.find(".restore").attr("onclick", "restoreMsg("+msgItem.msgid+")");
-						
 						if (msgItem.state == -1){
+                            msg.find(".restore").show();
 							msg.find(".delete").hide();
-							msg.find(".restore").show();
 						}
 						else {
-
 							msg.find(".delete").show();
 							msg.find(".restore").hide();
 						}
@@ -76,7 +78,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	function deleteMsg(msgid){
 		if(confirm("确认删除吗？")){
 			$.ajax({
-				url:"adminMessageServlet",
+				url:"admin/adminMessageServlet",
 				type:"post",
 				data:{"action":"deleteMsg","msgid" : msgid},
 				dataType:"json",
@@ -95,7 +97,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	function restoreMsg(msgid){
 		$.ajax({
-			url : "adminMessageServlet",
+			url : "admin/adminMessageServlet",
 			type : "post",
 			async : "true",
 			data : {"action" : "restoreMsg", "msgid" : msgid},
@@ -122,7 +124,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	function getTheme(){
 		$.ajax({
-			url : "adminThemeServlet", 
+			url : "messageServlet",
 			type : "POST",
 			async : "true",
 			data : {"action" : "getAllTheme"},

@@ -25,7 +25,13 @@ public interface IThemeDao {
 	 * @return
 	 */
 	int delete(int theid);
-	
+
+	/**
+	 * 更新主题
+	 * @param theme
+	 * @return
+	 */
+	int update(Theme theme);
 	/**
 	 * 查询全部主题
 	 * @return
@@ -41,5 +47,13 @@ public interface IThemeDao {
 	Page query(String key,Page page);
 
 	boolean isExist( String thename);
+
+	boolean isExistByid(int theid);
+
+	boolean queryMessageBytheid(int theid);
+
+	Theme queryThemeBytheid(int theid);
+
+	int updateCount(int count,int theid);
 //	Page query1(String key, Page page);
 }

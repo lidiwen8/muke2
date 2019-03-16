@@ -45,6 +45,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<c:if test="${sessionScope.admin != null}">
 				<li><a href="admin/msgmanager.jsp">帖子管理</a></li>
 				<li><a href="admin/usermanager.jsp">用户管理</a></li>
+				<li><a href="admin/userlogmanager.jsp">用户登录日志</a></li>
 				<li><a href="admin/thememanager.jsp">主题管理</a></li>
 				<li><a href="admin/advisemanager.jsp">建议管理</a></li>
 				<li class="dropdown">

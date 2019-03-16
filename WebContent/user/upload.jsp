@@ -23,7 +23,7 @@
         var r=new FileReader();
         r.readAsDataURL(pic);
         r.onload = function (ev) {
-          $(".k > div > img").attr("src",this.result).show();
+          $("img").attr("src",this.result).show();
         };
     }
       function submit() {

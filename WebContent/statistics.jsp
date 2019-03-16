@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	function getMsgCount(){
 		$.ajax({
-			url : "adminMessageServlet",
+			url : "adminServlet",
 			type : "post",
 			async : "true",
 			data : {"action" : "getMsgCount"},
@@ -43,7 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 	function getReplyCount(){
 		$.ajax({
-			url : "adminMessageServlet",
+			url : "adminServlet",
 			type : "post",
 			async : "true",
 			data : {"action" : "getReplyCount"},

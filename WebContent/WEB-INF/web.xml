@@ -61,6 +61,16 @@
     <servlet-name>VerifyCodeServlet</servlet-name>
     <url-pattern>/VerifyCodeServlet</url-pattern>
   </servlet-mapping>
+<!--阿里元连接池监控-->
+  <!--<servlet>-->
+    <!--<servlet-name>DruidStatView</servlet-name>-->
+    <!--<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>-->
+  <!--</servlet>-->
+  <!--<servlet-mapping>-->
+    <!--<servlet-name>DruidStatView</servlet-name>-->
+    <!--<url-pattern>/druid/*</url-pattern>-->
+  <!--</servlet-mapping>-->
+
   <display-name>muke</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
@@ -95,6 +105,10 @@
   </error-page>
   <error-page>
     <error-code>500</error-code>
+    <location>/WEB-INF/404.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>400</error-code>
     <location>/WEB-INF/404.jsp</location>
   </error-page>
 </web-app>

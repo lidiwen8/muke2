@@ -541,7 +541,7 @@ public class DBUtil {
 	/**
 	 * 可以选择三个不同的数据库连接
 	 *
-	 * @param JDBC
+//	 * @param JDBC
 	 *            ,JNDI（依赖web容器 DBCP
 	 * @return
 	 * @throws Exception

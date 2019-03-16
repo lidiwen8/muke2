@@ -31,7 +31,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     $(function(){
         validateForm();
         $("#username").keyup(function () {
-            validate_empName("#username");
+            var len=$("#username").val().length;
+            if(len>=6&&len<=30){
+                validate_empName("#username");
+			}
         });
         $(".form_datetime").datetimepicker({
             format: 'yyyy-mm-dd',
@@ -73,17 +76,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             message: '用户名长度必须在6到30之间'
                             
                         },
-						/*username : {
-							url : "UserServlet?action=isExist",//请求的路径
-							type : "post",
-							data : {
-								"username" : $("input[name='username']".val())
-							},
-							delay : 100,//1s后执行Ajax请求
-
-							dataType : "json",//请求的数控类型 
-							message : "该用户名已存在!"//提示信息
-						}  *//*最后一个没有逗号*/
 					}
 				},
 				password : {
@@ -145,14 +137,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 					}
 				},
-//				city : {
-//                    messaage : 'The city is not valid',
-//                    validators : {
-//                        notEmpty : {
-//                            message : '城市不能为空'
-//                        }
-//                    }
-//                },
 				email : {
 					messaage : 'The email is not valid',
 					validators : {
@@ -344,7 +328,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="form-group">
 				<label for="username" class="col-sm-2 control-label">账号：</label>
 				<div class="col-sm-4">
-					<input type="text" class="form-control" name="username" id="username" placeholder="请输入账号">
+					<input type="text" class="form-control" name="username" id="username" placeholder="请输入账号" autofocus="autofocus">
 					<span class="help-block1" style="color: #a94442"></span>
 				</div>
 			</div>

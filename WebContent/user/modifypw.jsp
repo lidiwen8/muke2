@@ -86,7 +86,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	function updatePW(){
 		// ajax 异步请求修改密码
 		$.ajax({
-			url:"userCenterServlet?action=updatePw",
+			url:"user/userCenterServlet?action=updatePw",
 			type : "POST",
 			async : "true",
 			data : $("#modifyform").serialize(),

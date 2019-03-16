@@ -1,4 +1,5 @@
 <%@page import="java.io.File"%>
+<%@ page import="com.muke.pojo.User" %>
 <%@ page language="java" contentType="text/html; charset=GB18030"
     pageEncoding="GB18030"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -24,7 +25,9 @@ function funCallback(funcNum,fileUrl){
 	String type = "";
 	if(request.getParameter("type") != null)//获取文件分类
 		type = request.getParameter("type").toLowerCase() + "/";
-	String clientPath = "ckeditor/uploader/upload/" + type;
+	HttpSession session1 =  ((HttpServletRequest)request).getSession();
+	User user = (User)session1.getAttribute("user");
+	String clientPath = "ckeditor/uploader/upload/"+user.getUserid()+"/" + type;
 	File root = new File(request.getSession().getServletContext().getRealPath(clientPath));
 	if(!root.exists()){
 		root.mkdirs();

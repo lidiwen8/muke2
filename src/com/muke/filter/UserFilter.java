@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.muke.pojo.Admin;
 import com.muke.pojo.User;
 
 
@@ -44,7 +45,8 @@ public class UserFilter implements Filter {
 		
 		HttpSession session =  ((HttpServletRequest)request).getSession();
 		User user = (User)session.getAttribute("user");
-		if(user == null) {
+		Admin admin = (Admin) session.getAttribute("admin");
+		if(user == null&&admin==null) {
 			
 			if (httpRequest.getRequestURI().endsWith(".json")){
 				httpResponse.getWriter().println("{\"res\":-2, \"info\":\"未登录\"}");

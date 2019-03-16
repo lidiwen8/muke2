@@ -3,23 +3,27 @@ package com.muke.servlet;
 /**
  * Created by lidiwen on 2018/7/31.
  */
+
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 public class CKEditorUploadServlet extends HttpServlet {
     private static String baseDir;// CKEditor的根目录
     private static boolean debug = false;// 是否debug模式
-    private static boolean enabled = false;// 是否开启CKEditor上传
+    private static boolean enabled = true;// 是否开启CKEditor上传
     private static Hashtable allowedExtensions;// 允许的上传文件扩展名
     private static Hashtable deniedExtensions;// 阻止的上传文件扩展名
     private static SimpleDateFormat dirFormatter;// 目录命名格式:yyyyMM
     private static SimpleDateFormat fileFormatter;// 文件命名格式:yyyyMMddHHmmssSSS
+
     /**
      * Servlet初始化方法
      */
@@ -27,7 +31,7 @@ public class CKEditorUploadServlet extends HttpServlet {
         // 从web.xml中读取debug模式
         debug = (new Boolean(getInitParameter("debug"))).booleanValue();
         if (debug)
-            System.out .println("\r\n---- SimpleUploaderServlet initialization started ----");
+            System.out.println("\r\n---- SimpleUploaderServlet initialization started ----");
 
         // 格式化目录和文件命名方式
         dirFormatter = new SimpleDateFormat("yyyyMM");
@@ -53,17 +57,19 @@ public class CKEditorUploadServlet extends HttpServlet {
                 stringToArrayList(getInitParameter("DeniedExtensionsFile")));
         allowedExtensions.put("Image",
                 stringToArrayList(getInitParameter("AllowedExtensionsImage")));
-        deniedExtensions.put("Image",           stringToArrayList(getInitParameter("DeniedExtensionsImage")));
-        allowedExtensions.put("Flash",          stringToArrayList(getInitParameter("AllowedExtensionsFlash")));
-        deniedExtensions.put("Flash",           stringToArrayList(getInitParameter("DeniedExtensionsFlash")));
+        deniedExtensions.put("Image", stringToArrayList(getInitParameter("DeniedExtensionsImage")));
+        allowedExtensions.put("Flash", stringToArrayList(getInitParameter("AllowedExtensionsFlash")));
+        deniedExtensions.put("Flash", stringToArrayList(getInitParameter("DeniedExtensionsFlash")));
         if (debug)
             System.out
                     .println("---- SimpleUploaderServlet initialization completed ----\r\n");
     }
+
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doPost(request, response);
     }
+
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (debug)
@@ -159,18 +165,21 @@ public class CKEditorUploadServlet extends HttpServlet {
         if (debug)
             System.out.println("--- END DOPOST ---");
     }
+
     /**
      * 获取文件名的方法
      */
     private static String getNameWithoutExtension(String fileName) {
         return fileName.substring(0, fileName.lastIndexOf("."));
     }
+
     /**
      * 获取扩展名的方法
      */
     private String getExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
+
     /**
      * 字符串像ArrayList转化的方法
      */
@@ -188,6 +197,7 @@ public class CKEditorUploadServlet extends HttpServlet {
         }
         return tmp;
     }
+
     /**
      * 判断扩展名是否允许的方法
      */

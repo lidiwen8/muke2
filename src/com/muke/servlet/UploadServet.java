@@ -1,133 +1,107 @@
 package com.muke.servlet;
 
+import com.muke.pojo.User;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * Servlet implementation class UploadServet
  */
+@WebServlet("/uploadServlet")
 public class UploadServet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public UploadServet() {
-		super();
-	}
+    public UploadServet() {
+        super();
+    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
-		response.setContentType("text/html; charset=UTF-8");
-		// 上传
-		// request.getParameter("sname")
-		try {
-			boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-			if (isMultipart) {// 判断前台的form是否有 mutipart属性
-//				FileItemFactory factory = new DiskFileItemFactory();
-				DiskFileItemFactory factory = new DiskFileItemFactory();
-				
-				ServletFileUpload upload = new ServletFileUpload(factory);
-				
-				//设置上传文件时 用到的临时文件的大小DiskFileItemFactory
-				factory.setSizeThreshold(10240);//设置临时的缓冲文件大小为10
-				factory.setRepository(new File("D:\\Java web项目\\UpAndDown\\WebContent\\uploadtemp"));//设置临时文件的目录
-				//控制上传单个文件的大小  20KB ServletFileUpload
-				upload.setSizeMax(2048000);//字节B
-				
-				
-				
-				
-				// 通过parseRequest解析form中的所有请求字段，并保存到 items集合中（即前台传递的sno sname
-				// spicture此时就保存在了items中）
-				List<FileItem> items = upload.parseRequest(request);
-				// 遍历items中的数据（item=sno sname spicture）
-				Iterator<FileItem> iter = items.iterator();
-				while (iter.hasNext()) {
-					FileItem item = iter.next();
-					String itemName = item.getFieldName();
-					int sno = -1;
-					String sname = null;
-					// 判断前台字段 是普通form表单字段(sno sname)，还是文件字段
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     * response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String path = request.getContextPath();
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+        if (ServletFileUpload.isMultipartContent(request)) {
+            String type = "";
+            if (request.getParameter("type") != null)//获取文件分类
+                type = request.getParameter("type").toLowerCase() + "/";
+            response.setContentType("text/html;charset=UTF-8");
+            FileItemFactory factory = new DiskFileItemFactory();
+            ServletFileUpload servletFileUpload = new ServletFileUpload(factory);
+            servletFileUpload.setHeaderEncoding("UTF-8");  //解决中文乱码
+            List<FileItem> fileItemsList = null;
+            try {
+                fileItemsList = servletFileUpload.parseRequest(request);
+            } catch (FileUploadException e) {
+                response.getWriter().print("{\"uploaded\": 0, \"error\":\"上传文件异常，请重试！\"}");
+                return;
+            }
+            for (FileItem item : fileItemsList) {
+                if (!item.isFormField()) {
+                    String fileName = item.getName();
+                    fileName = "file" + System.currentTimeMillis() + fileName.substring(fileName.lastIndexOf("."));
+                    String filetype = fileName.substring(fileName.lastIndexOf("."));
+                    if (!(filetype.equals(".jpg") || filetype.equals(".png") || filetype.equals(".gif") || filetype.equals(".jpeg"))) {
+                        response.getWriter().print("{\"uploaded\": 0, \"error\":\"请上传图片格式的文件！\"}");
+                        return;
+                    }
+                    HttpSession session1 = ((HttpServletRequest) request).getSession();
+                    User user = (User) session1.getAttribute("user");
+                    //定义文件路径，根据你的文件夹结构，可能需要做修改
+                    String clientPath = "ckeditor/uploader/upload/" + user.getUserid() + "/" + type + fileName;
+                    //保存文件到服务器上
+                    File file = new File(request.getSession().getServletContext().getRealPath(clientPath));
+                    if (!file.getParentFile().exists()) {
+                        file.getParentFile().mkdirs();
+                    }
+                    try {
+                        item.write(file);
+                    } catch (Exception e) {
+                        response.getWriter().print("{\"uploaded\": 0, \"error\":\"上传的图片大小最大不能超过1M！\"}");
+                        return;
+                    }
 
-					// request.getParameter() -- iter.getString()
-					if (item.isFormField()) {
-						if (itemName.equals("sno")) {// 根据name属性 判断item是sno sname 还是spicture?
-							sno = Integer.parseInt(item.getString("UTF-8"));
-						} else if (itemName.equals("sname")) {
-							sname = item.getString("UTF-8");
-						} else {
-							System.out.println("其他字段xxx.....");
-						}
-					} else {// spicture 123
-							// 文件 上传
-							// 文件名 getFieldName是获取 普通表单字段的Name值
-							// getName()是获取 文件名
-						String fileName = item.getName();//a.txt   a.docx   a.png
-						String ext = fileName.substring(  fileName.indexOf(".")+1 ) ;
-						if(!(ext.equals("png") || ext.equals("gif") ||ext.equals("jpg"))) {
-							System.out.println("图片类型有误！格式只能是 png gif  jpg");
-							return ;//终止
-						}
-						// 获取文件内容 并上传
-						// 定义文件路径：指定上传的位置(服务器路径)
-						// 获取服务器路径D:\\study\\apache-tomcat-8.5.30\\wtpwebapps\\UpAndDown\\upload
-						// String path =request.getSession().getServletContext().getRealPath("upload") ;
-						String path = "D:\\Java web项目\\UpAndDown\\WebContent\\upload";
+                    response.setContentType("text/html;charset=UTF-8");
+                    String callback = request.getParameter("CKEditorFuncNum");
+                    PrintWriter out = response.getWriter();
+                    out.println("<script type=\"text/javascript\">");
+                    out.println("window.parent.CKEDITOR.tools.callFunction(" + 1 + ",'" + clientPath + "',''" + ")");
+                    out.println("</script>");
+                    out.flush();
+                    out.close();
+//                    response.getWriter().print("{\"uploaded\": 1, \"url\":'"+clientPath+"'}");
+//                    return;
+                }
+            }
+        }
+    }
 
-						File file = new File(path, fileName);
-						
-					
-
-						item.write(file);// 上传
-						System.out.println(fileName + "上传成功！");
-						return;
-					}
-				}
-
-			}
-
-		}
-		catch (FileUploadBase.SizeLimitExceededException e) {//SizeLimitExceededException是FileUploadException的一个子类
-			System.out.println("上传文件大小超过限制！最大20KB");
-		}
-		catch (FileUploadException e)
-		{
-			e.printStackTrace();
-			
-		}
-		
-		// 解析请求
-		catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     * response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        doGet(request, response);
+    }
 
 }

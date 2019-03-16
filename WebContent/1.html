@@ -1,8 +1,727 @@
-
-
-
 <!--愿得一心人，白首不分离-->
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"><!--<meta http-equiv="Cache-Control" content="no-transform" />--><!--<meta http-equiv="Cache-Control" content="no-siteapp" />--> <meta name="applicable-device" content="pc,mobile"> <meta name="MobileOptimized" content="width"/> <meta name="HandheldFriendly" content="true"/><title>代码高亮 | 言曌博客</title><meta name="description" content="" /><meta name="keywords" content="" /><link rel="shortcut icon" href="https://media.liuyanzhao.com/wp-content/uploads/2017/04/sousoulogo.png"><link rel="apple-touch-icon" sizes="114x114" href="https://media.liuyanzhao.com/wp-content/uploads/2017/04/sousoulogo.png" /><link rel="profile" href="http://gmpg.org/xfn/11"><link rel="pingback" href="https://liuyanzhao.com/xmlrpc.php"> <link rel="stylesheet" href="https://media.liuyanzhao.com/wp-content/themes/begin/css/liuyanzhao.css"><!--[if lt IE 9]><script src="https://liuyanzhao.com/wp-content/themes/begin/js/html5.js"></script><script src="https://liuyanzhao.com/wp-content/themes/begin/js/css3-mediaqueries.js"></script><![endif]--><link rel='stylesheet' id='begin-style-css' href='https://liuyanzhao.com/wp-content/themes/begin/style.css?ver=4.7.11' type='text/css' media='all' /><link rel='stylesheet' id='fonts-css' href='https://media.liuyanzhao.com/wp-content/themes/begin/css/fonts.css?ver=2017.04.28' type='text/css' media='all' /><link rel='stylesheet' id='highlight-css' href='https://media.liuyanzhao.com/wp-content/themes/begin/css/highlight.css?ver=2017.04.28' type='text/css' media='all' /><script type='text/javascript' src='https://liuyanzhao.com/wp-content/themes/begin/js/jquery.min.js?ver=1.10.1'></script><script type='text/javascript' async='async' src='https://liuyanzhao.com/wp-content/themes/begin/js/slides.js?ver=2017.04.28'></script><script type='text/javascript' async='async' src='https://liuyanzhao.com/wp-content/themes/begin/js/jquery.qrcode.min.js?ver=2017.04.28'></script><script type='text/javascript' async='async' src='https://liuyanzhao.com/wp-content/themes/begin/js/sticky.js?ver=1.6.0'></script><script type='text/javascript' src='https://liuyanzhao.com/wp-content/themes/begin/js/jquery-ias.js?ver=2.2.1'></script><script type='text/javascript' async='async' src='https://liuyanzhao.com/wp-content/themes/begin/js/jquery.lazyload.js?ver=2017.04.28'></script><script type='text/javascript' async='async' src='https://liuyanzhao.com/wp-content/themes/begin/js/tipso.js?ver=1.0.1'></script><script type='text/javascript'>/* <![CDATA[ */var wpl_ajax_url = "https:\/\/liuyanzhao.com\/wp-admin\/admin-ajax.php";/* ]]> */</script><script type='text/javascript' src='https://liuyanzhao.com/wp-content/themes/begin/js/script.js?ver=2017.04.28'></script><script type='text/javascript' async='async' src='https://liuyanzhao.com/wp-content/themes/begin/js/flexisel.js?ver=2017.04.28'></script><script type='text/javascript' async='async' src='https://liuyanzhao.com/wp-content/themes/begin/js/fancybox.js?ver=2017.04.28'></script><script type='text/javascript' async='async' src='https://liuyanzhao.com/wp-content/themes/begin/js/comments-ajax-qt.js?ver=2017.04.28'></script><link rel="canonical" href="https://liuyanzhao.com/code-highlight.html" /><style>#content, .header-sub, .top-nav, #top-menu, #mobile-nav, #main-search, #search-main, .breadcrumb, .footer-widget, .links-box {width: 1080px;}@media screen and (max-width: 1080px) {#content, .breadcrumb, .footer-widget, .links-box {width: 98%;}#top-menu{width: 98%;}.top-nav {width: 98%;}#main-search, #search-main, #mobile-nav, .header-sub {width: 98%;}.breadcrumb {width: 98%;}}</style><style>#breadcrumb {background:#E7E7E7!important;}.wp-video {margin:0 auto;}#shuoshuo_content { background:rgba(255, 255, 255, 0.5)!important;filter:Alpha(opacity=0); background:#fff; }#shuoshuo_content p {position: relative;/* 设置子元素为相对定位，可让子元素不继承Alpha值，保证字体颜色不透明 */}.title-l { background: #ffffff; height:0;}.single-content code { background-color:transparent;}pre { background: #F7F1E1;}.dp-highlighter { border:none; background-color: #F5F2F0;}.dp-highlighter:hover { border:none; background-color: #F5F2F0;}.single-content h2 { font-size: 24px; color: #EC356C;}.dp-highlighter li { list-style: none !important; border:none!important; margin-left:10px!important;}.ad-site { background:none!important; padding:0!important; border:0; margin:0;}</style><style type="text/css" id="custom-background-css">body.custom-background { background-color: #f5f8f9; }</style><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script> (adsbygoogle = window.adsbygoogle || []).push({ google_ad_client: "ca-pub-8035829643459245", enable_page_level_ads: true });</script></head><body class="page-template page-template-pages page-template-template-code page-template-pagestemplate-code-php page page-id-1853 custom-background"><div id="page" class="hfeed site"> <header id="masthead" class="site-header"> <nav id="top-header"> <div class="top-nav"> <div id="user-profile"> <div class="user-login"> <!--顶部显示日期--start--> <script type="text/javascript"> function check(val) { if (val < 10) { return ("0" + val); } else { return (val); } } function TopCurrentTime() { var date = new Date(); var year = date.getFullYear(); var month = date.getMonth() + 1; var day = date.getDate(); var isnDay = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"); var timestr = year + "年" + month + "月" + day + "日 " + isnDay[date.getDay()]; document.getElementById("TopCurrentTime").innerHTML = timestr; var timerID = setTimeout('TopCurrentTime()', 1000); } </script> <span id="TopCurrentTime"></span> <script> TopCurrentTime(); </script> <!--顶部显示日期--end--> </div> <div class="clear"></div></div> <div class="menu-topmenu-container"><ul id="menu-topmenu" class="top-menu"><li id="menu-item-7953" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7953"><a href="https://liuyanzhao.com/shang.html"><i class="fa-heart fa"></i><span class="font-text">赞赏记录</span></a></li><li id="menu-item-944" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-944"><a href="https://liuyanzhao.com/shuoshuo.html"><i class="fa-comments fa"></i><span class="font-text">说说 </span></a></li><li id="menu-item-5069" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5069"><a href="https://liuyanzhao.com/tag/video"><i class="fa-video-camera fa"></i><span class="font-text">视频 </span></a></li><li id="menu-item-1970" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1970"><a href="https://liuyanzhao.com/mysites.html"><i class="fa-paperclip fa"></i><span class="font-text">收藏夹</span></a></li></ul></div> </div> </nav><!-- #top-header --> <div id="menu-box"> <div id="top-menu"> <span class="nav-search"><i class="fa fa-search"></i></span> <div class="logo-site"> <p class="site-title"><a href="https://liuyanzhao.com/" title="言曌博客" rel="home">言曌博客</a></p> <p class="site-description">程序人生，永不止步</p> </div><!-- .logo-site --> <div id="site-nav-wrap"> <div id="sidr-close"><a href="#sidr-close" class="toggle-sidr-close">×</a></div> <nav id="site-nav" class="main-nav"> <a href="#sidr-main" id="navigation-toggle" class="bars"><i class="fa fa-bars"></i></a> <div class="menu-mainmenu-container"><ul id="menu-mainmenu" class="down-menu nav-menu"><li id="menu-item-7415" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-7415"><a href="https://liuyanzhao.com/"><i class="fa-home fa"></i><span class="font-text">首页</span></a></li><li id="menu-item-7378" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7378"><a href="https://liuyanzhao.com/category/javadev/"><i class="fa-coffee fa"></i><span class="font-text">Java 开发</span></a><ul class="sub-menu"> <li id="menu-item-7379" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7379"><a href="https://liuyanzhao.com/category/javadev/java-basic/">Java 基础</a></li> <li id="menu-item-7381" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7381"><a href="https://liuyanzhao.com/category/javadev/core-java/">java 进阶</a></li> <li id="menu-item-7380" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7380"><a href="https://liuyanzhao.com/category/javadev/java-code/">Java 源码</a></li> <li id="menu-item-7736" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7736"><a href="https://liuyanzhao.com/category/javadev/multi-thread/">多线程并发编程</a></li> <li id="menu-item-7382" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7382"><a href="https://liuyanzhao.com/category/javadev/java-web/">JavaWeb</a></li> <li id="menu-item-7387" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7387"><a href="https://liuyanzhao.com/category/javadev/templates/">模板引擎</a></li> <li id="menu-item-7384" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7384"><a href="https://liuyanzhao.com/category/javadev/spring/">Spring 家族</a></li> <li id="menu-item-7383" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7383"><a href="https://liuyanzhao.com/category/javadev/orm/">ORM 框架</a></li> <li id="menu-item-7386" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7386"><a href="https://liuyanzhao.com/category/javadev/search-engine/">搜索引擎框架</a></li> <li id="menu-item-7388" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7388"><a href="https://liuyanzhao.com/category/javadev/cache/">缓存技术</a></li> <li id="menu-item-7970" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7970"><a href="https://liuyanzhao.com/category/javadev/util/">工具类</a></li> <li id="menu-item-7393" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7393"><a href="https://liuyanzhao.com/category/other-cat/ide/">开发利器</a></li> <li id="menu-item-8038" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8038"><a href="https://liuyanzhao.com/category/javadev/jiagou/">技术架构</a></li></ul></li><li id="menu-item-7396" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7396"><a href="https://liuyanzhao.com/category/other-languages/"><i class="fa-code fa"></i><span class="font-text">其他语言</span></a><ul class="sub-menu"> <li id="menu-item-7398" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7398"><a href="https://liuyanzhao.com/category/other-languages/html-css/">HTML/CSS</a></li> <li id="menu-item-7399" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7399"><a href="https://liuyanzhao.com/category/other-languages/js/">JavaScript/jQuery</a></li> <li id="menu-item-7990" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7990"><a href="https://liuyanzhao.com/category/other-languages/front-end-frame/">前端框架和插件</a></li> <li id="menu-item-7397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7397"><a href="https://liuyanzhao.com/category/other-languages/c/">C</a></li> <li id="menu-item-7400" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7400"><a href="https://liuyanzhao.com/category/other-languages/php-notes/">PHP</a></li></ul></li><li id="menu-item-7409" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7409"><a href="https://liuyanzhao.com/category/computer-science/"><i class="fa-cubes fa"></i><span class="font-text">计算机科学</span></a><ul class="sub-menu"> <li id="menu-item-7412" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7412"><a href="https://liuyanzhao.com/category/computer-science/data-structure-and-algorithm/">数据结构和算法</a></li> <li id="menu-item-7413" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7413"><a href="https://liuyanzhao.com/category/computer-science/computer-network/">计算机网络</a></li> <li id="menu-item-7410" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7410"><a href="https://liuyanzhao.com/category/computer-science/operating-system/">操作系统</a></li> <li id="menu-item-7411" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7411"><a href="https://liuyanzhao.com/category/computer-science/database-computer-science/">数据库</a></li></ul></li><li id="menu-item-7403" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7403"><a href="https://liuyanzhao.com/category/web-build/"><i class="fa-building fa"></i><span class="font-text">网站建设</span></a><ul class="sub-menu"> <li id="menu-item-7404" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7404"><a href="https://liuyanzhao.com/category/web-build/webserver/">Apache/Nginx</a></li> <li id="menu-item-7405" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7405"><a href="https://liuyanzhao.com/category/web-build/os/">Linux</a></li> <li id="menu-item-7406" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7406"><a href="https://liuyanzhao.com/category/web-build/wordpress/">WordPress</a></li> <li id="menu-item-7407" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7407"><a href="https://liuyanzhao.com/category/web-build/server-host/">服务器与主机</a></li> <li id="menu-item-7408" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7408"><a href="https://liuyanzhao.com/category/web-build/web-optimization/">网站优化</a></li></ul></li><li id="menu-item-7389" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7389"><a href="https://liuyanzhao.com/category/other-cat/"><i class="fa-th-large fa"></i><span class="font-text">其他</span></a><ul class="sub-menu"> <li id="menu-item-7391" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7391"><a href="https://liuyanzhao.com/category/other-cat/game/">娱乐游戏</a></li> <li id="menu-item-7394" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7394"><a href="https://liuyanzhao.com/category/other-cat/vedio/">视频收藏</a></li> <li id="menu-item-7390" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7390"><a href="https://liuyanzhao.com/category/other-cat/surf-skills/">上网百科</a></li> <li id="menu-item-7392" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7392"><a href="https://liuyanzhao.com/category/other-cat/trouble-solve/">异常与报错</a></li> <li id="menu-item-7395" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7395"><a href="https://liuyanzhao.com/category/other-cat/interview/">备战面试</a></li> <li id="menu-item-7401" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7401"><a href="https://liuyanzhao.com/category/specials/">文章杂烩</a></li> <li id="menu-item-7414" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7414"><a href="https://liuyanzhao.com/category/resource-share/">资源分享</a></li></ul></li><li id="menu-item-7416" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7416"><a href="https://liuyanzhao.com/message.html"><i class="fa-comments fa"></i><span class="font-text">留言板</span></a></li></ul></div> </nav><!-- #site-nav --> </div><!-- #site-nav-wrap --> <div class="clear"></div> </div><!-- #top-menu --> </div><!-- #menu-box --></header><!-- #masthead --><div id="search-main"> <div class="searchbar"> <form method="get" id="searchform" action="https://liuyanzhao.com/"> <span> <input type="text" value="" name="s" id="s" placeholder="输入搜索内容" required /> <button type="submit" id="searchsubmit">搜索</button> </span> </form></div> <div class="clear"></div></div> <nav class="breadcrumb"> <a class="crumbs" href="https://liuyanzhao.com/"><i class="fa fa-home"></i>首页</a><i class="fa fa-angle-right"></i>代码高亮 </nav> <div id="content" class="site-content"><script type="text/javascript" src="https://liuyanzhao.com/wp-content/themes/begin/js/highlight.js"></script><style type="text/css">#primary { width: 100%;}.entry-code { padding: 10px;}.code-h { font-size: 15px; font-weight: bold; margin: 0 -30px 5px -30px; padding: 0 0 0 30px; border-left: 5px solid #568abc;}.code-box { margin: 20px 10px 10px 0;}.entry-code textarea { background: #fff; padding: 10px; border: 1px solid #ebebeb;}.options { background: #f8f8f8; margin: 10px 10px 10px 0; padding: 10px 15px; border: 1px solid #ccc; border-radius: 2px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.03);}.entry-code button { color: #fff; line-height: 37px; padding: 0 18px; background: #0088cc; border: 1px solid #0088cc; cursor:pointer; border-radius: 2px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);}.entry-code button:hover { background: #666; border: 1px solid #555;}.entry-code select { background: #fff; border: 1px solid #ccc;}.entry-code p { color: #888; text-indent: 0em; margin: 0 0 5px 0;}.options_no { display: none;}</style><div id="primary" class="content-area"> <main id="main" class="site-main" role="main"> <article id="post-1853" class="post-1853 page type-page status-publish hentry rwz"> <header class="entry-header"> <h1 class="entry-title">代码高亮</h1> </header><!-- .entry-header --> <div class="entry-content"> <div class="single-content"> <div class="entry-code"> <div class="code-box"> <div class="code-h">输入源代码</div> <!-- <div id="copypaste"> <a href="#" onclick="docopy('source')">&nbsp;复制&nbsp;</a> |<a href="#" onclick="dopasted('source')">&nbsp;粘贴&nbsp;</a> |<a href="#" onclick="doclear('source')">&nbsp;清除&nbsp;</a> </div> --> <textarea title="输入源代码." class=java id=sourceCode style="width: 100%" name=sourceCode rows=6></textarea> </div> <div class="code-box"> <div class="code-h">转换设置</div> <span class="options">选择语言:&nbsp;&nbsp; <select onchange="document.getElementById('sourceCode').className=this.value"> <option value=java selected>java</option> <option value=xml>xml</option> <option value=sql>sql</option> <option value=jscript>jscript</option> <option value=groovy>groovy</option> <option value=css>css</option> <option value=cpp>cpp</option> <option value=c#>c#</option> <option value=python>python</option <option value=vb>vb</option> <option value=perl>perl</option> <option value=php>php</option> <option value=ruby>ruby</option> <option value=delphi>delphi</option> </select> </span> <span class="options">选项：&nbsp; <input id=showGutter type=checkbox checked> 显示行号 <input id=firstLine type=checkbox checked> 起始为1 <span class="options_no"> <input id=showControls type=checkbox> 工具栏 <input id=collapseAll type=checkbox> 折叠 <input id=showColumns type=checkbox> 显示列数 </span> </span> <span class="render"> <button onclick=generateCode()>转&nbsp;&nbsp;换</button> <button onclick=clearText()>清&nbsp;&nbsp;除</button> </span> </div> <div class="code-box"> <div class="code-h">HTML 代码</div> <p>在WordPress本文编辑模式，将下面代码复制粘贴进去</p> <textarea id=htmlCode style="width: 100%" name=htmlCode rows=6></textarea> </div> <div class="code-box"> <div class="code-h">HTML 预览</div> <div id="preview"></div> </div> </div> <!-- .entry-code --> </div> <!-- .single-content --> </div><!-- .entry-content --> </article><!-- #page --> </main><!-- .site-main --></div><!-- .content-area --> </div><!-- .site-content --> <div class="clear"></div> <div id="footer-widget-box" class="site-footer wow fadeInUp" data-wow-delay="0.3s"> <div class="footer-widget"> <aside id="text-22" class="widget widget_text wow fadeInUp" data-wow-delay="0.3s"><h3 class="widget-title"><span class="s-icon"></span>勤有功，戏无益</h3> <div class="textwidget"> <ul class="menu"> <li> <a title="" target="_blank" href="http://liuyanzhao.com/links.html"> <i class="fa-link fa"></i> <span class="font-text">友链链接</span> </a> </li> <li> <a title="" target="_blank" href="http://liuyanzhao.com/message.html"> <i class="fa-commenting fa"></i> <span class="font-text">留言板</span> </a> </li> <li> <a target="_blank" href="http://liuyanzhao.com/sitemap.html"> <i class="fa-sitemap fa"></i> <span class="font-text">站点地图</span> </a> </li> <li> <a target="_blank" rel="nofollow" href="http://liuyanzhao.com/article-file.html"> <i class="fa-list-alt fa"></i> <span class="font-text">文章归档</span> </a> </li> <li> <a title="" target="_blank" href="https://liuyanzhao.com/tags.html"> <i class="fa fa-tag"></i> <span class="font-text">标签库</span> </a> </li> <li> <a title="" target="_blank" href="https://liuyanzhao.com/recent-comments.html"> <i class="fa-comment fa"></i> <span class="font-text">最新评论</span> </a> </li> <li> <a title="" target="_blank" href="https://liuyanzhao.com/code-highlight.html"> <i class="fa-code fa"></i> <span class="font-text">代码高亮</span> </a> </li> <li> <a title="" target="_blank" href="https://liuyanzhao.com/category/other-cat/vedio"> <i class="fa-video-camera fa"></i> <span class="font-random">&nbsp;视频收藏</span> </a> </li> <li> <a title="" target="_blank" href="https://liuyanzhao.com/readers.html"> <i class="fa-newspaper-o fa"></i> <span class="font-text">读者排行</span> </a> </li> </ul></div> <div class="clear"></div></aside><aside id="text-23" class="widget widget_text wow fadeInUp" data-wow-delay="0.3s"><h3 class="widget-title"><span class="s-icon"></span>关于博主</h3> <div class="textwidget"><p style="text-indent: 2em;">博主系本科在校大学生(大三)，计算机科学与技术专业，19年毕业，将是一名 Java 后端er，梦想进入一线互联网公司。感恩您的关注！<span style="color:#EB356C"><strong>长期求内推和实习机会</strong></span></p> <p style="text-indent: 2em;">QQ交流群(交流或求助)：590480292 </p> </div> <div class="clear"></div></aside><aside id="text-24" class="widget widget_text wow fadeInUp" data-wow-delay="0.3s"><h3 class="widget-title"><span class="s-icon"></span>捐赠与支持</h3> <div class="textwidget"><div style="float:right;width:35%;"><img src="https://media.liuyanzhao.com/wp-content/uploads/2018/06/wechat.jpg" ></div><div style="margin-right:35%;padding-right:5px;"><p>为了维持本站运营，博主提供有偿服务和广告投放，需要的可以扫右侧微信二维码或加 QQ 847064370</p><div></div> <div class="clear"></div></aside> <div class="clear"></div> </div></div> <footer id="colophon" class="site-footer wow fadeInUp" data-wow-delay="0.3s" role="contentinfo"> <div class="site-info"> <p style="text-align: center;">Copyright © <a href="https://liuyanzhao.com/" target="_blank" rel="noopener noreferrer">言曌博客 </a>丨<a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow noopener noreferrer">赣ICP备17002430号 </a>丨 <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36042102000137" target="_blank" rel="nofollow noopener noreferrer"><img style="margin-bottom: -4px;" src="https://media.liuyanzhao.com/wp-content/uploads/2017/03/ghs.png" />赣公网安备36042102000137</a></p><p style="text-align: center;">博客已运行<span id="sitetime" style="color: #0085ba;"></span><a href="http://tongji.baidu.com/web/welcome/ico?s=6afab79aca1c297eeabbd7b79812dba7" target="_blank" rel="nofollow noopener noreferrer">网站统计 </a></p><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio> <span class="add-info"> &nbsp;<audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio><audio style="display: none;" controls="controls"></audio> <script type="text/javascript">$('#links ul>li>a').get(0).style.color = "red";</script> </span> </div><!-- .site-info --> </footer><!-- .site-footer --><script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script><ul id="scroll"> <li class="log log-no"><a class="log-button" title="文章目录"><i class="fa fa-bars"></i></a><div class="log-prompt"><div class="log-arrow">文章目录</div></div></li> <li><a class="scroll-h" title="返回顶部"><i class="fa fa-angle-up"></i></a></li> <li><a class="scroll-c" title="评论"><i class="fa fa-comment-o"></i></a></li> <li><a class="scroll-b" title="转到底部"><i class="fa fa-angle-down"></i></a></li> <li class="gb2-site"><a id="gb2big5"><span>繁</span></a></li> <li class="qqonline"> <div class="online"><a href="javascript:void(0)" ><i class="fa fa-qq"></i></a></div> <div class="qqonline-box"> <div class="qqonline-main"> <div class="nline-wiexin"> <h4>微信</h4> <img title="微信" alt="微信" src="https://media.liuyanzhao.com/wp-content/uploads/2018/06/wechat.jpg"/> </div> <div class="nline-qq"><a target="_blank" rel="external nofollow" href="http://wpa.qq.com/msgrd?v=3&uin=847064370&site=qq&menu=yes"><i class="fa fa-qq"></i>在线咨询</a></div> </div> <span class="qq-arrow"></span> </div></li> <li class="qr-site"><a href="javascript:void(0)" class="qr" title="本页二维码"><i class="fa fa-qrcode"></i><span class="qr-img"><span id="output"><img class="alignnone" src="https://media.liuyanzhao.com/wp-content/uploads/2017/04/sousoulogo.png" alt="icon"/></span><span class="arrow arrow-z"><i class="fa fa-caret-right"></i></span><span class="arrow arrow-y"><i class="fa fa-caret-right"></i></span></span></a></li> <script type="text/javascript">$(document).ready(function(){if(!+[1,]){present="table";} else {present="canvas";}$('#output').qrcode({render:present,text:window.location.href,width:"150",height:"150"});});</script> </ul></div><!-- .site --><script type="text/javascript" src="https://liuyanzhao.com/wp-content/themes/begin/js/jquery-ui.min.js"></script><script type="text/javascript" src="https://liuyanzhao.com/wp-content/themes/begin/js/qaptcha.jquery.js"></script><script type="text/javascript">var QaptchaJqueryPage="https://liuyanzhao.com/wp-content/themes/begin/inc/function/qaptcha.jquery.php"</script><script type="text/javascript">$(document).ready(function(){$('.qaptcha').QapTcha();});</script><script type='text/javascript'>/* <![CDATA[ */var viewsCacheL10n = {"admin_ajax_url":"https:\/\/liuyanzhao.com\/wp-admin\/admin-ajax.php","post_id":"1853"};/* ]]> */</script><script type='text/javascript' async='async' src='https://liuyanzhao.com/wp-content/plugins/wp-postviews/postviews-cache.js?ver=1.68'></script><script type='text/javascript' src='https://liuyanzhao.com/wp-content/themes/begin/js/superfish.js?ver=2017.04.28'></script><script type='text/javascript' async='async' src='https://liuyanzhao.com/wp-content/themes/begin/js/gb2big5.js?ver=2017.04.28'></script><script type='text/javascript' async='async' src='https://liuyanzhao.com/wp-content/themes/begin/js/carousel.min.js?ver=2017.04.28'></script><script src="https://liuyanzhao.com/wp-content/themes/begin/js/activate-power-mode.js"></script><script src="https://liuyanzhao.com/wp-content/themes/begin/js/liuyanzhao.js"></script><!--<script>--><!-- (function(){--><!-- var bp = document.createElement('script');--><!-- var curProtocol = window.location.protocol.split(':')[0];--><!-- if (curProtocol === 'https') {--><!-- bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';--><!-- }--><!-- else {--><!-- bp.src = 'http://push.zhanzhang.baidu.com/push.js';--><!-- }--><!-- var s = document.getElementsByTagName("script")[0];--><!-- s.parentNode.insertBefore(bp, s);--><!-- })();--><!--</script>--><!--<script type="text/javascript">--><!-- $('.comment-body').mouseover(function(e) {--><!-- $('.ua-info:').show();--><!-- });--><!-- $('.comment-body').mouseout(function(e) {--><!-- $('this>.ua-info').hide();--><!-- });--><!----><!--</script>--><script></script></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!--<meta http-equiv="Cache-Control" content="no-transform" />-->
+    <!--<meta http-equiv="Cache-Control" content="no-siteapp" />-->
+    <meta name="applicable-device" content="pc,mobile">
+    <meta name="MobileOptimized" content="width"/>
+    <meta name="HandheldFriendly" content="true"/>
+    <title>代码高亮 | 言曌博客</title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <link rel="shortcut icon" href="https://media.liuyanzhao.com/wp-content/uploads/2017/04/sousoulogo.png">
+    <link rel="apple-touch-icon" sizes="114x114"
+          href="https://media.liuyanzhao.com/wp-content/uploads/2017/04/sousoulogo.png"/>
+    <link rel="profile" href="http://gmpg.org/xfn/11">
+    <link rel="pingback" href="https://liuyanzhao.com/xmlrpc.php">
+    <link rel="stylesheet" href="https://media.liuyanzhao.com/wp-content/themes/begin/css/liuyanzhao.css">
+    <!--[if lt IE 9]>
+    <script src="https://liuyanzhao.com/wp-content/themes/begin/js/html5.js"></script>
+    <script src="https://liuyanzhao.com/wp-content/themes/begin/js/css3-mediaqueries.js"></script><![endif]-->
+    <link rel='stylesheet' id='begin-style-css'
+          href='https://liuyanzhao.com/wp-content/themes/begin/style.css?ver=4.7.11' type='text/css' media='all'/>
+    <link rel='stylesheet' id='fonts-css'
+          href='https://media.liuyanzhao.com/wp-content/themes/begin/css/fonts.css?ver=2017.04.28' type='text/css'
+          media='all'/>
+    <link rel='stylesheet' id='highlight-css'
+          href='https://media.liuyanzhao.com/wp-content/themes/begin/css/highlight.css?ver=2017.04.28' type='text/css'
+          media='all'/>
+    <script type='text/javascript'
+            src='https://liuyanzhao.com/wp-content/themes/begin/js/jquery.min.js?ver=1.10.1'></script>
+    <script type='text/javascript' async='async'
+            src='https://liuyanzhao.com/wp-content/themes/begin/js/slides.js?ver=2017.04.28'></script>
+    <script type='text/javascript' async='async'
+            src='https://liuyanzhao.com/wp-content/themes/begin/js/jquery.qrcode.min.js?ver=2017.04.28'></script>
+    <script type='text/javascript' async='async'
+            src='https://liuyanzhao.com/wp-content/themes/begin/js/sticky.js?ver=1.6.0'></script>
+    <script type='text/javascript'
+            src='https://liuyanzhao.com/wp-content/themes/begin/js/jquery-ias.js?ver=2.2.1'></script>
+    <script type='text/javascript' async='async'
+            src='https://liuyanzhao.com/wp-content/themes/begin/js/jquery.lazyload.js?ver=2017.04.28'></script>
+    <script type='text/javascript' async='async'
+            src='https://liuyanzhao.com/wp-content/themes/begin/js/tipso.js?ver=1.0.1'></script>
+    <script type='text/javascript'>/* <![CDATA[ */
+    var wpl_ajax_url = "https:\/\/liuyanzhao.com\/wp-admin\/admin-ajax.php";
+    /* ]]> */</script>
+    <script type='text/javascript'
+            src='https://liuyanzhao.com/wp-content/themes/begin/js/script.js?ver=2017.04.28'></script>
+    <script type='text/javascript' async='async'
+            src='https://liuyanzhao.com/wp-content/themes/begin/js/flexisel.js?ver=2017.04.28'></script>
+    <script type='text/javascript' async='async'
+            src='https://liuyanzhao.com/wp-content/themes/begin/js/fancybox.js?ver=2017.04.28'></script>
+    <script type='text/javascript' async='async'
+            src='https://liuyanzhao.com/wp-content/themes/begin/js/comments-ajax-qt.js?ver=2017.04.28'></script>
+    <link rel="canonical" href="https://liuyanzhao.com/code-highlight.html"/>
+    <style>#content, .header-sub, .top-nav, #top-menu, #mobile-nav, #main-search, #search-main, .breadcrumb, .footer-widget, .links-box {
+        width: 1080px;
+    }
+
+    @media screen and (max-width: 1080px) {
+        #content, .breadcrumb, .footer-widget, .links-box {
+            width: 98%;
+        }
+
+        #top-menu {
+            width: 98%;
+        }
+
+        .top-nav {
+            width: 98%;
+        }
+
+        #main-search, #search-main, #mobile-nav, .header-sub {
+            width: 98%;
+        }
+
+        .breadcrumb {
+            width: 98%;
+        }
+    }</style>
+    <style>#breadcrumb {
+        background: #E7E7E7 !important;
+    }
+
+    .wp-video {
+        margin: 0 auto;
+    }
+
+    #shuoshuo_content {
+        background: rgba(255, 255, 255, 0.5) !important;
+        filter: Alpha(opacity=0);
+        background: #fff;
+    }
+
+    #shuoshuo_content p {
+        position: relative; /* 设置子元素为相对定位，可让子元素不继承Alpha值，保证字体颜色不透明 */
+    }
+
+    .title-l {
+        background: #ffffff;
+        height: 0;
+    }
+
+    .single-content code {
+        background-color: transparent;
+    }
+
+    pre {
+        background: #F7F1E1;
+    }
+
+    .dp-highlighter {
+        border: none;
+        background-color: #F5F2F0;
+    }
+
+    .dp-highlighter:hover {
+        border: none;
+        background-color: #F5F2F0;
+    }
+
+    .single-content h2 {
+        font-size: 24px;
+        color: #EC356C;
+    }
+
+    .dp-highlighter li {
+        list-style: none !important;
+        border: none !important;
+        margin-left: 10px !important;
+    }
+
+    .ad-site {
+        background: none !important;
+        padding: 0 !important;
+        border: 0;
+        margin: 0;
+    }</style>
+    <style type="text/css" id="custom-background-css">body.custom-background {
+        background-color: #f5f8f9;
+    }</style>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script> (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-8035829643459245",
+        enable_page_level_ads: true
+    });</script>
+</head>
+<body class="page-template page-template-pages page-template-template-code page-template-pagestemplate-code-php page page-id-1853 custom-background">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header">
+        <nav id="top-header">
+            <div class="top-nav">
+                <div id="user-profile">
+                    <div class="user-login"> <!--顶部显示日期--start-->
+                        <script type="text/javascript"> function check(val) {
+                            if (val < 10) {
+                                return ("0" + val);
+                            } else {
+                                return (val);
+                            }
+                        }
+
+                        function TopCurrentTime() {
+                            var date = new Date();
+                            var year = date.getFullYear();
+                            var month = date.getMonth() + 1;
+                            var day = date.getDate();
+                            var isnDay = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日");
+                            var timestr = year + "年" + month + "月" + day + "日 " + isnDay[date.getDay()];
+                            document.getElementById("TopCurrentTime").innerHTML = timestr;
+                            var timerID = setTimeout('TopCurrentTime()', 1000);
+                        } </script>
+                        <span id="TopCurrentTime"></span>
+                        <script> TopCurrentTime(); </script> <!--顶部显示日期--end--> </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="menu-topmenu-container">
+                    <ul id="menu-topmenu" class="top-menu">
+                        <li id="menu-item-7953"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7953"><a
+                                href="https://liuyanzhao.com/shang.html"><i class="fa-heart fa"></i><span
+                                class="font-text">赞赏记录</span></a></li>
+                        <li id="menu-item-944"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-944"><a
+                                href="https://liuyanzhao.com/shuoshuo.html"><i class="fa-comments fa"></i><span
+                                class="font-text">说说 </span></a></li>
+                        <li id="menu-item-5069"
+                            class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5069"><a
+                                href="https://liuyanzhao.com/tag/video"><i class="fa-video-camera fa"></i><span
+                                class="font-text">视频 </span></a></li>
+                        <li id="menu-item-1970"
+                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1970"><a
+                                href="https://liuyanzhao.com/mysites.html"><i class="fa-paperclip fa"></i><span
+                                class="font-text">收藏夹</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav><!-- #top-header -->
+        <div id="menu-box">
+            <div id="top-menu"><span class="nav-search"><i class="fa fa-search"></i></span>
+                <div class="logo-site"><p class="site-title"><a href="https://liuyanzhao.com/" title="言曌博客" rel="home">言曌博客</a>
+                </p>
+                    <p class="site-description">程序人生，永不止步</p></div><!-- .logo-site -->
+                <div id="site-nav-wrap">
+                    <div id="sidr-close"><a href="#sidr-close" class="toggle-sidr-close">×</a></div>
+                    <nav id="site-nav" class="main-nav"><a href="#sidr-main" id="navigation-toggle" class="bars"><i
+                            class="fa fa-bars"></i></a>
+                        <div class="menu-mainmenu-container">
+                            <ul id="menu-mainmenu" class="down-menu nav-menu">
+                                <li id="menu-item-7415"
+                                    class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-7415">
+                                    <a href="https://liuyanzhao.com/"><i class="fa-home fa"></i><span class="font-text">首页</span></a>
+                                </li>
+                                <li id="menu-item-7378"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7378">
+                                    <a href="https://liuyanzhao.com/category/javadev/"><i class="fa-coffee fa"></i><span
+                                            class="font-text">Java 开发</span></a>
+                                    <ul class="sub-menu">
+                                        <li id="menu-item-7379"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7379">
+                                            <a href="https://liuyanzhao.com/category/javadev/java-basic/">Java 基础</a>
+                                        </li>
+                                        <li id="menu-item-7381"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7381">
+                                            <a href="https://liuyanzhao.com/category/javadev/core-java/">java 进阶</a>
+                                        </li>
+                                        <li id="menu-item-7380"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7380">
+                                            <a href="https://liuyanzhao.com/category/javadev/java-code/">Java 源码</a>
+                                        </li>
+                                        <li id="menu-item-7736"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7736">
+                                            <a href="https://liuyanzhao.com/category/javadev/multi-thread/">多线程并发编程</a>
+                                        </li>
+                                        <li id="menu-item-7382"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7382">
+                                            <a href="https://liuyanzhao.com/category/javadev/java-web/">JavaWeb</a></li>
+                                        <li id="menu-item-7387"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7387">
+                                            <a href="https://liuyanzhao.com/category/javadev/templates/">模板引擎</a></li>
+                                        <li id="menu-item-7384"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7384">
+                                            <a href="https://liuyanzhao.com/category/javadev/spring/">Spring 家族</a></li>
+                                        <li id="menu-item-7383"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7383">
+                                            <a href="https://liuyanzhao.com/category/javadev/orm/">ORM 框架</a></li>
+                                        <li id="menu-item-7386"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7386">
+                                            <a href="https://liuyanzhao.com/category/javadev/search-engine/">搜索引擎框架</a>
+                                        </li>
+                                        <li id="menu-item-7388"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7388">
+                                            <a href="https://liuyanzhao.com/category/javadev/cache/">缓存技术</a></li>
+                                        <li id="menu-item-7970"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7970">
+                                            <a href="https://liuyanzhao.com/category/javadev/util/">工具类</a></li>
+                                        <li id="menu-item-7393"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7393">
+                                            <a href="https://liuyanzhao.com/category/other-cat/ide/">开发利器</a></li>
+                                        <li id="menu-item-8038"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8038">
+                                            <a href="https://liuyanzhao.com/category/javadev/jiagou/">技术架构</a></li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-7396"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7396">
+                                    <a href="https://liuyanzhao.com/category/other-languages/"><i
+                                            class="fa-code fa"></i><span class="font-text">其他语言</span></a>
+                                    <ul class="sub-menu">
+                                        <li id="menu-item-7398"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7398">
+                                            <a href="https://liuyanzhao.com/category/other-languages/html-css/">HTML/CSS</a>
+                                        </li>
+                                        <li id="menu-item-7399"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7399">
+                                            <a href="https://liuyanzhao.com/category/other-languages/js/">JavaScript/jQuery</a>
+                                        </li>
+                                        <li id="menu-item-7990"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7990">
+                                            <a href="https://liuyanzhao.com/category/other-languages/front-end-frame/">前端框架和插件</a>
+                                        </li>
+                                        <li id="menu-item-7397"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7397">
+                                            <a href="https://liuyanzhao.com/category/other-languages/c/">C</a></li>
+                                        <li id="menu-item-7400"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7400">
+                                            <a href="https://liuyanzhao.com/category/other-languages/php-notes/">PHP</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-7409"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7409">
+                                    <a href="https://liuyanzhao.com/category/computer-science/"><i
+                                            class="fa-cubes fa"></i><span class="font-text">计算机科学</span></a>
+                                    <ul class="sub-menu">
+                                        <li id="menu-item-7412"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7412">
+                                            <a href="https://liuyanzhao.com/category/computer-science/data-structure-and-algorithm/">数据结构和算法</a>
+                                        </li>
+                                        <li id="menu-item-7413"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7413">
+                                            <a href="https://liuyanzhao.com/category/computer-science/computer-network/">计算机网络</a>
+                                        </li>
+                                        <li id="menu-item-7410"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7410">
+                                            <a href="https://liuyanzhao.com/category/computer-science/operating-system/">操作系统</a>
+                                        </li>
+                                        <li id="menu-item-7411"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7411">
+                                            <a href="https://liuyanzhao.com/category/computer-science/database-computer-science/">数据库</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-7403"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7403">
+                                    <a href="https://liuyanzhao.com/category/web-build/"><i
+                                            class="fa-building fa"></i><span class="font-text">网站建设</span></a>
+                                    <ul class="sub-menu">
+                                        <li id="menu-item-7404"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7404">
+                                            <a href="https://liuyanzhao.com/category/web-build/webserver/">Apache/Nginx</a>
+                                        </li>
+                                        <li id="menu-item-7405"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7405">
+                                            <a href="https://liuyanzhao.com/category/web-build/os/">Linux</a></li>
+                                        <li id="menu-item-7406"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7406">
+                                            <a href="https://liuyanzhao.com/category/web-build/wordpress/">WordPress</a>
+                                        </li>
+                                        <li id="menu-item-7407"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7407">
+                                            <a href="https://liuyanzhao.com/category/web-build/server-host/">服务器与主机</a>
+                                        </li>
+                                        <li id="menu-item-7408"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7408">
+                                            <a href="https://liuyanzhao.com/category/web-build/web-optimization/">网站优化</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-7389"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7389">
+                                    <a href="https://liuyanzhao.com/category/other-cat/"><i
+                                            class="fa-th-large fa"></i><span class="font-text">其他</span></a>
+                                    <ul class="sub-menu">
+                                        <li id="menu-item-7391"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7391">
+                                            <a href="https://liuyanzhao.com/category/other-cat/game/">娱乐游戏</a></li>
+                                        <li id="menu-item-7394"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7394">
+                                            <a href="https://liuyanzhao.com/category/other-cat/vedio/">视频收藏</a></li>
+                                        <li id="menu-item-7390"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7390">
+                                            <a href="https://liuyanzhao.com/category/other-cat/surf-skills/">上网百科</a>
+                                        </li>
+                                        <li id="menu-item-7392"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7392">
+                                            <a href="https://liuyanzhao.com/category/other-cat/trouble-solve/">异常与报错</a>
+                                        </li>
+                                        <li id="menu-item-7395"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7395">
+                                            <a href="https://liuyanzhao.com/category/other-cat/interview/">备战面试</a></li>
+                                        <li id="menu-item-7401"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7401">
+                                            <a href="https://liuyanzhao.com/category/specials/">文章杂烩</a></li>
+                                        <li id="menu-item-7414"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7414">
+                                            <a href="https://liuyanzhao.com/category/resource-share/">资源分享</a></li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-7416"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7416"><a
+                                        href="https://liuyanzhao.com/message.html"><i class="fa-comments fa"></i><span
+                                        class="font-text">留言板</span></a></li>
+                            </ul>
+                        </div>
+                    </nav><!-- #site-nav --> </div><!-- #site-nav-wrap -->
+                <div class="clear"></div>
+            </div><!-- #top-menu --> </div><!-- #menu-box --></header><!-- #masthead -->
+    <div id="search-main">
+        <div class="searchbar">
+            <form method="get" id="searchform" action="https://liuyanzhao.com/"><span> <input type="text" value=""
+                                                                                              name="s" id="s"
+                                                                                              placeholder="输入搜索内容"
+                                                                                              required/> <button
+                    type="submit" id="searchsubmit">搜索</button> </span></form>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <nav class="breadcrumb"><a class="crumbs" href="https://liuyanzhao.com/"><i class="fa fa-home"></i>首页</a><i
+            class="fa fa-angle-right"></i>代码高亮
+    </nav>
+    <div id="content" class="site-content">
+        <script type="text/javascript" src="https://liuyanzhao.com/wp-content/themes/begin/js/highlight.js"></script>
+        <style type="text/css">#primary {
+            width: 100%;
+        }
+
+        .entry-code {
+            padding: 10px;
+        }
+
+        .code-h {
+            font-size: 15px;
+            font-weight: bold;
+            margin: 0 -30px 5px -30px;
+            padding: 0 0 0 30px;
+            border-left: 5px solid #568abc;
+        }
+
+        .code-box {
+            margin: 20px 10px 10px 0;
+        }
+
+        .entry-code textarea {
+            background: #fff;
+            padding: 10px;
+            border: 1px solid #ebebeb;
+        }
+
+        .options {
+            background: #f8f8f8;
+            margin: 10px 10px 10px 0;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.03);
+        }
+
+        .entry-code button {
+            color: #fff;
+            line-height: 37px;
+            padding: 0 18px;
+            background: #0088cc;
+            border: 1px solid #0088cc;
+            cursor: pointer;
+            border-radius: 2px;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .entry-code button:hover {
+            background: #666;
+            border: 1px solid #555;
+        }
+
+        .entry-code select {
+            background: #fff;
+            border: 1px solid #ccc;
+        }
+
+        .entry-code p {
+            color: #888;
+            text-indent: 0em;
+            margin: 0 0 5px 0;
+        }
+
+        .options_no {
+            display: none;
+        }</style>
+        <div id="primary" class="content-area">
+            <main id="main" class="site-main" role="main">
+                <article id="post-1853" class="post-1853 page type-page status-publish hentry rwz">
+                    <header class="entry-header"><h1 class="entry-title">代码高亮</h1></header><!-- .entry-header -->
+                    <div class="entry-content">
+                        <div class="single-content">
+                            <div class="entry-code">
+                                <div class="code-box">
+                                    <div class="code-h">输入源代码</div>
+                                    <!-- <div id="copypaste"> <a href="#" onclick="docopy('source')">&nbsp;复制&nbsp;</a> |<a href="#" onclick="dopasted('source')">&nbsp;粘贴&nbsp;</a> |<a href="#" onclick="doclear('source')">&nbsp;清除&nbsp;</a> </div> -->
+                                    <textarea title="输入源代码." class=java id=sourceCode style="width: 100%"
+                                              name=sourceCode rows=6></textarea></div>
+                                <div class="code-box">
+                                    <div class="code-h">转换设置</div>
+                                    <span class="options">选择语言:&nbsp;&nbsp; <select
+                                            onchange="document.getElementById('sourceCode').className=this.value"> <option
+                                            value=java selected>java</option> <option value=xml>xml</option> <option
+                                            value=sql>sql</option> <option value=jscript>jscript</option> <option
+                                            value=groovy>groovy</option> <option value=css>css</option> <option
+                                            value=cpp>cpp</option> <option value=c#>c#</option> <option value=python>python</option <option
+                                            value=vb>vb</option> <option value=perl>perl</option> <option
+                                            value=php>php</option> <option value=ruby>ruby</option> <option
+                                            value=delphi>delphi</option> </select> </span> <span class="options">选项：&nbsp; <input
+                                        id=showGutter type=checkbox checked> 显示行号 <input id=firstLine type=checkbox
+                                                                                         checked> 起始为1 <span
+                                        class="options_no"> <input id=showControls type=checkbox> 工具栏 <input
+                                        id=collapseAll type=checkbox> 折叠 <input id=showColumns
+                                                                                type=checkbox> 显示列数 </span> </span>
+                                    <span class="render"> <button onclick=generateCode()>转&nbsp;&nbsp;换</button> <button
+                                            onclick=clearText()>清&nbsp;&nbsp;除</button> </span></div>
+                                <div class="code-box">
+                                    <div class="code-h">HTML 代码</div>
+                                    <p>在WordPress本文编辑模式，将下面代码复制粘贴进去</p> <textarea id=htmlCode style="width: 100%"
+                                                                                  name=htmlCode rows=6></textarea></div>
+                                <div class="code-box">
+                                    <div class="code-h">HTML 预览</div>
+                                    <div id="preview"></div>
+                                </div>
+                            </div> <!-- .entry-code --> </div> <!-- .single-content --> </div><!-- .entry-content -->
+                </article><!-- #page --> </main><!-- .site-main --></div><!-- .content-area --> </div>
+    <!-- .site-content -->
+    <div class="clear"></div>
+    <div id="footer-widget-box" class="site-footer wow fadeInUp" data-wow-delay="0.3s">
+        <div class="footer-widget">
+            <aside id="text-22" class="widget widget_text wow fadeInUp" data-wow-delay="0.3s"><h3 class="widget-title">
+                <span class="s-icon"></span>勤有功，戏无益</h3>
+                <div class="textwidget">
+                    <ul class="menu">
+                        <li><a title="" target="_blank" href="http://liuyanzhao.com/links.html"> <i
+                                class="fa-link fa"></i> <span class="font-text">友链链接</span> </a></li>
+                        <li><a title="" target="_blank" href="http://liuyanzhao.com/message.html"> <i
+                                class="fa-commenting fa"></i> <span class="font-text">留言板</span> </a></li>
+                        <li><a target="_blank" href="http://liuyanzhao.com/sitemap.html"> <i class="fa-sitemap fa"></i>
+                            <span class="font-text">站点地图</span> </a></li>
+                        <li><a target="_blank" rel="nofollow" href="http://liuyanzhao.com/article-file.html"> <i
+                                class="fa-list-alt fa"></i> <span class="font-text">文章归档</span> </a></li>
+                        <li><a title="" target="_blank" href="https://liuyanzhao.com/tags.html"> <i
+                                class="fa fa-tag"></i> <span class="font-text">标签库</span> </a></li>
+                        <li><a title="" target="_blank" href="https://liuyanzhao.com/recent-comments.html"> <i
+                                class="fa-comment fa"></i> <span class="font-text">最新评论</span> </a></li>
+                        <li><a title="" target="_blank" href="https://liuyanzhao.com/code-highlight.html"> <i
+                                class="fa-code fa"></i> <span class="font-text">代码高亮</span> </a></li>
+                        <li><a title="" target="_blank" href="https://liuyanzhao.com/category/other-cat/vedio"> <i
+                                class="fa-video-camera fa"></i> <span class="font-random">&nbsp;视频收藏</span> </a></li>
+                        <li><a title="" target="_blank" href="https://liuyanzhao.com/readers.html"> <i
+                                class="fa-newspaper-o fa"></i> <span class="font-text">读者排行</span> </a></li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </aside>
+            <aside id="text-23" class="widget widget_text wow fadeInUp" data-wow-delay="0.3s"><h3 class="widget-title">
+                <span class="s-icon"></span>关于博主</h3>
+                <div class="textwidget"><p style="text-indent: 2em;">博主系本科在校大学生(大三)，计算机科学与技术专业，19年毕业，将是一名 Java
+                    后端er，梦想进入一线互联网公司。感恩您的关注！<span style="color:#EB356C"><strong>长期求内推和实习机会</strong></span></p>
+                    <p style="text-indent: 2em;">QQ交流群(交流或求助)：590480292 </p></div>
+                <div class="clear"></div>
+            </aside>
+            <aside id="text-24" class="widget widget_text wow fadeInUp" data-wow-delay="0.3s"><h3 class="widget-title">
+                <span class="s-icon"></span>捐赠与支持</h3>
+                <div class="textwidget">
+                    <div style="float:right;width:35%;"><img
+                            src="https://media.liuyanzhao.com/wp-content/uploads/2018/06/wechat.jpg"></div>
+                    <div style="margin-right:35%;padding-right:5px;"><p>为了维持本站运营，博主提供有偿服务和广告投放，需要的可以扫右侧微信二维码或加 QQ
+                        847064370</p>
+                        <div></div>
+                        <div class="clear"></div>
+            </aside>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <footer id="colophon" class="site-footer wow fadeInUp" data-wow-delay="0.3s" role="contentinfo">
+        <div class="site-info"><p style="text-align: center;">Copyright © <a href="https://liuyanzhao.com/"
+                                                                             target="_blank" rel="noopener noreferrer">言曌博客 </a>丨<a
+                href="http://www.miitbeian.gov.cn/" target="_blank"
+                rel="nofollow noopener noreferrer">赣ICP备17002430号 </a>丨 <a
+                href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36042102000137" target="_blank"
+                rel="nofollow noopener noreferrer"><img style="margin-bottom: -4px;"
+                                                        src="https://media.liuyanzhao.com/wp-content/uploads/2017/03/ghs.png"/>赣公网安备36042102000137</a>
+        </p>
+            <p style="text-align: center;">博客已运行<span id="sitetime" style="color: #0085ba;"></span><a
+                    href="http://tongji.baidu.com/web/welcome/ico?s=6afab79aca1c297eeabbd7b79812dba7" target="_blank"
+                    rel="nofollow noopener noreferrer">网站统计 </a></p>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <audio style="display: none;" controls="controls"></audio>
+            <span class="add-info"> &nbsp;<audio style="display: none;" controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio><audio style="display: none;"
+                                                                              controls="controls"></audio><audio
+                    style="display: none;" controls="controls"></audio> <script
+                    type="text/javascript">$('#links ul>li>a').get(0).style.color = "red";</script> </span></div>
+        <!-- .site-info --> </footer><!-- .site-footer -->
+    <script>window._bd_share_config = {
+        "common": {
+            "bdSnsKey": {},
+            "bdText": "",
+            "bdMini": "2",
+            "bdMiniList": false,
+            "bdPic": "",
+            "bdStyle": "1",
+            "bdSize": "16"
+        }, "share": {"bdSize": 16}
+    };
+    with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+    <ul id="scroll">
+        <li class="log log-no"><a class="log-button" title="文章目录"><i class="fa fa-bars"></i></a>
+            <div class="log-prompt">
+                <div class="log-arrow">文章目录</div>
+            </div>
+        </li>
+        <li><a class="scroll-h" title="返回顶部"><i class="fa fa-angle-up"></i></a></li>
+        <li><a class="scroll-c" title="评论"><i class="fa fa-comment-o"></i></a></li>
+        <li><a class="scroll-b" title="转到底部"><i class="fa fa-angle-down"></i></a></li>
+        <li class="gb2-site"><a id="gb2big5"><span>繁</span></a></li>
+        <li class="qqonline">
+            <div class="online"><a href="javascript:void(0)"><i class="fa fa-qq"></i></a></div>
+            <div class="qqonline-box">
+                <div class="qqonline-main">
+                    <div class="nline-wiexin"><h4>微信</h4> <img title="微信" alt="微信"
+                                                               src="https://media.liuyanzhao.com/wp-content/uploads/2018/06/wechat.jpg"/>
+                    </div>
+                    <div class="nline-qq"><a target="_blank" rel="external nofollow"
+                                             href="http://wpa.qq.com/msgrd?v=3&uin=847064370&site=qq&menu=yes"><i
+                            class="fa fa-qq"></i>在线咨询</a></div>
+                </div>
+                <span class="qq-arrow"></span></div>
+        </li>
+        <li class="qr-site"><a href="javascript:void(0)" class="qr" title="本页二维码"><i class="fa fa-qrcode"></i><span
+                class="qr-img"><span id="output"><img class="alignnone"
+                                                      src="https://media.liuyanzhao.com/wp-content/uploads/2017/04/sousoulogo.png"
+                                                      alt="icon"/></span><span class="arrow arrow-z"><i
+                class="fa fa-caret-right"></i></span><span class="arrow arrow-y"><i
+                class="fa fa-caret-right"></i></span></span></a></li>
+        <script type="text/javascript">$(document).ready(function () {
+            if (!+[1,]) {
+                present = "table";
+            } else {
+                present = "canvas";
+            }
+            $('#output').qrcode({render: present, text: window.location.href, width: "150", height: "150"});
+        });</script>
+    </ul>
+</div><!-- .site -->
+<script type="text/javascript" src="https://liuyanzhao.com/wp-content/themes/begin/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://liuyanzhao.com/wp-content/themes/begin/js/qaptcha.jquery.js"></script>
+<script type="text/javascript">var QaptchaJqueryPage = "https://liuyanzhao.com/wp-content/themes/begin/inc/function/qaptcha.jquery.php"</script>
+<script type="text/javascript">$(document).ready(function () {
+    $('.qaptcha').QapTcha();
+});</script>
+<script type='text/javascript'>/* <![CDATA[ */
+var viewsCacheL10n = {"admin_ajax_url": "https:\/\/liuyanzhao.com\/wp-admin\/admin-ajax.php", "post_id": "1853"};
+/* ]]> */</script>
+<script type='text/javascript' async='async'
+        src='https://liuyanzhao.com/wp-content/plugins/wp-postviews/postviews-cache.js?ver=1.68'></script>
+<script type='text/javascript'
+        src='https://liuyanzhao.com/wp-content/themes/begin/js/superfish.js?ver=2017.04.28'></script>
+<script type='text/javascript' async='async'
+        src='https://liuyanzhao.com/wp-content/themes/begin/js/gb2big5.js?ver=2017.04.28'></script>
+<script type='text/javascript' async='async'
+        src='https://liuyanzhao.com/wp-content/themes/begin/js/carousel.min.js?ver=2017.04.28'></script>
+<script src="https://liuyanzhao.com/wp-content/themes/begin/js/activate-power-mode.js"></script>
+<script src="https://liuyanzhao.com/wp-content/themes/begin/js/liuyanzhao.js"></script><!--<script>-->
+<!-- (function(){--><!-- var bp = document.createElement('script');-->
+<!-- var curProtocol = window.location.protocol.split(':')[0];--><!-- if (curProtocol === 'https') {-->
+<!-- bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';--><!-- }--><!-- else {-->
+<!-- bp.src = 'http://push.zhanzhang.baidu.com/push.js';--><!-- }-->
+<!-- var s = document.getElementsByTagName("script")[0];--><!-- s.parentNode.insertBefore(bp, s);--><!-- })();-->
+<!--</script>--><!--<script type="text/javascript">--><!-- $('.comment-body').mouseover(function(e) {-->
+<!-- $('.ua-info:').show();--><!-- });--><!-- $('.comment-body').mouseout(function(e) {-->
+<!-- $('this>.ua-info').hide();--><!-- });--><!----><!--</script>-->
+<script>
+    socialShare("#share",{sites:['qzone','qq','weibo','wechat','douban']})
+</script>
+<link rel="stylesheet" href="dist/css/share.min.css">
+
+<!--分享接口-->
+<script src="dist/src/js/social-share.js"></script>
+<script src="dist/src/js/qrcode.js"></script>
+<div class="row">
+    <div id="share"></div>
+</div>
+</body>
+</html>
 <!--压缩前的大小: 35512 bytes; 压缩后的大小: 32547 bytes; 节约：8.35% -->
 <!-- Dynamic page generated in 0.454 seconds. -->
 <!-- Cached page generated by WP-Super-Cache on 2018-08-26 22:43:35 -->

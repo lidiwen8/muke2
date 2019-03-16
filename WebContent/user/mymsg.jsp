@@ -25,10 +25,48 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		getMyMsg();//获取我的问题 
 	});
 
-	
+    function deleteMymsg(msgid,msgtopic){
+        if(confirm("确认删除该<"+msgtopic+">帖子吗？")){
+            $.ajax({
+                url:"user/userMessageServlet",
+                type:"post",
+                data:{"action":"deleteMymsg","msgid" : msgid},
+                dataType:"json",
+                success:function(data){
+                    if(data.res==1){
+                        alert ("删除成功");
+                        window.location.replace("<%=basePath%>user/mymsg.jsp");
+                    }else{
+                        alert(data.info);
+                    }
+                }
+            });
+        };
+    }
+
+
+    function restoreMymsg(msgid){
+        $.ajax({
+            url : "user/userMessageServlet",
+            type : "post",
+            async : "true",
+            data : {"action" : "restoreMymsg", "msgid" : msgid},
+            dataType : "json",
+            success : function(data){
+                if (data.res == 1){
+                    alert ("恢复成功");
+                    window.location.replace("<%=basePath%>user/mymsg.jsp");
+                }
+                else {
+                    alert(data.info);
+                }
+            }
+        });
+    }
+
 	function getMyMsg(){
 		// ajax 异步获取我的问题
-		$.get("userMessageServlet",
+		$.get("user/userMessageServlet",
 				{
 			"action":"getMyMsg",
 			"pageNum":pageNum
@@ -36,16 +74,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			function(data){
 			
 				if(data.res==1){
+				    $("#kk").text("我的问题-"+data.message.rows+"个");
 					$.each(data.message.data,function(index,element){
 						var msg=$(".template").clone();//复制模版
 						msg.show();//显示
 						msg.removeClass("template");//移除模版
 						msg.find(".title").text(element.msgtopic);//帖子标题
 						 //添加href属性
-						msg.find(".title").attr("href","<%=basePath%>message.jsp?msgid="+element.msgid);
+						msg.find(".title").attr("href", "<%=basePath%>message.jsp?msgid=" + element.msgid);
 						msg.find(".time").text(element.msgtime);//发帖时间
-						msg.find(".count").text(element.accessCount+" • "+element.replyCount);//浏览量和回复量
-                        msg.find(".editor").attr("onclick", "updateMsg("+element.msgid+")");
+						msg.find(".count").text(element.accessCount+" • "+element.replyCount+" • "+element.likecount);//浏览量和回复量
+                        msg.find(".edit_btn").attr("onclick", "getMsg("+element.msgid+")");
+                        msg.find(".delete_btn").attr("onclick", "deleteMymsg("+element.msgid+",'"+element.msgtopic+"')");
+                        msg.find(".restore_btn").attr("onclick", "restoreMymsg("+element.msgid+")");
+                        if (element.state==3){
+                            msg.find(".edit_btn").hide();
+                            msg.find(".delete_btn").hide();
+                            msg.find(".restore_btn").show();
+                        }else if(element.state==-1){
+                            msg.find(".edit_btn").hide();
+                            msg.find(".delete_btn").hide();
+                            msg.find(".restore_btn").hide();
+						}
+
+                        else {
+                            msg.find(".edit_btn").show();
+                            msg.find(".delete_btn").show();
+                            msg.find(".restore_btn").hide();
+                        }
 						$(".list").append(msg);//将帖子信息添加到list中
 					});
 					//加载更多
@@ -79,20 +135,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
     }
     //模态框修改自己的问题
-    function updateMsg(msgid){
+    function getMsg(msgid){
         // ajax 异步修改自己的问题
         $.ajax({
-            url:"userMessageServlet",
+            url:"user/userMessageServlet",
             type:"post",
-            data:{"action":"updateMsg","msgid" : msgid},
+            data:{"action":"getMsg","msgid" : msgid},
             dataType:"json",
             success:function(data){
                 if(data.res==1){
-                    alert("更新成功！");
-                    window.location.replace("index.jsp");
+                    alert(data.info);
+                    window.location.replace("<%=basePath%>user/editmsg.jsp");
                 }
                 else {
-                    $(".text-warning").text("修改失败！");
+                    alert(data.info);
                 }
             }
         });
@@ -106,15 +162,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div id="to_top" title="返回顶部">
 		<img src="../images/top.png" width="40" height="40" />
 	</div>
-	<div class="container">		
+	<div class="container">
+		<br>
 		<div class="row">
-			<div class="col-sm-12 msgtitle"><h3>我的问题</h3></div>
+			<div class="col-sm-12 msgtitle"><h3 id="kk">我的问题</h3></div>
 		</div>
 		<div class="row">
 			<div class="col-sm-8 col-xs-8"><h4>标题</h4></div>
 			<div class="col-sm-2 col-xs-4 text-center"><h4>时间</h4></div>
-			<div class="col-sm-2 hidden-xs text-center"><h4>浏览 • 回复</h4></div>
-			<div class="col-sm-2 col-xs-4 text-center"><h4>操作</h4></div>
+			<div class="col-sm-2 hidden-xs text-center"><h4>浏览 • 回复 • 点赞</h4></div>
+			<%--<div class="col-sm-2 col-xs-2 text-center"><h4>操作</h4></div>--%>
 		</div>
 		<div class="row msglist template">
 			<div class="col-sm-12">
@@ -123,7 +180,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<div class="col-sm-2  col-xs-4 text-center time">时间</div>
 				<div class="col-sm-2 hidden-xs text-center count">浏览/回复</div>
-				<button type="button" class="btn btn-success editor">编辑</button>
+				<button class="btn btn-primary btn-sm edit_btn"><span class="glyphicon glyphicon-pencil">编辑</span></button>
+				<button class="btn btn-danger btn-sm delete_btn"><span class="glyphicon glyphicon-trash">删除</span></button>
+				<button class="btn btn-warning restore_btn">恢复</button>
 			</div>
 		</div>
 		<div class="list">

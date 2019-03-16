@@ -5,7 +5,6 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";  
 %>  
 <!DOCTYPE>
-
 <html>
 <head>
 	<base href="<%=basePath%>">
@@ -112,8 +111,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         });
 
         function getTheme(){
-            // ajax 请求servlet获取 主题数据
-            $.get("adminThemeServlet",{"action":"getAllTheme"},
+            // ajax 请求Servlet获取主题数据
+            $.get("messageServlet",{"action":"getAllTheme"},
                 function(data){
                     var theme=$("select[name='theid']");
                     //属性选择器  append 是添加到界面显示
@@ -142,7 +141,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             //帖子内容
             var theid=$("select[name='theid']").val();//主题ID
             $.ajax({
-                url:"userMessageServlet",
+                url:"user/userMessageServlet",
                 type:"post",
                 data:{
                     "action":"add",
@@ -177,7 +176,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</script>
 </head>
 <body>
-<jsp:include flush="fasle" page="../header.jsp" />
+<jsp:include flush="true" page="../header.jsp" />
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 text-center">
@@ -219,6 +218,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	</form>
 </div>
-<jsp:include flush="fasle" page="../footer.jsp" />
+<jsp:include flush="true" page="../footer.jsp" />
 </body>
 </html>

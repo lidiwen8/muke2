@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * 
  * @Description: 用户信息实体类
- * @author:Zheng Yanbo
+ * @author:lidiwen
  * @time:2017年7月24日 下午3:30:08
  *
  */
@@ -25,6 +25,9 @@ public class User implements Cloneable{
 	private int mailstate;
 	private String user_img;
 	private String logintime;//最后一次登陆时间
+	private String description;
+	private int loginNum;//登陆次数
+
 	
 	public int getUserid() {
 		return userid;
@@ -140,5 +143,21 @@ public class User implements Cloneable{
 
 	public void setLogintime(String logintime) {
 		this.logintime = logintime;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public int getLoginNum() {
+		return loginNum;
+	}
+
+	public void setLoginNum(int loginNum) {
+		this.loginNum = loginNum;
 	}
 }
