@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%
@@ -94,14 +95,19 @@
                     dataType: "json",
                     beforeSend: function () {
                         // 禁用按钮防止重复提交，发送前响应
+                        $("#verificationss").attr({ disabled: "disabled" });
                         $('#verificationss').text("验证码正在发送。。");
                     },
                     success: function (data) {
+                        if(data.res != 1){
+                            $("#verificationss").removeAttr("disabled");
+                        }
                         if (data.res == 1) {
                             alert(data.info);
                             $('#verificationss').text("验证码发送成功");
                             $("#verificationss").attr({ disabled: "disabled" });
-                        } else if (data.res == 6) {
+                        }
+                        else if (data.res == 6) {
                             alert(data.info);
                             $(".text-warning").text("尊敬的用户:邮箱号输入不能为空，请重新输入！");
                             $('#verificationss').text("发送验证码");
@@ -133,6 +139,10 @@
                             alert(data.info);
                             $(".text-warning").text("尊敬的用户:你输入的邮箱已经抢先被其它用户绑定了!绑定邮箱失败，请换一个邮箱呗！");
                             $('#verificationss').text("发送验证码");
+                        }else if(data.res==17){
+                            alert(data.info);
+                            $(".text-warning").text(data.info);
+                            $('#verificationss').text("发送验证码");
                         }
                         else {
                             alert(data.info);
@@ -146,7 +156,7 @@
                 return false;
         }
         function bindingmail() {
-            // Ajax 异步请求登录
+            // Ajax 异步请求绑定
             var username = $("input[name='username']").val();
             var mail = $("input[name='mail']").val();
             var input1 = $("input[name='input1']").val();
@@ -168,7 +178,7 @@
                             $(".text-warning").text("尊敬的用户:邮箱号输入不能为空，请重新输入！");
                         } else if (data.res == 10) {
                             alert(data.info);
-                            $(".text-warning").text("尊敬的用户:你输入的邮箱格式不正确，请重新输入！");
+                            $(".text-warning").text(data.info);
                         }else if (data.res == 20) {
                             alert(data.info);
                             $(".text-warning").text("尊敬的用户:你输入的账号并没有注册过!请你注册后，再来绑定你的邮箱！");
@@ -196,6 +206,16 @@
                 });
                 return false;
         }
+
+        function gg() {
+            var bootstrapValidator = $("#modifyform").data("bootstrapValidator");
+            //触发验证
+            bootstrapValidator.validate();
+            //如果验证通过，则调用login方法
+            if (bootstrapValidator.isValid()) {
+                bindingmail();
+            }
+        }
     </script>
 </head>
 <body onload="promot()">
@@ -210,13 +230,23 @@
         <div class="form-group">
             <label for="username" class="col-sm-2 control-label">账户：</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" name="username" placeholder="请输入你注册时的账户号" id="username">
+                <c:if test="${sessionScope.user!= null}">
+                    <input type="text" class="form-control" name="username" value="${sessionScope.user.username}" placeholder="请输入你注册时的账户号" id="username" readonly="readonly">
+                </c:if>
+                <c:if test="${sessionScope.user== null}">
+                    <input type="text" class="form-control" name="username" placeholder="请输入你注册时的账户号" id="username" autofocus="autofocus">
+                </c:if>
             </div>
         </div>
         <div class="form-group">
             <label for="mail" class="col-sm-2 control-label">邮箱：</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" name="mail" id="mail" placeholder="请输入你注册时的邮箱">
+                <c:if test="${sessionScope.user!= null}">
+                <input type="text" class="form-control" name="mail" id="mail" placeholder="请输入你注册时的邮箱" value="${sessionScope.user.email}">
+                </c:if>
+                <c:if test="${sessionScope.user== null}">
+                    <input type="text" class="form-control" name="mail" id="mail" placeholder="请输入你注册时的邮箱">
+                </c:if>
             </div>
         </div>
         <div class="form-group">
@@ -233,7 +263,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-4 col-xs-12">
-                <button type="button" class="btn btn-success btn-block" onclick="bindingmail();" id="submitbutton" name="submitbutton">提交</button>
+                <button type="button" class="btn btn-success btn-block" onclick="gg();" id="submitbutton" name="submitbutton">提交</button>
             </div>
         </div>
     </form>

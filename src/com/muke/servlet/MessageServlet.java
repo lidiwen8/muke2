@@ -199,6 +199,50 @@ public class MessageServlet extends HttpServlet {
         response.getWriter().print("{\"res\": 1, \"themeMsg\":" + json + "}");
     }
 
+    // 最新帖子
+    private void homepageTopNew(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String pageNum = request.getParameter("pageNum");
+        if (pageNum == null || pageNum.equals("")) {
+            pageNum = "1";
+        }
+        Page page = new Page();
+        page.setCurPage(Integer.parseInt(pageNum));
+        page = messageservice.queryHomepageNew(page);
+        Gson gson = new GsonBuilder().setDateFormat("yyyy年MM月dd日 HH:mm:ss").create();
+        String json = gson.toJson(page);
+        response.getWriter().print("{\"res\": 1,\"newMsg\":" + json + "}");
+    }
+
+    // 最热帖子
+    private void homepageTopHot(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String pageNum = request.getParameter("pageNum");
+        if (pageNum == null || pageNum.equals("")) {
+            pageNum = "1";
+        }
+        Page page = new Page();
+        page.setCurPage(Integer.parseInt(pageNum));
+        page = messageservice.queryHomepageHot(page);
+        Gson gson = new GsonBuilder().setDateFormat("M/d").create();
+        String json = gson.toJson(page);
+        response.getWriter().print("{\"res\": 1,\"hotMsg\":" + json + "}");
+    }
+
+
+    // 查询最热5主题的，最新帖
+    private void homepageTopTheme(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String pageNum = request.getParameter("pageNum");
+        if (pageNum == null || pageNum.equals("")) {
+            pageNum = "1";
+        }
+        Page page = new Page();
+        page.setCurPage(Integer.parseInt(pageNum));
+        page = messageservice.queryHomepageTheme(page);
+        Gson gson = new GsonBuilder().setDateFormat("M/d").create();
+        String json = gson.toJson(page);
+        response.getWriter().print("{\"res\": 1, \"themeMsg\":" + json + "}");
+    }
+
+
     //主页搜索相关帖子
     private void searchMsg(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String key = request.getParameter("key");

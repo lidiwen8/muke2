@@ -105,15 +105,15 @@
         function updatePW(){
             // ajax 异步请求修改密码
             $.ajax({
-                url:"userCenterServlet?action=updatePw2",
+                url:"userServlet?action=updatePw2",
                 type : "POST",
                 async : "true",
                 data : $("#modifyform").serialize(),
                 dataType : "json",
                 success : function(data) {
-                    if(data.res==1){
+                    if(data.res==-1){
                         alert(data.info);
-                        window.location.replace("login.jsp");
+                        window.location.replace("mailpassword.jsp");
                     }else if(data.res==3){
                         alert(data.info);
 //                        $(".text-warning").innerHTML="尊敬的用户:用户账号不能为空，请重新输入！".fontcolor("red");

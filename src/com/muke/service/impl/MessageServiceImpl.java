@@ -51,6 +51,22 @@ public class MessageServiceImpl implements IMessageService {
     }
 
     @Override
+    public Page queryHomepageNew(Page page) {
+        return messagedao.queryHomepageNew(page);
+    }
+
+    @Override
+    public Page queryHomepageHot(Page page) {
+        return messagedao.queryHomepageHot(page);
+    }
+
+    @Override
+    public Page queryHomepageTheme(Page page) {
+        return messagedao.queryHomepageTheme(page);
+    }
+
+
+    @Override
     public int deleteMsg(int msgid) {
         return messagedao.updateState(msgid, -1);
     }
@@ -81,8 +97,18 @@ public class MessageServiceImpl implements IMessageService {
     }
 
     @Override
+    public Page searchUserMyMsg(MessageCriteria messageCriteria, Page page){
+        return messagedao.searchUserMyMsg(messageCriteria, page);
+    }
+
+    @Override
     public Page search1(MessageCriteria messageCriteria, Page page) {
         return messagedao.query1(messageCriteria, page);
+    }
+
+    @Override
+    public Page searchUserCnterMsg(MessageCriteria messageCriteria, Page page) {
+        return messagedao.searchUserCnterMsg(messageCriteria, page);
     }
 
     @Override
@@ -119,6 +145,11 @@ public class MessageServiceImpl implements IMessageService {
     @Override
     public Page queryReply(MessageCriteria messageCriteria, Page page) {
         return messagedao.queryReply(messageCriteria, page);
+    }
+
+    @Override
+    public Page queryUserCenterReply(MessageCriteria messageCriteria, Page page) {
+        return messagedao.queryUserCenterReply(messageCriteria, page);
     }
 
     @Override

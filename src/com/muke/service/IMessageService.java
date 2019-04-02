@@ -52,6 +52,13 @@ public interface IMessageService {
     Page queryTheme(Page page);
 
 
+    Page queryHomepageNew(Page page);
+
+    Page queryHomepageHot(Page page);
+
+    Page queryHomepageTheme(Page page);
+
+
     int queryMsgState(int msgid);
 
     int deleteMsg(int msgid);//假删除帖子
@@ -64,11 +71,17 @@ public interface IMessageService {
 
     Page search(MessageCriteria messageCriteria, Page page);
 
+    Page searchUserMyMsg(MessageCriteria messageCriteria, Page page);
+
     Page search1(MessageCriteria messageCriteria, Page page);
+
+    Page searchUserCnterMsg(MessageCriteria messageCriteria, Page page);
 
     Page searchUserMsg(MessageCriteria messageCriteria, Page page);
 
     Page queryReply(MessageCriteria messageCriteria, Page page);
+
+    Page queryUserCenterReply(MessageCriteria messageCriteria, Page page);
 
     long queryMsgCountByDate(Date startDate, Date endDate);    // 根据时间查发贴数量
 

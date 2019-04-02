@@ -10,6 +10,7 @@ import com.muke.dao.IMessageDao;
 import com.muke.pojo.Message;
 import com.muke.pojo.MessageCriteria;
 import com.muke.pojo.MessageInfo;
+import com.muke.pojo.ShortMessageInfo;
 import com.muke.util.DBUtil;
 import com.muke.util.Page;
 
@@ -47,7 +48,7 @@ public class MessageDaoImpl implements IMessageDao {
     @Override
     public int updateMsg(MessageInfo msgInfo) {
         String sql = "update message  SET msgcontents = ? ,theid = ? ,msgip = ?,msgtopic = ?,msgupdatetime=?  where msgid = ?";
-        Object[] params = {msgInfo.getMsgcontents(), msgInfo.getTheid(), msgInfo.getMsgip(), msgInfo.getMsgtopic(), msgInfo.getMsgupdatetime(),msgInfo.getMsgid()};
+        Object[] params = {msgInfo.getMsgcontents(), msgInfo.getTheid(), msgInfo.getMsgip(), msgInfo.getMsgtopic(), msgInfo.getMsgupdatetime(), msgInfo.getMsgid()};
         int rs = 0;
         try {
             rs = dbutil.execute(sql, params);
@@ -76,9 +77,9 @@ public class MessageDaoImpl implements IMessageDao {
     }
 
     @Override
-    public int updateMessagelike(Message message){
+    public int updateMessagelike(Message message) {
         String sql = "update message set likecount=?,likeuserid=? where msgid=?";
-        Object[] params = {message.getLikecount(),message.getLikeuserid(),message.getMsgid()};
+        Object[] params = {message.getLikecount(), message.getLikeuserid(), message.getMsgid()};
         int rs = 0;
         try {
             rs = dbutil.execute(sql, params);
@@ -90,7 +91,7 @@ public class MessageDaoImpl implements IMessageDao {
     }
 
     @Override
-    public List getMessagelikeUserid(int msgid){
+    public List getMessagelikeUserid(int msgid) {
         String sql = "SELECT likeuserid FROM message where msgid=?";
         Object[] params = {msgid};
         List list = null;
@@ -210,6 +211,69 @@ public class MessageDaoImpl implements IMessageDao {
     }
 
     @Override
+    public Page searchUserMyMsg(MessageCriteria messageCriteria, Page page) {
+        StringBuffer sBuffer = new StringBuffer();
+        sBuffer.append(" select a.msgid, msgtopic, msgtime,likecount, a.state, ");
+        sBuffer.append(" d.accessCount, d.replyCount ");
+        sBuffer.append(" FROM message a ");
+        sBuffer.append(" LEFT JOIN user b ON a.userid=b.userid ");
+        sBuffer.append(" LEFT JOIN theme c ON a.theid=c.theid ");
+        sBuffer.append(" LEFT JOIN count d ON a.msgid=d.msgid ");
+        /*		sBuffer.append(" LEFT JOIN reply e ON a.msgid=e.msgid ");*/
+        sBuffer.append(" WHERE 1=1 ");
+        List<Object> params = new ArrayList<Object>();
+        if (messageCriteria != null) {
+            // 根据查询条件拼接SQL语句
+            int userId = messageCriteria.getUserid();
+            if (userId > 0) {
+                sBuffer.append(" AND a.userid=? ");
+                params.add(userId);
+            }
+            String username = messageCriteria.getUsername();
+            if (username != null && username.trim().length() > 0) {
+                sBuffer.append(" AND b.realname LIKE ? ");
+                params.add("%" + username + "%");
+            }
+            int theid = messageCriteria.getTheid();
+            if (theid > 0) {
+                sBuffer.append(" AND a.theid=? ");
+                params.add(theid);
+            }
+            int state = messageCriteria.getState();
+            if (state >= -1) {
+                sBuffer.append(" AND a.state>=? ");
+                params.add(state);
+            }
+            String key = messageCriteria.getKey();
+            if (key != null && key.trim().length() > 0) {
+                sBuffer.append(" AND a.msgtopic LIKE ? ");
+                params.add("%" + key + "%");
+            }
+        }
+        sBuffer.append(" GROUP BY a.msgid ");
+        //排序规则
+        switch (messageCriteria.getOrderRule()) {
+            case ORDER_BY_ACCESS_COUNT:
+                sBuffer.append(" ORDER BY d.accessCount ");
+                break;
+            case ORDER_BY_MSG_TIME:
+                sBuffer.append(" ORDER BY msgtime ");
+                break;
+            default:
+                break;
+        }
+        //是否升序或者降序
+        if (!messageCriteria.isAsc()) {
+            sBuffer.append(" DESC ");
+        }
+
+        Page resPage = null;
+        resPage = dbutil.getQueryPage(ShortMessageInfo.class, sBuffer.toString(), params.toArray(), page);
+        return resPage;
+    }
+
+
+    @Override
     public Page query1(MessageCriteria messageCriteria, Page page) {
 
         StringBuffer sBuffer = new StringBuffer();
@@ -276,6 +340,70 @@ public class MessageDaoImpl implements IMessageDao {
     }
 
     @Override
+    public Page searchUserCnterMsg(MessageCriteria messageCriteria, Page page) {
+        StringBuffer sBuffer = new StringBuffer();
+        sBuffer.append(" select a.msgid, msgtopic, msgtime,likecount, ");
+//         sBuffer.append(" c.thename, ");
+        sBuffer.append(" d.accessCount, d.replyCount ");
+        sBuffer.append(" FROM message a ");
+        sBuffer.append(" LEFT JOIN user b ON a.userid=b.userid ");
+        sBuffer.append(" LEFT JOIN theme c ON a.theid=c.theid ");
+        sBuffer.append(" LEFT JOIN count d ON a.msgid=d.msgid ");
+        /*		sBuffer.append(" LEFT JOIN reply e ON a.msgid=e.msgid ");*/
+        sBuffer.append(" WHERE 1=1 ");
+        List<Object> params = new ArrayList<Object>();
+        if (messageCriteria != null) {
+            // 根据查询条件拼接SQL语句
+            int userId = messageCriteria.getUserid();
+            if (userId > 0) {
+                sBuffer.append(" AND a.userid=? ");
+                params.add(userId);
+            }
+            String username = messageCriteria.getUsername();
+            if (username != null && username.trim().length() > 0) {
+                sBuffer.append(" AND b.realname LIKE ? ");
+                params.add("%" + username + "%");
+            }
+            int theid = messageCriteria.getTheid();
+            if (theid > 0) {
+                sBuffer.append(" AND a.theid=? ");
+                params.add(theid);
+            }
+            int state = messageCriteria.getState();
+            if (state >= -1) {
+                sBuffer.append(" AND a.state>=? AND a.state<3");
+                params.add(state);
+            }
+            String key = messageCriteria.getKey();
+            if (key != null && key.trim().length() > 0) {
+                sBuffer.append(" AND a.msgtopic LIKE ? ");
+                params.add("%" + key + "%");
+            }
+        }
+
+        sBuffer.append(" GROUP BY a.msgid ");
+        //排序规则
+        switch (messageCriteria.getOrderRule()) {
+            case ORDER_BY_ACCESS_COUNT:
+                sBuffer.append(" ORDER BY d.accessCount ");
+                break;
+            case ORDER_BY_MSG_TIME:
+                sBuffer.append(" ORDER BY msgtime ");
+                break;
+            default:
+                break;
+        }
+        //是否升序或者降序
+        if (!messageCriteria.isAsc()) {
+            sBuffer.append(" DESC ");
+        }
+
+        Page resPage = null;
+        resPage = dbutil.getQueryPage(ShortMessageInfo.class, sBuffer.toString(), params.toArray(), page);
+        return resPage;
+    }
+
+    @Override
     public Page queryReply(MessageCriteria messageCriteria, Page page) {
 
         StringBuffer sBuffer = new StringBuffer();
@@ -329,6 +457,55 @@ public class MessageDaoImpl implements IMessageDao {
 
         Page resPage = null;
         resPage = dbutil.getQueryPage(MessageInfo.class, sBuffer.toString(), params.toArray(), page);
+        return resPage;
+    }
+
+    @Override
+    public Page queryUserCenterReply(MessageCriteria messageCriteria, Page page) {
+        StringBuffer sBuffer = new StringBuffer();
+        sBuffer.append(" select m.msgid, msgtopic, msgtime,likecount, ");
+        sBuffer.append(" c.accessCount, c.replyCount ");
+        sBuffer.append(" FROM message m ");
+        sBuffer.append(" LEFT JOIN count c ON m.msgid=c.msgid ");
+        sBuffer.append(" WHERE 1=1 ");
+        List<Object> params = new ArrayList<Object>();
+        if (messageCriteria != null) {
+            // 根据查询条件拼接SQL语句
+            int userId = messageCriteria.getUserid();
+            if (userId > 0) {
+                sBuffer.append(" AND m.msgid in (SELECT distinct msgid AS msgid FROM reply where userid=?) ");
+                params.add(userId);
+            }
+            int state = messageCriteria.getState();
+            if (state >= -1) {
+                sBuffer.append(" AND m.state>=? AND m.state<3 ");
+                params.add(state);
+            }
+            String key = messageCriteria.getKey();
+            if (key != null && key.trim().length() > 0) {
+                sBuffer.append(" AND m.msgtopic LIKE ? ");
+                params.add("%" + key + "%");
+            }
+        }
+        sBuffer.append(" GROUP BY m.msgid ");
+        //排序规则
+        switch (messageCriteria.getOrderRule()) {
+            case ORDER_BY_ACCESS_COUNT:
+                sBuffer.append(" ORDER BY d.accessCount ");
+                break;
+            case ORDER_BY_MSG_TIME:
+                sBuffer.append(" ORDER BY msgtime ");
+                break;
+            default:
+                break;
+        }
+        //是否升序或者降序
+        if (!messageCriteria.isAsc()) {
+            sBuffer.append(" DESC ");
+        }
+
+        Page resPage = null;
+        resPage = dbutil.getQueryPage(ShortMessageInfo.class, sBuffer.toString(), params.toArray(), page);
         return resPage;
     }
 
@@ -404,8 +581,8 @@ public class MessageDaoImpl implements IMessageDao {
     @Override
     public Page queryNew(Page page) {
         StringBuffer sBuffer = new StringBuffer();
-        sBuffer.append(" SELECT m.msgid,msgtopic,msgcontents,msgtime,msgupdatetime,msgip,likecount,m.userid, ");
-        sBuffer.append(" username,realname,sex,city,user_img, ");
+        sBuffer.append(" SELECT m.msgid,msgtopic,msgcontents,msgtime,msgupdatetime,likecount, ");
+        sBuffer.append("realname, ");
         sBuffer.append("  accessCount,replyCount ");
         sBuffer.append(" FROM message m ");
         sBuffer.append(" LEFT JOIN user u ON u.userid=m.userid ");
@@ -421,8 +598,8 @@ public class MessageDaoImpl implements IMessageDao {
     @Override
     public Page queryHot(Page page) {
         StringBuffer sBuffer = new StringBuffer();
-        sBuffer.append(" SELECT m.msgid,msgtopic,msgcontents,msgtime,msgupdatetime,msgip,likecount,m.userid, ");
-        sBuffer.append(" username,realname,sex,city, user_img, ");
+        sBuffer.append(" SELECT m.msgid,msgtopic,msgcontents,msgtime,msgupdatetime,likecount, ");
+        sBuffer.append(" realname, ");
         sBuffer.append("  accessCount,replyCount ");
         sBuffer.append(" FROM message m");
         sBuffer.append(" LEFT JOIN user u ON u.userid=m.userid ");
@@ -439,9 +616,9 @@ public class MessageDaoImpl implements IMessageDao {
     @Override
     public Page queryTheme(Page page) {
         StringBuffer sBuffer = new StringBuffer();
-        sBuffer.append("SELECT b.msgid, msgtopic, msgcontents, msgtime,msgupdatetime,msgip,b.likecount, b.state, ");
-        sBuffer.append("b.theid, a.thename, ");
-        sBuffer.append("b.userid, username, realname, sex, city, user_img, ");
+        sBuffer.append("SELECT b.msgid, msgtopic, msgcontents, msgtime,b.likecount, b.state, ");
+        sBuffer.append("a.thename, ");
+        sBuffer.append("realname, ");
         sBuffer.append("d.accessCount, d.replyCount, ");
         sBuffer.append("max(e.replytime) as replytime ");
         sBuffer.append("FROM theme a ");
@@ -465,6 +642,73 @@ public class MessageDaoImpl implements IMessageDao {
         Page resPage = null;
         try {
             resPage = dbutil.getQueryPage(MessageInfo.class, sBuffer.toString(), null, page);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return resPage;
+    }
+
+    @Override
+    public Page queryHomepageNew(Page page) {
+        StringBuffer sBuffer = new StringBuffer();
+        sBuffer.append(" SELECT m.msgid,msgtopic,msgtime, ");
+        sBuffer.append("  accessCount ");
+        sBuffer.append(" FROM message m ");
+        sBuffer.append(" LEFT JOIN user u ON u.userid=m.userid ");
+        sBuffer.append(" LEFT JOIN count c ON c.msgid=m.msgid ");
+        sBuffer.append(" WHERE m.state>=0 AND m.state<3 ");
+        sBuffer.append(" GROUP BY m.msgid ");
+        sBuffer.append(" ORDER BY m.msgtime DESC ");
+        Page resPage = null;
+        resPage = dbutil.getQueryPage(ShortMessageInfo.class, sBuffer.toString(), null, page);
+        return resPage;
+    }
+
+    @Override
+    public Page queryHomepageHot(Page page) {
+        StringBuffer sBuffer = new StringBuffer();
+        sBuffer.append(" SELECT m.msgid,msgtopic,msgtime, ");
+        sBuffer.append("  accessCount ");
+        sBuffer.append(" FROM message m");
+        sBuffer.append(" LEFT JOIN user u ON u.userid=m.userid ");
+        sBuffer.append(" LEFT JOIN count c ON c.msgid=m.msgid ");
+        sBuffer.append(" WHERE m.state>=0 AND m.state<3 ");
+        sBuffer.append(" GROUP BY m.msgid ");
+        sBuffer.append(" ORDER BY c.accessCount DESC ");
+        Page resPage = null;
+        resPage = dbutil.getQueryPage(ShortMessageInfo.class, sBuffer.toString(), null, page);
+        return resPage;
+    }
+
+    @Override
+    public Page queryHomepageTheme(Page page) {
+        StringBuffer sBuffer = new StringBuffer();
+        sBuffer.append("SELECT b.msgid, msgtopic, msgtime, ");
+        sBuffer.append("a.thename, ");
+        sBuffer.append("d.accessCount, ");
+        sBuffer.append("max(e.replytime) as replytime ");
+        sBuffer.append("FROM theme a ");
+        sBuffer.append("LEFT JOIN message b ON a.theid = b.theid ");
+        sBuffer.append("LEFT JOIN user c ON b.userid = c.userid ");
+        sBuffer.append("LEFT JOIN count d ON b.msgid = d.msgid ");
+        sBuffer.append("LEFT JOIN reply e on b.msgid = e.msgid ");
+        sBuffer.append("WHERE b.state >= 0 AND b.state<3 AND b.msgtime IN ");
+        sBuffer.append("( SELECT MAX(msgtime) ");
+        sBuffer.append("FROM ");
+        sBuffer.append("message f ");
+        sBuffer.append("WHERE ");
+        sBuffer.append("f.state >= 0 AND f.state<3 AND ");
+        sBuffer.append("b.theid = f.theid) ");
+        sBuffer.append("GROUP BY ");
+        sBuffer.append("b.msgid, msgtopic, msgcontents, msgtime, msgip, b.state, ");
+        sBuffer.append("b.theid, a.thename, a.count, ");
+        sBuffer.append("b.userid, username, realname, sex, city, user_img, ");
+        sBuffer.append("d.accessCount, d.replyCount ");
+        sBuffer.append("ORDER BY a.count DESC ");
+        Page resPage = null;
+        try {
+            resPage = dbutil.getQueryPage(ShortMessageInfo.class, sBuffer.toString(), null, page);
         } catch (Exception e) {
             e.printStackTrace();
         }

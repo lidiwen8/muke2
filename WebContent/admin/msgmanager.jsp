@@ -137,10 +137,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
 		});
 	}
+    function getInfo(){
+        getTheme();
+        $('#search').modal('show');
+        $('#search').on('shown.bs.modal', function (e) {
+            $("#key").focus();//获取焦点
+        });
+	}
 
 	$(function(){
 		getMsg(page);
-		getTheme();
+
 	});
 </script>
 </head>
@@ -152,7 +159,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<h3 class="pull-left">帖子管理
 				</h3>
 				<div class="replybtn">
-					<button type="button" class="btn btn-success" data-toggle="modal"
+					<button type="button" class="btn btn-success" onclick="getInfo()" data-toggle="modal"
 							data-target="#search">搜索</button>
 					
 				</div>

@@ -1,11 +1,13 @@
 package com.muke.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,13 +20,17 @@ import javax.servlet.http.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.muke.config.GeetestConfig;
 import com.muke.pojo.*;
+import com.muke.sdk.GeetestLib;
 import com.muke.service.IMessageService;
 import com.muke.service.IUserService;
 import com.muke.service.impl.MessageServiceImpl;
 import com.muke.service.impl.UserServiceImpl;
 import com.muke.util.*;
 import com.sun.mail.smtp.SMTPAddressFailedException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 @WebServlet("/userServlet")
 public class UserServlet extends HttpServlet {
@@ -94,8 +100,19 @@ public class UserServlet extends HttpServlet {
     private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getSession().getAttribute("user") != null) {
             ServletContext application = this.getServletContext();
+            User user = (User) request.getSession().getAttribute("user");
+            // 获取application对象中user
+            ArrayList<String> users = (ArrayList<String>) application.getAttribute("user");
+            if (application.getAttribute("user") != null) {
+                for (int i = 0; i < users.size(); i++) { //循环application对象
+                    //如果当前登录用户对象与保存在application中的对象相等
+                    if (user.getUsername().equals(users.get(i))) {
+                        users.remove(i); //从保存的LIST中清除掉登录的用户
+                    }
+                }
+            }
             request.getSession().invalidate();//使session无效
-            application.removeAttribute("user");//从application中移除user使session无效
+//            application.removeAttribute("users");//从application中移除user使session无效
         }
         response.getWriter().print("{\"res\": 1, \"info\":\"欢迎下次登录！\"}");
     }
@@ -224,7 +241,9 @@ public class UserServlet extends HttpServlet {
             response.getWriter().print("{\"res\": 19, \"info\":\"尊敬的用户:你输入的账号已经存在!注册失败，请换一个其它账号呗！\"}");
             return;
         }
-        if (userService.isExistmail(email) == false) {
+        //被其它用户绑定的邮箱不能继续被绑定，也就是数据库存在该邮箱且已经被激活
+        User user1 = userService.useremail(email);
+        if (user1 != null && user1.getMailstate() == 1) {
             response.getWriter().print("{\"res\": 20, \"info\":\"尊敬的用户:你输入的邮箱已经被注册了!注册失败，请换一个邮箱呗！\"}");
             return;
         }
@@ -354,6 +373,7 @@ public class UserServlet extends HttpServlet {
         String username = request.getParameter("username");
         String random = (int) ((Math.random() * 9 + 1) * 100000) + "";
         validate = random;
+        HttpSession session = request.getSession();
         if (username.equals(null) || username.equals("")) {
             response.getWriter().print("{\"res\": 3, \"info\":\"尊敬的用户:用户账号不能为空，请重新输入！\"}");
             return;
@@ -393,6 +413,11 @@ public class UserServlet extends HttpServlet {
         }
         if (user.getMailstate() == 1) {
             response.getWriter().print("{\"res\": 21, \"info\":\"尊敬的" + user.getUsername() + "用户:你的邮箱已经激活了，请不要重复激活！\"}");
+            return;
+        }
+        User user2 = (User) session.getAttribute("user");
+        if (user2 == null && (email != user.getEmail())) {
+            response.getWriter().print("{\"res\": 17, \"info\":\"尊敬的" + user.getUsername() + "用户:你输入的邮箱跟你注册时的邮箱不匹配，请重新输入！\"}");
             return;
         }
         //被其它用户绑定的邮箱不能继续被绑定，也就是数据库存在该邮箱且已经被激活
@@ -412,6 +437,8 @@ public class UserServlet extends HttpServlet {
             try {
                 if (sendEmail.sslSend(messageEmail)) {
                     response.getWriter().print("{\"res\": 1, \"info\":\"尊敬的用户：用户验证成功，发送邮件成功，请你及时登录邮箱查看\"}");
+                    session.setAttribute("email", email);
+                    session.setAttribute("username", username);
                     return;
                 } else {
                     response.getWriter().print("{\"res\": 8, \"info\":\"尊敬的" + user.getUsername() + "用户：用户身份验证成功，发送邮件失败，可能服务器出了点问题，请及时联系网站管理员\"}");
@@ -423,6 +450,8 @@ public class UserServlet extends HttpServlet {
             }
         } catch (SMTPAddressFailedException e) {
             response.getWriter().print("{\"res\": 1, \"info\":\"尊敬的用户：用户验证成功，发送邮件成功！请你及时登录邮箱查看。若您没有收到邮件，请一分钟后核对邮箱重新验证。\"}");
+            session.setAttribute("email", email);
+            session.setAttribute("username", username);
             return;
         }
     }
@@ -431,6 +460,7 @@ public class UserServlet extends HttpServlet {
         String email = request.getParameter("mail");
         String username = request.getParameter("username");
         String code = request.getParameter("input1");//验证码
+        HttpSession session = request.getSession();
         if (username.equals(null) || username.equals("")) {
             response.getWriter().print("{\"res\": 3, \"info\":\"尊敬的用户:用户账号不能为空，请重新输入！\"}");
             return;
@@ -463,6 +493,14 @@ public class UserServlet extends HttpServlet {
                 return;
             }
         }
+        if (!email.equals((String) session.getAttribute("email"))) {
+            response.getWriter().print("{\"res\": 10, \"info\":\"尊敬的用户:你输入的邮箱或验证码不正确，请重新输入！\"}");
+            return;
+        }
+        if (!username.equals((String) session.getAttribute("username"))) {
+            response.getWriter().print("{\"res\": 10, \"info\":\"尊敬的用户:你输入的账户是无效的，请重新输入！\"}");
+            return;
+        }
         User user = userService.username(username);
         if (user == null) {
             response.getWriter().print("{\"res\": 20, \"info\":\"尊敬的用户:你输入的账号并没有注册过!请你注册后，再来绑定你的邮箱！\"}");
@@ -472,13 +510,29 @@ public class UserServlet extends HttpServlet {
             response.getWriter().print("{\"res\": 21, \"info\":\"尊敬的" + user.getUsername() + "用户:你的邮箱已经激活了，请不要重复激活！\"}");
             return;
         }
-
+        //被其它用户绑定的邮箱不能继续被绑定，也就是数据库存在该邮箱且已经被激活
+        User user2 = userService.useremail(email);
+        if (user2 != null && user2.getMailstate() == 1) {
+            response.getWriter().print("{\"res\": 23, \"info\":\"尊敬的" + user.getUsername() + "用户:你输入的邮箱已经抢先被其它用户绑定了!绑定邮箱失败，请换一个邮箱呗！\"}");
+            return;
+        }
+        if (code == null || code == "") {
+            response.getWriter().print("{\"res\": 3, \"info\":\"尊敬的用户:验证码不能为空，请重新输入！\"}");
+            return;
+        }
         if (validate.equals(code)) {
             user.setMailstate(1);//激活邮箱
             user.setEmail(email);//绑定新邮箱
             int res = userService.updatemail(user.getUsername(), user.getEmail(), user.getMailstate());//更新数据插入数据库
             if (res == 1) {
+                User user1 = (User) request.getSession().getAttribute("user");
+                if (user1 != null) {
+                    user1.setEmail(user.getEmail());
+                    user1.setMailstate(1);
+                    request.getSession().setAttribute("user", user1);
+                }
                 response.getWriter().print("{\"res\": 1, \"info\":\"绑定邮箱成功\"}");
+                validate = "";
                 return;
             } else {
                 response.getWriter().print("{\"res\": 17, \"info\":\"服务器发生错误，请及时联系网站管理员\"}");
@@ -550,6 +604,9 @@ public class UserServlet extends HttpServlet {
 //					response.getWriter().print("{\"res\": 6, \"info\":\"系统开了点小差，请再尝试一次登录！\"}");
 //					return;
                 } else {
+                    if (request.getSession().getAttribute("user") != null) {
+                        request.getSession().invalidate();//使session无效
+                    }
                     response.getWriter().print("{\"res\": 6, \"info\":\"尊敬的" + user.getUsername() + "用户：你的账号已在其它地方登陆,你被迫下线,你暂时无法登录！\"}");
                     return;
                 }
@@ -632,7 +689,6 @@ public class UserServlet extends HttpServlet {
         String password = request.getParameter("newpassword");
         String password2 = request.getParameter("newpassword2");
 
-        //验证session中的密码是否与输入的旧密码相同
         if (username.equals(null) || username.equals("")) {
             response.getWriter().print("{\"res\": 3, \"info\":\"尊敬的用户:用户账号不能为空，请重新输入！\"}");
             return;
@@ -692,32 +748,33 @@ public class UserServlet extends HttpServlet {
         user = userService.userPass(username, mail);
         if (user != null) {
             if (user.getMailstate() == 1) {
-                user.setUsername(username);
-                Md5Encrypt md5 = new Md5Encrypt();
-                try {
-                    password = md5.Encrypt(password);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                user.setPassword(password);
-                userService.updatePw(user);
-                response.getWriter().print("{\"res\": 1, \"info\":\"修改成功！请用修改后的密码登录\"}");
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
-                String time = df.format(new Date());
-                MessageEmail messageEmail = new MessageEmail();
-                SendEmail sendEmail = new SendEmail();
-                List<String> str = new ArrayList<String>();
-                str.add(mail);
-                messageEmail.setFrom("1632029393@qq.com");
-                messageEmail.setTo(str);
-                messageEmail.setMsg(sendEmail.sendupdatepass2("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
-                try {
-                    sendEmail.sslSend(messageEmail);//发送邮件
-                    return;
-                } catch (SendFailedException e) {
-                    System.out.println("修改密码时发送邮件失败");
-                    return;
-                }
+                response.getWriter().print("{\"res\": -1, \"info\":\"暂时不能通过该方式修改密码，请使用你已经激活的邮箱找回密码！\"}");
+//                user.setUsername(username);
+//                Md5Encrypt md5 = new Md5Encrypt();
+//                try {
+//                    password = md5.Encrypt(password);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                user.setPassword(password);
+//                userService.updatePw(user);
+//                response.getWriter().print("{\"res\": 1, \"info\":\"修改成功！请用修改后的密码登录\"}");
+//                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
+//                String time = df.format(new Date());
+//                MessageEmail messageEmail = new MessageEmail();
+//                SendEmail sendEmail = new SendEmail();
+//                List<String> str = new ArrayList<String>();
+//                str.add(mail);
+//                messageEmail.setFrom("1632029393@qq.com");
+//                messageEmail.setTo(str);
+//                messageEmail.setMsg(sendEmail.sendupdatepass2("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
+//                try {
+//                    sendEmail.sslSend(messageEmail);//发送邮件
+//                    return;
+//                } catch (SendFailedException e) {
+//                    System.out.println("修改密码时发送邮件失败");
+//                    return;
+//                }
             } else {
                 response.getWriter().print("{\"res\": 27, \"info\":\"你的该邮箱账号并没有被激活，不能通过此方式来更改密码，请激活后再修改！\"}");
                 return;
@@ -737,7 +794,7 @@ public class UserServlet extends HttpServlet {
             return;
         }
         Gson gson = new Gson();
-        user.setPassword("逗比");
+        user.setPassword("********");
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String createtime = df.format(user.getCreatetime());
@@ -756,7 +813,7 @@ public class UserServlet extends HttpServlet {
         messageCriteria.setUserid(userid);
         messageCriteria.setOrderRule(MessageCriteria.OrderRuleEnum.ORDER_BY_MSG_TIME);//排序条件
         messageCriteria.setState(0);//查询非禁用状态
-        page = messageservice.search1(messageCriteria, page);
+        page = messageservice.searchUserCnterMsg(messageCriteria, page);
         gson = new GsonBuilder().setDateFormat("yy-MM-dd").create();
         String json2 = gson.toJson(page);
         long replycount = messageservice.queryReplyCount(userid);//回复总数
@@ -777,7 +834,7 @@ public class UserServlet extends HttpServlet {
             return;
         }
         //查询用户回复过的帖子
-        Gson gson = new Gson();
+        Gson gson;
         String pageNum = request.getParameter("pageNum");
         if (pageNum == null || pageNum.equals("")) {
             pageNum = "1";
@@ -790,7 +847,7 @@ public class UserServlet extends HttpServlet {
         messageCriteria.setUserid(userid);
         messageCriteria.setOrderRule(MessageCriteria.OrderRuleEnum.ORDER_BY_MSG_TIME);//排序条件
         messageCriteria.setState(0);//查询非禁用状态
-        page = messageservice.queryReply(messageCriteria, page);
+        page = messageservice.queryUserCenterReply(messageCriteria, page);
         gson = new GsonBuilder().setDateFormat("yy-MM-dd").create();
         String json = gson.toJson(page);
 
@@ -803,6 +860,454 @@ public class UserServlet extends HttpServlet {
         response.getWriter().print("{\"res\":1,\"message\":" + json + ",\"day\":" + day + "}");
 
     }
+
+    private void StartCaptcha(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        GeetestLib gtSdk = new GeetestLib(GeetestConfig.getGeetest_id(), GeetestConfig.getGeetest_key(),
+                GeetestConfig.isnewfailback());
+
+        String resStr = "{}";
+
+        String userid = request.getParameter("username");
+        //自定义参数,可选择添加
+        HashMap<String, String> param = new HashMap<String, String>();
+        param.put("user_id", userid); //网站用户id
+        if (JudgeIsMoblieUtil.JudgeIsMoblie(request)) {
+            param.put("client_type", "h5");
+        } else {
+            param.put("client_type", "web"); //web:电脑上的浏览器；h5:手机上的浏览器，包括移动应用内完全内置的web_view；native：通过原生SDK植入APP应用的方式
+        }
+        param.put("ip_address", IPUtil.getIpAdrress(request)); //传输用户请求验证时所携带的IP
+
+        //进行验证预处理
+        int gtServerStatus = gtSdk.preProcess(param);
+
+        //将服务器状态设置到session中
+        request.getSession().setAttribute(gtSdk.gtServerStatusSessionKey, gtServerStatus);
+        //将userid设置到session中
+        request.getSession().setAttribute("userid", userid);
+
+        resStr = gtSdk.getResponseStr();
+
+        PrintWriter out = response.getWriter();
+        out.println(resStr);
+    }
+
+    private void VerifyLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException, MessagingException {
+        GeetestLib gtSdk = new GeetestLib(GeetestConfig.getGeetest_id(), GeetestConfig.getGeetest_key(),
+                GeetestConfig.isnewfailback());
+
+        String challenge = request.getParameter(GeetestLib.fn_geetest_challenge);
+        String validate = request.getParameter(GeetestLib.fn_geetest_validate);
+        String seccode = request.getParameter(GeetestLib.fn_geetest_seccode);
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        if (request.getSession().getAttribute(gtSdk.gtServerStatusSessionKey) == null) {
+            response.getWriter().print("{\"res\": -2, \"info\":\"抱歉,验证失败！\"}");
+            return;
+        }
+        //从session中获取gt-server状态
+        int gt_server_status_code = (Integer) request.getSession().getAttribute(gtSdk.gtServerStatusSessionKey);
+//        //从session中获取userid
+//        String userid = (String) request.getSession().getAttribute("userid");
+
+        //自定义参数,可选择添加
+        HashMap<String, String> param = new HashMap<String, String>();
+        param.put("user_id", username); //网站用户id
+        if (JudgeIsMoblieUtil.JudgeIsMoblie(request)) {
+            param.put("client_type", "h5");
+        } else {
+            param.put("client_type", "web"); //web:电脑上的浏览器；h5:手机上的浏览器，包括移动应用内完全内置的web_view；native：通过原生SDK植入APP应用的方式
+        }
+        param.put("ip_address", IPUtil.getIpAdrress(request)); //传输用户请求验证时所携带的IP
+
+        int gtResult = 0;
+
+        if (gt_server_status_code == 1) {
+            //gt-server正常，向gt-server进行二次验证
+            gtResult = gtSdk.enhencedValidateRequest(challenge, validate, seccode, param);
+        } else {
+            // gt-server非正常情况下，进行failback模式验证
+            gtResult = gtSdk.failbackValidateRequest(challenge, validate, seccode);
+        }
+        if (gtResult == 1) {
+            // 验证成功
+            String password1 = password;
+            String rememberme = request.getParameter("rememberme");//记住登陆
+            if (username == null || username.trim().length() < 6 || username.trim().length() > 30 || password == null
+                    || password.trim().length() < 6 || password.trim().length() > 30) {
+                // 信息有问题重新登录
+                response.getWriter().print("{\"res\": -1, \"info\":\"登录信息填写有误，请不要带有非法字符！\"}");
+                return;
+            }
+            Md5Encrypt md5 = new Md5Encrypt();
+            try {
+                password = md5.Encrypt(password);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            User user = userService.userLogin(username, password);
+            if (user == null) {
+                // 登录失败 用户名或密码错误
+                response.getWriter().print("{\"res\": -1, \"info\":\"用户名或密码错误，请重新输入！\"}");
+            } else if (user.getState() == -1) {
+                // 登录失败 帐号被封
+                response.getWriter().print("{\"res\": -1, \"info\":\"你的账号已被禁用！\"}");
+            } else {
+                // 用户登录重复判断
+
+                // 登录成功
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user);
+                session.setAttribute("username", username);
+                ServletContext application = this.getServletContext();
+                // 获取application对象中user
+                ArrayList<String> users = (ArrayList<String>) application.getAttribute("user");
+                if (users != null && users.contains(username)) {
+                    SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String time_2 = dfs.format(new Date());
+                    Date begin = dfs.parse(user.getLogintime());
+                    Date end = dfs.parse(time_2);
+                    long miao = (end.getTime() - begin.getTime()) / 1000;
+                    //除以1000是为了转换成秒
+                    long fen = miao / 60;
+                    if (fen > 30) {
+                        for (int i = 0; i < users.size(); i++) { //循环application对象
+                            //如果当前登录用户对象与保存在application中的对象相等
+                            if (user.getUsername().equals(users.get(i))) {
+                                users.remove(i); //从保存的LIST中清除掉登录的用户
+                            }
+                        }
+                        try {
+                            VerifyLogin(request, response);
+                        } catch (NullPointerException e) {
+                            response.getWriter().print("{\"res\": -2, \"info\":\"抱歉,验证失败！\"}");
+                            return;
+                        }
+                    } else {
+                        if (request.getSession().getAttribute("user") != null) {
+                            request.getSession().invalidate();//使session无效
+                        }
+                        response.getWriter().print("{\"res\": 6, \"info\":\"尊敬的" + user.getUsername() + "用户：你的账号已在其它地方登陆,你被迫下线,你暂时无法登录！\"}");
+                        return;
+                    }
+                } else {
+                    if (users == null)// 如果当前application中没有user，初始化user对象
+                    {
+                        users = new ArrayList<String>();
+                    }
+                    users.add(username);
+                    application.setAttribute("user", users);
+                }
+                Date day = new Date();
+                SimpleDateFormat da = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//登录时间
+                userService.insertlogintime(username, da.format(day));
+                userService.insertLoginNum(username);//增加登录次数
+                Gson gson = new Gson();
+                String dataJSON = gson.toJson(user);
+                //存入cookie
+                if (Integer.parseInt(rememberme) == 1) {
+                    //创建两个Cookie对象
+                    Cookie nameCookie = new Cookie("username", username);
+                    //设置Cookie的有效期为3天
+                    nameCookie.setMaxAge(60 * 60 * 24 * 3);
+                    Cookie pwdCookie = new Cookie("password", password1);
+                    pwdCookie.setMaxAge(60 * 60 * 24 * 3);
+                    response.addCookie(nameCookie);
+                    response.addCookie(pwdCookie);
+                }
+                if (user.getMailstate() == 0) {
+                    response.getWriter().print("{\"res\": 2, \"info\":\"尊敬的" + user.getUsername() + "用户:登录成功，但是你的邮箱账号还没被激活，是否前去激活！\"}");
+                } else {
+                    response.getWriter().print("{\"res\": 1, \"data\":" + dataJSON + "}");
+                }//已经被激活的邮箱才在登录时发送到激活邮箱账号提醒用户登录
+                if (user.getEmail() != null&& user.getMailstate() == 1 ){
+                    boolean flag1 = false;
+                    Pattern p3 = null;
+                    Matcher m1 = null;
+                    p3 = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+                    m1 = p3.matcher(user.getEmail());
+                    flag1 = m1.matches();
+                    if (flag1 == true) {
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
+                        String time = df.format(new Date());
+                        MessageEmail messageEmail = new MessageEmail();
+                        SendEmail sendEmail = new SendEmail();
+                        List<String> strs = new ArrayList<String>();
+                        strs.add(user.getEmail());
+                        messageEmail.setFrom("1632029393@qq.com");
+                        messageEmail.setTo(strs);
+                        messageEmail.setMsg(sendEmail.sendlogin("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
+                        try {
+                            sendEmail.sslSend(messageEmail);//发送邮件
+                        } catch (SMTPAddressFailedException e) {
+                            System.out.println("登录时发送邮件异常");
+                        } catch (SendFailedException e) {
+                            System.out.println("登录时发送邮件失败");
+                        }
+                    }
+                }
+                Userlog userlog = new Userlog();
+                userlog.setLogintime(da.format(day));
+                userlog.setUserid(user.getUserid());
+                String ip = IPUtil.getIpAdrress(request);
+                userlog.setIp(ip);
+                userlog.setPlace(PlaceUtil.baiduGetCityCode(ip));
+                userService.insertloginLog(userlog);//插入登陆日志
+            }
+        } else {
+            // 验证失败
+            response.getWriter().print("{\"res\": -2, \"info\":\"抱歉,验证失败！\"}");
+        }
+
+    }
+
+    private void StartCaptchaRegister(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        GeetestLib gtSdk = new GeetestLib(GeetestConfig.getGeetest_id(), GeetestConfig.getGeetest_key(),
+                GeetestConfig.isnewfailback());
+
+        String resStr = "{}";
+
+        //自定义参数,可选择添加
+        HashMap<String, String> param = new HashMap<String, String>();
+//        param.put("user_id", userid); //网站用户id
+        if (JudgeIsMoblieUtil.JudgeIsMoblie(request)) {
+            param.put("client_type", "h5");
+        } else {
+            param.put("client_type", "web"); //web:电脑上的浏览器；h5:手机上的浏览器，包括移动应用内完全内置的web_view；native：通过原生SDK植入APP应用的方式
+        }
+        param.put("ip_address", IPUtil.getIpAdrress(request)); //传输用户请求验证时所携带的IP
+
+        //进行验证预处理
+        int gtServerStatus = gtSdk.preProcess(param);
+
+        //将服务器状态设置到session中
+        request.getSession().setAttribute(gtSdk.gtServerStatusSessionKey, gtServerStatus);
+        //将userid设置到session中
+//        request.getSession().setAttribute("userid", userid);
+
+        resStr = gtSdk.getResponseStr();
+
+        PrintWriter out = response.getWriter();
+        out.println(resStr);
+    }
+
+    private void VerifyRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        GeetestLib gtSdk = new GeetestLib(GeetestConfig.getGeetest_id(), GeetestConfig.getGeetest_key(),
+                GeetestConfig.isnewfailback());
+
+        String challenge = request.getParameter(GeetestLib.fn_geetest_challenge);
+        String validate = request.getParameter(GeetestLib.fn_geetest_validate);
+        String seccode = request.getParameter(GeetestLib.fn_geetest_seccode);
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String password2 = request.getParameter("password2");
+        String realname = request.getParameter("realname");
+        String sex = request.getParameter("sex");
+        String birthday = request.getParameter("birthday");
+        String city = request.getParameter("city");
+        String email = request.getParameter("email");
+        String qq = request.getParameter("qq");
+        String[] item = request.getParameter("hobbys").split(",");
+        if (request.getSession().getAttribute(gtSdk.gtServerStatusSessionKey) == null) {
+            response.getWriter().print("{\"res\": -2, \"info\":\"抱歉,验证失败！\"}");
+            return;
+        }
+        //从session中获取gt-server状态
+        int gt_server_status_code = (Integer) request.getSession().getAttribute(gtSdk.gtServerStatusSessionKey);
+//        //从session中获取userid
+//        String userid = (String) request.getSession().getAttribute("userid");
+
+        //自定义参数,可选择添加
+        HashMap<String, String> param = new HashMap<String, String>();
+//        param.put("user_id", username); //网站用户id
+        if (JudgeIsMoblieUtil.JudgeIsMoblie(request)) {
+            param.put("client_type", "h5");
+        } else {
+            param.put("client_type", "web"); //web:电脑上的浏览器；h5:手机上的浏览器，包括移动应用内完全内置的web_view；native：通过原生SDK植入APP应用的方式
+        }
+        param.put("ip_address", IPUtil.getIpAdrress(request)); //传输用户请求验证时所携带的IP
+
+        int gtResult = 0;
+
+        if (gt_server_status_code == 1) {
+            //gt-server正常，向gt-server进行二次验证
+            gtResult = gtSdk.enhencedValidateRequest(challenge, validate, seccode, param);
+        } else {
+            // gt-server非正常情况下，进行failback模式验证
+            gtResult = gtSdk.failbackValidateRequest(challenge, validate, seccode);
+        }
+        if (gtResult == 1) {
+            // 验证成功
+            boolean flag3 = true;
+            String delStr = "";
+            if (item != null) {
+                for (int i = 0; i < item.length - 1; i++) {
+                    delStr += item[i] + ",";
+                }
+                for (int i = item.length - 1; i < item.length; i++) {
+                    delStr += item[i] + ";";
+                }
+            }
+            if (username == null || username.equals("")) {
+                response.getWriter().print("{\"res\": 3, \"info\":\"尊敬的用户:用户账号不能为空，请重新输入！\"}");
+                return;
+            }
+            if (username != null && username != "") {
+                boolean flag = false;
+                Pattern p3 = null;
+                Matcher m1 = null;
+                p3 = Pattern.compile("^[A-Za-z0-9]+$");
+                m1 = p3.matcher(username);
+                flag = m1.matches();
+                if (flag == false || username.length() < 6 || username.length() > 30) {
+                    flag3 = false;
+                    response.getWriter().print("{\"res\": 8, \"info\":\"尊敬的用户:用户账号长度必须在6到30之间且不包含特殊符号与中文，请重新输入！\"}");
+                    return;
+                }
+            }
+            if (password == null || password.equals("") || password.length() < 6 || password.length() > 30) {
+                response.getWriter().print("{\"res\": 4, \"info\":\"尊敬的用户:密码长度必须在6到30之间，请重新输入！\"}");
+                return;
+            }
+            if (password != null && password != "") {
+                boolean flag9 = false;
+                Pattern p4 = null;
+                Matcher m2 = null;
+                p4 = Pattern.compile("^[a-zA-Z0-9_\\.]+$");
+                m2 = p4.matcher(password);
+                flag9 = m2.matches();
+                if (flag9 == false) {
+                    response.getWriter().print("{\"res\": 28, \"info\":\"尊敬的用户:你输入的密码不合法，不能包含特殊字符和空格，请重新输入！\"}");
+                    return;
+                }
+            }
+            if (password2 == null || password2.equals("") || password2.length() < 6 || password2.length() > 30) {
+                response.getWriter().print("{\"res\": 9, \"info\":\"尊敬的用户:确认密码长度必须在6到30之间，且要跟新密码一致，请重新输入！\"}");
+                return;
+            }
+            if (!password.equals(password2)) {
+                response.getWriter().print("{\"res\": 5, \"info\":\"尊敬的用户:确认密码跟新密码不匹配，请重新输入确认密码！\"}");
+                return;
+            }
+            if (realname == null || realname.equals("")) {
+                response.getWriter().print("{\"res\": 2, \"info\":\"尊敬的用户:为了保证你的合法性，真实姓名不能为空，请如实填写！\"}");
+                return;
+            }
+            if (realname.length() > 30) {
+                response.getWriter().print("{\"res\": 30, \"info\":\"尊敬的用户:真实姓名的长度必须小于30，请重新填写！\"}");
+                return;
+            }
+            if (item == null || item.length < 0 || item.length == 0) {
+                response.getWriter().print("{\"res\": 13, \"info\":\"尊敬的用户:爱好不能为空，请至少勾选一个爱好！\"}");
+                return;
+            }
+            if (city == null || city.equals("")) {
+                response.getWriter().print("{\"res\": 7, \"info\":\"尊敬的用户:所在城市不能为空，请点击城市下拉列表选择你所在的城市！\"}");
+                return;
+            }
+            if (email == null || email.equals("")) {
+                response.getWriter().print("{\"res\": 6, \"info\":\"尊敬的用户:邮箱号输入不能为空，请重新输入！\"}");
+                return;
+            }
+            if (email != null && email != "") {
+                boolean flag1 = false;
+                Pattern p3 = null;
+                Matcher m1 = null;
+                p3 = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+                m1 = p3.matcher(email);
+                flag1 = m1.matches();
+                if (flag1 == false) {
+                    response.getWriter().print("{\"res\": 10, \"info\":\"尊敬的用户:你输入的邮箱格式不正确，请重新输入！\"}");
+                    return;
+                }
+            }
+            if (qq == null || qq.equals("")) {
+                response.getWriter().print("{\"res\": 11, \"info\":\"尊敬的用户:QQ号输入不能为空，请重新输入！\"}");
+                return;
+            }
+            if (qq != null && qq != "") {
+                boolean flag1 = false;
+                Pattern p3 = null;
+                Matcher m1 = null;
+                p3 = Pattern.compile("[1-9][0-9]{4,14}");
+                m1 = p3.matcher(qq);
+                flag1 = m1.matches();
+                if (flag1 == false) {
+                    response.getWriter().print("{\"res\": 12, \"info\":\"尊敬的用户:你输入的QQ格式不正确，请重新输入！\"}");
+                    return;
+                }
+            }
+
+            if (userService.isExist(username) == false) {
+                response.getWriter().print("{\"res\": 19, \"info\":\"尊敬的用户:你输入的账号已经存在!注册失败，请换一个其它账号呗！\"}");
+                return;
+            }
+            //被其它用户绑定的邮箱不能继续被绑定，也就是数据库存在该邮箱且已经被激活
+            User user1 = userService.useremail(email);
+            if (user1 != null && user1.getMailstate() == 1) {
+                response.getWriter().print("{\"res\": 20, \"info\":\"尊敬的用户:你输入的邮箱已经被注册了!注册失败，请换一个邮箱呗！\"}");
+                return;
+            }
+            User user = new User();
+            user.setUsername(username);
+            Md5Encrypt md5 = new Md5Encrypt();
+            try {
+                password = md5.Encrypt(password);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            user.setPassword(password);
+            user.setRealname(realname);
+            if (sex.equals("男")) {
+                user.setUser_img("image/nan.png");
+            } else {
+                user.setUser_img("image/nu.png");
+            }
+            user.setSex(sex);
+
+            user.setHobbys(delStr);
+            user.setBirthday(birthday);
+            user.setCity(city);
+            user.setEmail(email);
+            user.setQq(qq);
+            user.setLoginNum(1);
+            Date day = new Date();
+            SimpleDateFormat da = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//登录时间
+            user.setLogintime(da.format(day));
+            try {
+
+                int res = userService.userRegister(user);
+                if (res == 1) {
+                    // 自动登录
+                    user = userService.userLogin(username, password);
+                    // 登录成功
+                    HttpSession session = request.getSession();
+                    session.setAttribute("user", user);
+                    session.setAttribute("username", username);
+                    response.getWriter().print("{\"res\": 1, \"info\":\"注册成功\"}");
+                    Userlog userlog = new Userlog();
+                    userlog.setLogintime(da.format(day));
+                    userlog.setUserid(user.getUserid());
+                    String ip = IPUtil.getIpAdrress(request);
+                    userlog.setIp(ip);
+                    userlog.setPlace(PlaceUtil.baiduGetCityCode(ip));
+                    userService.insertloginLog(userlog);//注册成功后自动登录也要插入登陆日志
+                    return;
+                } else {
+                    response.getWriter().print("{\"res\": " + res + ", \"info\":\"注册失败，尊敬的用户:你输入的账号已经存在，请换一个其它账号呗！\"}");
+                    return;
+                }
+            } catch (Exception e) {
+                response.getWriter().print("{\"res\": 19, \"info\":\"尊敬的用户:你输入的账号已经存在!注册失败，请换一个其它账号呗！\"}");
+                return;
+            }
+        } else {
+            // 验证失败
+            response.getWriter().print("{\"res\": -2, \"info\":\"抱歉,验证失败！\"}");
+        }
+
+    }
+
 
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

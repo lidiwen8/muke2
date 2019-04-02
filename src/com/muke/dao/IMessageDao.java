@@ -64,8 +64,12 @@ public interface IMessageDao {
      */
     Page query(MessageCriteria messageCriteria, Page page);
 
+    Page searchUserMyMsg(MessageCriteria messageCriteria, Page page);
 
     Page query1(MessageCriteria messageCriteria, Page page);
+
+
+    Page searchUserCnterMsg(MessageCriteria messageCriteria, Page page);
 
     /**
      * 查询最新的帖子信息
@@ -109,6 +113,12 @@ public interface IMessageDao {
      */
     long queryCountByDate(Date startDate, Date endDate);
 
+    Page queryHomepageNew(Page page);
+
+    Page queryHomepageHot(Page page);
+
+    Page queryHomepageTheme(Page page);
+
     long queryCountBy();
 
     long queryMsgCount(int state);
@@ -120,6 +130,8 @@ public interface IMessageDao {
     long queryDistinctReplyCount(int userid);
 
     Page queryReply(MessageCriteria messageCriteria, Page page);
+
+    Page queryUserCenterReply(MessageCriteria messageCriteria, Page page);
 
     int msgCountBytheid(int theid);
 

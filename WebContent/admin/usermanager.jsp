@@ -38,6 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     window.location.replace("admin/login.jsp");
                 }
 				if (data.res==1){
+                    $("#usermanger").text("用户管理-"+data.data.rows);
 					$(".list").html("");
 					$.each(data.data.data, function(index, userItem) {
 						var user = $(".template").clone();
@@ -214,7 +215,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="container">		
 		<div class="row">
 			<div class="col-sm-12 msgtitle">
-				<h3 class="pull-left">用户管理
+				<h3 class="pull-left" id="usermanger">用户管理
 				</h3>
 				<div class="replybtn">
 					<button type="button" class="btn btn-success" data-toggle="modal"

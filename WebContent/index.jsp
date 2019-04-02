@@ -25,7 +25,7 @@
 
         function getNew() {
             // Ajax异步请求最新五条
-            $.get("messageServlet?action=topNew",
+            $.get("messageServlet?action=homepageTopNew",
                 function (data) {
                     $.each(data.newMsg.data, function (index, element) {
                         var time = element.msgtime.split("/");
@@ -33,7 +33,7 @@
                         msg.show();
                         msg.removeClass("template");
                         msg.find(".text-limit").text(element.msgtopic);
-                        msg.find(".text-limit").attr("href", "<%=basePath%>newmsg.jsp?msgid=" + element.msgid + "");
+                        msg.find(".text-limit").attr("href", "<%=basePath%>message.jsp?msgid=" + element.msgid + "");
 //				msg.find(".badge").text(time[0]+"年"+time[1]+"月"+time[2]+"号");
                         msg.find(".badge").text(element.msgtime);
                         $(".newList").append(msg);
@@ -45,14 +45,14 @@
         function getHot() {
 
             // Ajax异步请求最热五条,就是评论最多的五条
-            $.get("messageServlet?action=topHot",
+            $.get("messageServlet?action=homepageTopHot",
                 function (data) {
                     $.each(data.hotMsg.data, function (index, element) {
                         var msg = $(".template").clone();
                         msg.show();
                         msg.removeClass("template");
                         msg.find(".text-limit").text(element.msgtopic);
-                        msg.find(".text-limit").attr("href", "<%=basePath%>hotmsg.jsp?msgid=" + element.msgid + "");
+                        msg.find(".text-limit").attr("href", "<%=basePath%>message.jsp?msgid=" + element.msgid + "");
                         msg.find(".badge").text("浏览:" + element.accessCount + "次");
                         $(".hotList").append(msg);
                     });
@@ -63,14 +63,14 @@
         function getTheme() {
 
             // Ajax异步请求, 最热的五个主题
-            $.get("messageServlet?action=topTheme",
+            $.get("messageServlet?action=homepageTopTheme",
                 function (data) {
                     $.each(data.themeMsg.data, function (index, element) {
                         var msg = $(".template").clone();
                         msg.show();
                         msg.removeClass("template");
                         msg.find(".text-limit").text(element.msgtopic);
-                        msg.find(".text-limit").attr("href", "<%=basePath%>thememsg.jsp?msgid=" + element.msgid + "");
+                        msg.find(".text-limit").attr("href", "<%=basePath%>message.jsp?msgid=" + element.msgid + "");
                         msg.find(".badge").text(element.thename);
                         $(".themeList").append(msg);
                     });

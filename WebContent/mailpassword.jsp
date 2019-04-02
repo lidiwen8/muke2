@@ -138,14 +138,19 @@
                     dataType: "json",
                     beforeSend: function () {
                         // 禁用按钮防止重复提交，发送前响应
+                        $("#mailbutton").attr({ disabled: "disabled" });
                         $('#mailbutton').text("邮件正在发送。。。");
                     },
                     success: function (data) {
+                        if(data.res!=1){
+                            _hyz();
+                            $("#mailbutton").removeAttr("disabled");
+                        }
                         if (data.res == 1) {
                             alert(data.info);
                             $('#mailbutton').text("邮件发送成功");
                             $("#mailbutton").attr({ disabled: "disabled" });
-//                            window.location.replace("login.jsp");
+                            window.location.replace("login.jsp");
                         } else if (data.res == 6) {
                             alert(data.info);
                             $(".text-warning").text("尊敬的用户:邮箱号输入不能为空，请重新输入！");
@@ -154,7 +159,6 @@
                             alert(data.info);
                             $(".text-warning").text("尊敬的用户:验证码输入错误，请重新输入！");
                             $("input[name='verifyCode']").val("");
-                            _hyz();
                             $('#mailbutton').text("提交");
                         }
                         else if (data.res == 10) {

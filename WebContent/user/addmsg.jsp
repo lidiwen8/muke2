@@ -140,6 +140,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             var msgcontents=CKEDITOR.instances.msgcontents.getData();
             //帖子内容
             var theid=$("select[name='theid']").val();//主题ID
+            $(".btn-success").attr('disabled',true);
             $.ajax({
                 url:"user/userMessageServlet",
                 type:"post",
@@ -155,6 +156,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         alert(data.info);
                         window.location.replace("<%=basePath%>user/mymsg.jsp");
                     }else{
+                        $(".btn-success").attr('disabled',false);
                         alert(data.info);
                     }
 

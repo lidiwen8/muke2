@@ -1,6 +1,7 @@
 package com.muke.util;
 
 
+import com.muke.config.MailConfig;
 import com.muke.pojo.MessageEmail;
 
 import javax.mail.*;
@@ -61,16 +62,17 @@ public class SendEmail {
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
         // Get a Properties object
         Properties props = new Properties();
-        props.load(SendEmail.class.getClassLoader().getResourceAsStream("mail.properties"));
-//		props.setProperty("mail.smtp.host", props.getProperty("mail.smtp.host"));
+		props.setProperty("mail.smtp.host", MailConfig.getMail_smtp_host());
         props.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
         props.setProperty("mail.smtp.socketFactory.fallback", "false");
-//		props.setProperty("mail.smtp.port", "465");
+		props.setProperty("mail.smtp.port", MailConfig.getSmtp_port());
         props.setProperty("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.auth", "true");
 
-        final String username = props.getProperty("mail.user");
-        final String password = props.getProperty("mail.password");
+//        final String username = DESUtils.getDecryptString( MailConfig.getMail_user());
+//        final String password = DESUtils.getDecryptString(MailConfig.getMail_password());
+        final String username = MailConfig.getMail_user();
+        final String password = MailConfig.getMail_password();
         Session session = Session.getDefaultInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);

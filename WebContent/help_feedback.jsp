@@ -53,7 +53,7 @@
                 }
             }
             disableButton(false, 'sendFeedbackBtn', '正在提交...', "button-disable");
-            // ajax 用户异步请求绑定邮箱
+            // ajax 用户异步
             $.ajax({
                 url: "userServlet?action=help",
                 type: "POST",

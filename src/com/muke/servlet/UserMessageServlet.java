@@ -114,7 +114,7 @@ public class UserMessageServlet extends HttpServlet {
         messageCriteria.setUserid(userid);
         messageCriteria.setOrderRule(OrderRuleEnum.ORDER_BY_MSG_TIME);//排序条件
         messageCriteria.setState(0);//查询非禁用状态
-        page = messageservice.search(messageCriteria, page);
+        page = messageservice.searchUserMyMsg(messageCriteria, page);
         Gson gson = new GsonBuilder().setDateFormat("yy-MM-dd").create();
         String json = gson.toJson(page);
         response.getWriter().print("{\"res\":1,\"message\":" + json + "}");

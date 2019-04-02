@@ -23,8 +23,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
+    <%--<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>--%>
     <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+    <%--https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css--%>
     <link rel="stylesheet" href="semantic/semantic.min.css">
+    <%--<link rel="stylesheet" href="https://oj.bnuz.edu.cn/static/assets/semantic/semantic.min.css">--%>
     <link rel="stylesheet" href="semantic/app.css">
     <link rel="stylesheet" href="semantic/jquery.Jcrop.min.css">
     <link rel="stylesheet" href="css/site.css">
@@ -136,7 +139,11 @@
                     $("#reply").text(replycount);
                     $("#replydistinctcount").text(replydistinctcount);
                     $("#realname").text(message.realname);
-                    $("#email").text(message.email);
+                    if(message.mailstate==0){
+                        $("#email").text(message.email+"（未验证）");
+                    }else{
+                        $("#email").text(message.email);
+                    }
                     $("#qq").text(message.qq);
                     $("#birthday").text(message.birthday);
                     $("#pro_city").text(message.city);

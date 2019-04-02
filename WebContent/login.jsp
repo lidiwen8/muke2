@@ -17,7 +17,24 @@
     <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
     <!-- 表单验证 -->
     <script src="bootstrapvalidator/js/bootstrapValidator.js" type="text/javascript"></script>
+    <script src="js/gt.js"></script>
     <title>爱之家网站答疑平台</title>
+    <style>
+        .show1 {
+            display: block;
+        }
+        .hide2 {
+            display: none;
+        }
+        #notice,.text-warning {
+            color: red;
+        }
+        #wait {
+            text-align: left;
+            color: #666;
+            margin: 0;
+        }
+    </style>
     <script type="text/javascript">
         $(function () {
             validateForm();
@@ -72,109 +89,34 @@
                                 message: '密码长度必须在6到30之间'
                             }
                         }
-                    },
-                    verifyCode: {
-                        messaage: 'The validate is not valid',
-                        validators: {
-                            notEmpty: {
-                                message: '验证码不能为空'
-                            },
-                            stringLength: {
-                                min: 4,
-                                max: 4,
-                                message: '验证码长度必须为四位'
-                            },
-                            regexp: {
-                                regexp: /^[a-zA-Z0-9]+$/,
-                                message: '验证码不合法, 请重新输入'
-                            }
-                        }
                     }
                 }
             });
         }
 
-        function validate() {
-            var inputCode = document.getElementById("input1").value.toUpperCase();
-            if (inputCode.length <= 0) {
-                $(".text-warning").text("验证码不能为空！");
-                return false;
-            } else if (inputCode != code) {
-                $(".text-warning").text("验证码输入错误！");
-                createCode();//刷新验证码
-                document.getElementById("input1").value = "";
-                return false;
-            } else {
-                // alert("^-^ OK");
-                return true;
+        //记住密码复选框的点击事件
+        function remember(){
+            var remFlag = $("input[type='checkbox']").is(':checked');
+            if(remFlag==true){ //如果选中设置remFlag为true
+                var conFlag = confirm("记住密码功能不宜在公共场所(如网吧等)使用,以防密码泄露.您确定要使用此功能吗?");
+                if(conFlag){ //确认标志
+                    $('#rememberme').val(1);
+                }else{
+                    $("input[type='checkbox']").removeAttr('checked');
+                    $('#rememberme').val(0);
+                }
+            }else{ //如果没选中设置remFlag为false
+                $('#rememberme').val(0);
             }
         }
-
-        function _hyz() {
-            /*
-             1. 获取<img>元素
-             2. 给它的src指向为/tools/VerifyCodeServlet
-             */
-            var img = document.getElementById("imgVerifyCode");
-
-            // 需要给出一个参数，这个参数每次都不同，这样才能干掉浏览器缓存！
-
-            img.src = "VerifyCodeServlet?a=" + new Date().getTime();
-
-        }
-
-        function login() {
-            // Ajax 异步请求登录
-            var username = $("input[name='username']").val();
-            var password = $("input[name='password']").val();
-            var verifyCode = $("input[name='verifyCode']").val();
-//        var flag=validate();
-//        if (flag) {
-
-            $.ajax({
-                url: "userServlet?action=login",
-                type: "POST",
-                async: "true",
-                data: {"action": "login", "username": username, "password": password, "verifyCode": verifyCode},
-                dataType: "json",
-                success: function (data) {
-                    if (data.res == 1) {
-                        alert("登录成功");
-                        window.location.replace("");
-                    } else if (data.res == 2) {
-                        alert(data.info);
-                        window.location.replace("bindingmail.jsp");
-                    }
-                    else if (data.res == 6) {
-                        alert(data.info);
-                    } else if (data.res == 7) {
-                        alert(data.info);
-                        $(".text-warning").text("验证码输入错误，请重新输入！");
-                        $("input[name='verifyCode']").val("");
-                        _hyz();
-                    }
-                    else {
-                        $(".text-warning").text(data.info);
-                        $("input[name='username']").val("");
-                        $("input[name='password']").val("");
-                    }
-                }
-            });
-
-            return false;
-//        }else {
-//            $(".text-warning").text("验证码输入错误！");
-//		}
-
-        }
-
         function gg() {
             var bootstrapValidator = $("#loginform").data("bootstrapValidator");
             //触发验证
             bootstrapValidator.validate();
             //如果验证通过，则调用login方法
             if (bootstrapValidator.isValid()) {
-                login();
+                // login();
+                $('#submit').click();
             }
         }
 
@@ -186,8 +128,8 @@
         });
     </script>
 </head>
-<body onload="load()">
-<jsp:include flush="fasle" page="header.jsp"/>
+<body>
+<jsp:include flush="true" page="header.jsp"/>
 <div class="container">
     <div class="row">
         <div class="col-sm-offset-3 col-sm-6 text-center">
@@ -222,25 +164,18 @@
                        value="<%=password%>">
             </div>
         </div>
-        <%--<div class="form-group">--%>
-        <%--<label for="input1" class="col-sm-2 control-label">验证码：</label>--%>
-        <%--<div class="col-sm-4">--%>
-        <%--<input type="text" class="form-control"  name="input1" onblur="validate()" id="input1" placeholder="请输入验证码"/> <input type="text" class="form-control" onclick="createCode()" readonly="readonly" id="checkCode"  style="color: #171719;width: 117px;background-color: #0044cc" />--%>
-        <%--</div>--%>
-        <%--</div>--%>
         <div class="form-group">
-            <label for="input1" class="col-sm-2 control-label">验证码：</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" name="verifyCode" id="input1" placeholder="请输入验证码"/>
-                <img src="VerifyCodeServlet" id="imgVerifyCode" class="form-control" style="width: 117px;"/>
-                <a href="javascript:_hyz()">换一张</a>
-            </div>
+                <label class="col-sm-2 control-label">验证：</label>
+                <div id="captcha" class="col-sm-4">
+                    <p id="wait" class="show1">正在加载验证码.....</p>
+                </div>
         </div>
         <div class="form-group has-error">
             <div class="col-sm-offset-2 col-sm-4 col-xs-6 ">
-                <span class="text-warning"></span>
-                <label for="rememberme"><input name="rememberme" type="checkbox" id="rememberme" value="1"
-                                               style="cursor:pointer;" checked/> 记住密码</label>
+                <span class="text-warning"><p id="notice" class="hide2">请先完成验证</p></span>
+                <p>
+                <label for="rememberme"><input name="rememberme" type="checkbox" id="rememberme" value="0"
+                                               style="cursor:pointer;" onclick="remember();"/> 记住密码</label>
             </div>
         </div>
         <div class="form-group">
@@ -257,8 +192,86 @@
                 </div>
             </div>
         </div>
+        <input class="btn" id="submit" type="hidden" value="提交">
     </form>
+    <script>
+        var handler2 = function (captchaObj) {
+            $("#submit").click(function (e) {
+                var result = captchaObj.getValidate();
+                if (!result) {
+                    $("#notice").show();
+                    setTimeout(function () {
+                        $("#notice").hide();
+                    }, 2000);
+                } else {
+                    $('#btnLogin').attr('disabled',true);
+                    $.ajax({
+                        url: 'userServlet?action=VerifyLogin',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            username: $('#username').val(),
+                            password: $('#password').val(),
+                            rememberme: $('#rememberme').val(),
+                            geetest_challenge: result.geetest_challenge,
+                            geetest_validate: result.geetest_validate,
+                            geetest_seccode: result.geetest_seccode
+                        },
+                        success: function (data) {
+                            if (data.res == 1) {
+                                alert("登录成功");
+                                window.location.replace("");
+                            } else if (data.res == 2) {
+                                alert(data.info);
+                                window.location.replace("bindingmail.jsp");
+                            }
+                            else if (data.res == 6) {
+                                $('#btnLogin').attr('disabled',false);
+                                alert(data.info);
+                                captchaObj.reset();
+                            }
+                            else if(data.info=="你的账号已被禁用！"){
+                                $('#btnLogin').attr('disabled',false);
+                                $(".text-warning").text("");
+                                captchaObj.reset();
+                                alert("你的账号由于违规发布不良信息已经被系统管理员禁用，如有疑问请联系管理员邮箱：1632029393@qq.com!");
+                            }else {
+                                $('#btnLogin').attr('disabled',false);
+                                alert(data.info);
+                                captchaObj.reset();
+                            }
+                        }
+                    })
+                }
+                e.preventDefault();
+            });
+            // 将验证码加到id为captcha的元素里，同时会有三个input的值用于表单提交
+            captchaObj.appendTo("#captcha");
+            captchaObj.onReady(function () {
+                $("#wait").hide();
+            });
+        };
+            var username1 = (new Date()).getTime();
+            $.ajax({
+                url: "userServlet?action=StartCaptcha&username=" + username1 + "&t=" + (new Date()).getTime(), // 加随机数防止缓存
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    // 调用 initGeetest 初始化参数
+                    // 参数1：配置参数
+                    // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它调用相应的接口
+                    initGeetest({
+                        gt: data.gt,
+                        challenge: data.challenge,
+                        new_captcha: data.new_captcha, // 用于宕机时表示是新验证码的宕机
+                        offline: !data.success, // 表示用户后台检测极验服务器是否宕机，一般不需要关注
+                        product: "popup", // 产品形式，包括：float，popup
+                        width: "100%"
+                    }, handler2);
+                }
+            });
+    </script>
 </div>
-<jsp:include flush="fasle" page="footer.jsp"/>
+<jsp:include flush="true" page="footer.jsp"/>
 </body>
 </html>

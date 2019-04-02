@@ -27,7 +27,7 @@
     <script src="bootstrapvalidator/js/bootstrapValidator.js" type="text/javascript"></script>
     <title>爱之家网站答疑平台</title>
     <script type="text/javascript">
-        var counts=0;
+        var counts = 0;
         $.fn.datetimepicker.dates['zh-CN'] = {
             days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
             daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
@@ -80,13 +80,13 @@
             validateForm();
             $("#province").click(function () {
                 counts++;
-                if(counts<=1){
+                if (counts <= 1) {
                     load();
                 }
             });
             $("#city").click(function () {
                 counts++;
-                if(counts<=1){
+                if (counts <= 1) {
                     load();
                 }
             });
@@ -97,6 +97,11 @@
             script.type = "text/javascript";
             script.src = "jquery/city2.js";
             document.body.appendChild(script)
+        }
+
+        function updaEmail() {
+             $("input[name='email']").removeAttr("readonly");
+             $("input[name='email']").focus();
         }
 
         function getUser() {
@@ -371,6 +376,7 @@
                     <input type="email" class="form-control" name="email" placeholder="请输入邮箱" value="${user.email}"
                            readonly="readonly">
                 </div>
+                <button class="btn" onclick="updaEmail();">点击修改 </button>
             </c:if>
             <c:if test="${user.mailstate==0}">
                 <label for="email" class="col-sm-2 control-label">邮箱未绑定：</label>
