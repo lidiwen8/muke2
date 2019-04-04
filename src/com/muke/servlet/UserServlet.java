@@ -307,6 +307,7 @@ public class UserServlet extends HttpServlet {
         String email = request.getParameter("mail");
         String random = (int) ((Math.random() * 9 + 1) * 100000) + "";
         String verifyCode = request.getParameter("verifyCode");
+        String key;
         if (email.equals(null) || email.equals("")) {
             response.getWriter().print("{\"res\": 6, \"info\":\"尊敬的用户:邮箱号输入不能为空，请重新输入！\"}");
             return;
@@ -334,6 +335,7 @@ public class UserServlet extends HttpServlet {
             return;
         }
         User user = userService.useremail(email);
+        String username = user.getUsername();
         if (user.getMailstate() == 1) {
             Md5Encrypt md5 = new Md5Encrypt();
             MessageEmail messageEmail = new MessageEmail();
@@ -342,7 +344,12 @@ public class UserServlet extends HttpServlet {
             strs.add(user.getEmail());
             messageEmail.setFrom("1632029393@qq.com");
             messageEmail.setTo(strs);
-            messageEmail.setMsg(sendEmail.sendMsg(user.getEmail(), random, user.getUsername()));
+            key = UUIDUtils.getUUID();
+            HttpSession session = request.getSession();
+            session.setAttribute(username + email, key);
+            session.setAttribute("token", username + email);
+            session.setMaxInactiveInterval(60 * 5);
+            messageEmail.setMsg(sendEmail.sendMsg("http://www.lidiwen.club/muke_Web/userServlet/passwordResetByemail", random, username, key, email));
             try {
                 random = md5.Encrypt(random);
             } catch (Exception e) {
@@ -350,8 +357,7 @@ public class UserServlet extends HttpServlet {
             }
             try {
                 if (sendEmail.sslSend(messageEmail)) {
-                    user.setPassword(random);
-                    userService.updatePw(user);
+                    session.setAttribute(username + "random", random);
                     response.getWriter().print("{\"res\": 1, \"info\":\"尊敬的用户：用户验证成功，发送邮件成功，请你及时登录邮箱查看\"}");
                     return;
                 } else {
@@ -366,6 +372,53 @@ public class UserServlet extends HttpServlet {
             response.getWriter().print("{\"res\": 27, \"info\":\"尊敬的用户：你的该邮箱账号并没有被激活，不能通过此方式来找回密码，请激活后再通过邮箱账号重置密码！\"}");
             return;
         }
+    }
+
+    private void passwordResetByemail(HttpServletRequest request, HttpServletResponse response) throws IOException, MessagingException {
+        String username = request.getParameter("username");
+        String email = request.getParameter("email");
+        String key = request.getParameter("key");
+        User user = userService.username(username);
+        HttpSession session = request.getSession();
+        if (email == null || username == null || key == null || email == "" || username == "" || key == "") {
+            response.getWriter().print("{\"res\": -1, \"info\":\"该链接是无效的！\"}");
+            return;
+        }
+        if (user != null) {
+            if (user.getEmail().equals(email) && user.getMailstate() == 1) {
+                try {
+                    if (session.getAttribute("token").equals(username+email)) {
+                        if (session.getAttribute(username + email).equals(key)) {
+                            if (session.getAttribute(username + "check") == null) {
+                                user.setPassword((String) session.getAttribute(username + "random"));
+                                userService.updatePw(user);
+                                session.setAttribute(username + "check", true);
+                                session.setMaxInactiveInterval(60 * 5);
+                                response.getWriter().print("{\"res\": 1, \"info\":\"重置的密码已经生效，请用新密码登录！\"}");
+                                return;
+                            }else {
+                                response.getWriter().print("{\"res\": -1, \"info\":\"该链接是一次性的，重复点击无效！\"}");
+                                return;
+                            }
+                        }
+                    } else {
+                        response.getWriter().print("{\"res\": -1, \"info\":\"没有找回密码，或已经找回密码且新密码已经生效！\"}");
+                        return;
+                    }
+
+                } catch (NullPointerException e) {
+                    response.getWriter().print("{\"res\": -2, \"info\":\"该链接已过期，请重新通过系统向你绑定的邮箱发送找回密码的链接！\"}");
+                    return;
+                }
+            }else {
+                response.getWriter().print("{\"res\": -1, \"info\":\"该链接是无效的！\"}");
+                return;
+            }
+        } else {
+            response.getWriter().print("{\"res\": -1, \"info\":\"该链接是无效的！\"}");
+            return;
+        }
+
     }
 
     private void bindingmail(HttpServletRequest request, HttpServletResponse response) throws IOException, MessagingException {
@@ -949,9 +1002,11 @@ public class UserServlet extends HttpServlet {
             if (user == null) {
                 // 登录失败 用户名或密码错误
                 response.getWriter().print("{\"res\": -1, \"info\":\"用户名或密码错误，请重新输入！\"}");
+                return;
             } else if (user.getState() == -1) {
                 // 登录失败 帐号被封
                 response.getWriter().print("{\"res\": -1, \"info\":\"你的账号已被禁用！\"}");
+                return;
             } else {
                 // 用户登录重复判断
 
@@ -1017,10 +1072,11 @@ public class UserServlet extends HttpServlet {
                 }
                 if (user.getMailstate() == 0) {
                     response.getWriter().print("{\"res\": 2, \"info\":\"尊敬的" + user.getUsername() + "用户:登录成功，但是你的邮箱账号还没被激活，是否前去激活！\"}");
+                    return;
                 } else {
                     response.getWriter().print("{\"res\": 1, \"data\":" + dataJSON + "}");
                 }//已经被激活的邮箱才在登录时发送到激活邮箱账号提醒用户登录
-                if (user.getEmail() != null&& user.getMailstate() == 1 ){
+                if (user.getEmail() != null && user.getMailstate() == 1) {
                     boolean flag1 = false;
                     Pattern p3 = null;
                     Matcher m1 = null;
@@ -1057,6 +1113,7 @@ public class UserServlet extends HttpServlet {
         } else {
             // 验证失败
             response.getWriter().print("{\"res\": -2, \"info\":\"抱歉,验证失败！\"}");
+            return;
         }
 
     }
