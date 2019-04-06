@@ -200,9 +200,9 @@ public class ReplyDaoImpl implements IReplyDao {
     }
 
     @Override
-    public List getReplyUseremail(int msgid,int userid){
+    public List getReplyUseremail(int msgid, int userid) {
         String sql = "select email from user where userid in (select r.userid FROM message m  LEFT JOIN reply r ON r.msgid=m.msgid where m.msgid= ? and r.userid!= ? AND m.state=3) and mailstate=1";
-        Object[] params = {msgid,userid};
+        Object[] params = {msgid, userid};
         List list = null;
         try {
             list = dbutil.getQueryList(sql, params);
@@ -215,9 +215,9 @@ public class ReplyDaoImpl implements IReplyDao {
     }
 
     @Override
-    public List AdmingetReplyUseremail(int msgid){
-        String sql = "select email from user where userid in (select r.userid FROM message m  LEFT JOIN reply r ON r.msgid=m.msgid where m.msgid= ? AND m.state=-1) and mailstate=1";
-        Object[] params = {msgid};
+    public List AdmingetReplyUseremail(int msgid) {
+        String sql = "select email from user where (userid in (select r.userid FROM message m  LEFT JOIN reply r ON r.msgid=m.msgid where m.msgid= ? AND m.state=-1) or userid in (select userid from message where msgid=?)) and mailstate=1";
+        Object[] params = {msgid,msgid};
         List list = null;
         try {
             list = dbutil.getQueryList(sql, params);
@@ -230,7 +230,7 @@ public class ReplyDaoImpl implements IReplyDao {
     }
 
     @Override
-    public List AdmingetMsgUseremail(int msgid){
+    public List AdmingetMsgUseremail(int msgid) {
         String sql = "select email from user where userid in (select m.userid FROM message m where m.msgid= ? AND m.state=-1) and mailstate=1";
         Object[] params = {msgid};
         List list = null;

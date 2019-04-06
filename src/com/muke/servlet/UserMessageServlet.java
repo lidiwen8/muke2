@@ -244,6 +244,9 @@ public class UserMessageServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         int userid = user.getUserid();
+        if (msgid == null || msgid.equals("")) {
+            msgid = "-1";
+        }
         MessageInfo messageInfo = messageservice.getMsgNoincreaseCount(Integer.parseInt(msgid));
         if(messageInfo!=null) {
             if (userid == messageInfo.getUserid()) {//只有本人才有资格删除自己的问题
@@ -252,20 +255,16 @@ public class UserMessageServlet extends HttpServlet {
                     response.getWriter().print("{\"res\":-1,\"info\":\"该帖子由于存在不良信息已被管理员屏蔽，你暂时没有删除权限!如有疑问，请联系管理员QQ:1632029393!\"}");
                     return;
                 }
-
-                if (msgid == null || msgid.equals("")) {
-                    msgid = "-1";
-                }
                 int res = messageservice.userdeleteMsg(Integer.parseInt(msgid));
                 if (res == 1) {
                     response.getWriter().print("{\"res\": 1, \"info\":\"删除成功\"}");
                     if (messageInfo.getReplyCount() > 0) {
-                        String finalMsgid = msgid;
+                        int finalMsgid = Integer.parseInt(msgid);
                         Thread t = new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 if (user.getMailstate() == 1) {
-                                    List emailList = iReplyService.getReplyUseremail(Integer.parseInt(finalMsgid), userid);
+                                    List emailList = iReplyService.getReplyUseremail(finalMsgid, userid);
                                     if (emailList.size() != 0 && emailList != null) {
                                         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
                                         String time = df.format(new Date());
@@ -284,7 +283,6 @@ public class UserMessageServlet extends HttpServlet {
                                         messageEmail.setTo(str);
                                         try {
                                             SendEmail.sslSend(messageEmail);//发送邮件
-                                            return;
                                         } catch (MessagingException | IOException e) {
                                             System.out.println("删除帖子时发送邮件失败");
                                             return;

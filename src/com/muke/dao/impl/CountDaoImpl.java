@@ -3,6 +3,8 @@ package com.muke.dao.impl;
 import com.muke.dao.ICountDao;
 import com.muke.util.DBUtil;
 
+import java.util.Map;
+
 public class CountDaoImpl implements ICountDao {
     DBUtil dbutil = new DBUtil();
 
@@ -33,4 +35,19 @@ public class CountDaoImpl implements ICountDao {
         }
         return rs;
     }
+    @Override
+    public int getReplyCount(int msgid){
+        String sql = "SELECT replyCount AS count FROM count WHERE msgid=?";
+        Object[] params = {msgid};
+        Map map = null;
+        try {
+            map = dbutil.getObject(sql, params);
+            int count = (int)map.get("count");
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }

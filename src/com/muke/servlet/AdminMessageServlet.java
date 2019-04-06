@@ -18,7 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.muke.pojo.*;
+import com.muke.service.ICountService;
 import com.muke.service.IReplyService;
+import com.muke.service.impl.ICountServiceImpl;
 import com.muke.service.impl.IReplyServiceImpl;
 import com.muke.util.DateUtil;
 import com.muke.util.Page;
@@ -41,6 +43,7 @@ public class AdminMessageServlet extends HttpServlet {
 
     private IMessageService iMessageService = new MessageServiceImpl();
     private IReplyService iReplyService = new IReplyServiceImpl();
+    private ICountService iCountService = new ICountServiceImpl();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -109,17 +112,17 @@ public class AdminMessageServlet extends HttpServlet {
         if (msgid == null || msgid.equals("")) {
             msgid = "-1";
         }
-        MessageInfo messageInfo = iMessageService.getMsgNoincreaseCount(Integer.parseInt(msgid));
-        int res = iMessageService.deleteMsg(Integer.parseInt(msgid));
-
+        int finalMsgid = Integer.parseInt(msgid);
+        int count=iCountService.getReplyCount(finalMsgid);
+        String msgtopic=iMessageService.getMsgNoincreaseCount(finalMsgid).getMsgtopic();
+        int res = iMessageService.deleteMsg(finalMsgid);
         if (res == 1) {
             response.getWriter().print("{\"res\": 1, \"info\":\"删除成功\"}");
-            int finalMsgid = Integer.parseInt(msgid);
             Thread t2 = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     List emailList=null;
-                    if(messageInfo.getReplyCount()>0){
+                    if(count>0){
                          emailList = iReplyService.AdmingetReplyUseremail(finalMsgid);
                     }else {
                         emailList=iReplyService.AdmingetMsgUseremail(finalMsgid);
@@ -130,7 +133,7 @@ public class AdminMessageServlet extends HttpServlet {
                             MessageEmail messageEmail = new MessageEmail();
                             messageEmail.setFrom("1632029393@qq.com");
                             try {
-                                messageEmail.setMsg(SendEmail.SendDeleteMsgmail3("http://www.lidiwen.club/muke_Web/message.jsp?msgid="+ finalMsgid, messageInfo.getMsgtopic(), time));
+                                messageEmail.setMsg(SendEmail.SendDeleteMsgmail3("http://www.lidiwen.club/muke_Web/message.jsp?msgid="+ finalMsgid, msgtopic, time));
                             } catch (MessagingException e) {
                                 e.printStackTrace();
                             }
@@ -142,7 +145,6 @@ public class AdminMessageServlet extends HttpServlet {
                             messageEmail.setTo(str);
                             try {
                                 SendEmail.sslSend(messageEmail);//发送邮件
-                                return;
                             } catch (MessagingException | IOException e) {
                                 System.out.println("管理员删除帖子时发送邮件失败");
                                 return;

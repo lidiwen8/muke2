@@ -22,4 +22,6 @@ public interface ICountDao {
      * @return
      */
     int updateReplyCount(int msgid);
+
+    int getReplyCount(int msgid);
 }

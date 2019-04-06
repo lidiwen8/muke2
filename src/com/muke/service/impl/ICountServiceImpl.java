@@ -12,4 +12,9 @@ public class ICountServiceImpl implements ICountService {
         return countdao.updateReplyCount(msgid);
     }
 
+    @Override
+    public int getReplyCount(int msgid){
+        return countdao.getReplyCount(msgid);
+    }
+
 }
