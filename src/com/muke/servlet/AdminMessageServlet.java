@@ -128,10 +128,9 @@ public class AdminMessageServlet extends HttpServlet {
                             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
                             String time = df.format(new Date());
                             MessageEmail messageEmail = new MessageEmail();
-                            SendEmail sendEmail = new SendEmail();
                             messageEmail.setFrom("1632029393@qq.com");
                             try {
-                                messageEmail.setMsg(sendEmail.SendDeleteMsgmail3("http://www.lidiwen.club/muke_Web/message.jsp?msgid="+ finalMsgid, messageInfo.getMsgtopic(), time));
+                                messageEmail.setMsg(SendEmail.SendDeleteMsgmail3("http://www.lidiwen.club/muke_Web/message.jsp?msgid="+ finalMsgid, messageInfo.getMsgtopic(), time));
                             } catch (MessagingException e) {
                                 e.printStackTrace();
                             }
@@ -142,7 +141,7 @@ public class AdminMessageServlet extends HttpServlet {
                             }
                             messageEmail.setTo(str);
                             try {
-                                sendEmail.sslSend(messageEmail);//发送邮件
+                                SendEmail.sslSend(messageEmail);//发送邮件
                                 return;
                             } catch (MessagingException | IOException e) {
                                 System.out.println("管理员删除帖子时发送邮件失败");

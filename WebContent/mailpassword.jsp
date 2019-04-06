@@ -126,6 +126,13 @@
             img.src = "VerifyCodeServlet?a=" + new Date().getTime();
 
         }
+        function apper(info) {
+            $("#notice").text(info);
+            $("#notice").show();
+            setTimeout(function () {
+                $("#notice").hide();
+            }, 2000);
+        }
         function updatePW() {
 //            var flag = validate();
 //            if (flag) {
@@ -153,34 +160,39 @@
                             window.location.replace("login.jsp");
                         } else if (data.res == 6) {
                             alert(data.info);
-                            $(".text-warning").text("尊敬的用户:邮箱号输入不能为空，请重新输入！");
                             $('#mailbutton').text("提交");
+                            apper(data.info);
                         } else if (data.res == 7) {
                             alert(data.info);
-                            $(".text-warning").text("尊敬的用户:验证码输入错误，请重新输入！");
+                            // $(".text-warning").text("尊敬的用户:验证码输入错误，请重新输入！");
                             $("input[name='verifyCode']").val("");
                             $('#mailbutton').text("提交");
+                            apper(data.info);
                         }
                         else if (data.res == 10) {
                             alert(data.info);
-                            $(".text-warning").text("尊敬的用户:你输入的邮箱格式不正确，请重新输入！");
+                            // $(".text-warning").text("尊敬的用户:你输入的邮箱格式不正确，请重新输入！");
                             $('#mailbutton').text("提交");
+                            apper(data.info);
                         }
                         else if (data.res == 8) {
                             alert(data.info);
-                            $(".text-warning").text("用户身份验证成功，发送邮件失败，可能服务器出了点问题，请及时联系网站管理员！");
+                            // $(".text-warning").text("用户身份验证成功，发送邮件失败，可能服务器出了点问题，请及时联系网站管理员！");
                             $('#mailbutton').text("邮件发送失败");
+                            apper(data.info);
                         } else if (data.res ==27) {
                             alert(data.info);
-                            $(".text-warning").text("尊敬的用户:你的该邮箱账号并没有被激活，不能通过此方式来找回密码，请激活后再通过邮箱账号重置密码！");
+                            // $(".text-warning").text("尊敬的用户:你的该邮箱账号并没有被激活，不能通过此方式来找回密码，请激活后再通过邮箱账号重置密码！");
                             $('#mailbutton').text("邮件未发送");
+                            apper(data.info);
                             window.location.replace("bindingmail.jsp");
                         }
                         else {
                             alert(data.info);
-                            $(".text-warning").text("尊敬的用户:你输入的邮箱号并没有被注册或者激活!用户认证失败，请重新输入！");
+                            // $(".text-warning").text("尊敬的用户:你输入的邮箱号并没有被注册或者激活!用户认证失败，请重新输入！");
                             $("input[name='mail']").val("");
                             $('#mailbutton').text("邮件发送失败");
+                            apper(data.info);
                         }
                     }
                 });
@@ -233,7 +245,7 @@
         </div>
         <div class="form-group has-error">
             <div class="col-sm-offset-2 col-sm-4 col-xs-6 ">
-                <span class="text-warning" style="color: #a94442"></span>
+                <span class="text-warning" style="color: #a94442"><p id="notice" style="display: none;"></p></span>
             </div>
         </div>
         <div class="form-group">

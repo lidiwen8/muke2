@@ -136,14 +136,13 @@ public class UserCenterServlet extends HttpServlet {
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
                     String time = df.format(new Date());
                     MessageEmail messageEmail = new MessageEmail();
-                    SendEmail sendEmail = new SendEmail();
                     List<String> strs = new ArrayList<String>();
                     strs.add(user.getEmail());
                     messageEmail.setFrom("1632029393@qq.com");
                     messageEmail.setTo(strs);
-                    messageEmail.setMsg(sendEmail.sendupdatepass("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
+                    messageEmail.setMsg(SendEmail.sendupdatepass("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
                     try {
-                        sendEmail.sslSend(messageEmail);//发送邮件
+                        SendEmail.sslSend(messageEmail);//发送邮件
                     } catch (SendFailedException e) {
                         System.out.println("修改密码时发送邮件失败");
                     }

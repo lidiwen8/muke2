@@ -339,7 +339,6 @@ public class UserServlet extends HttpServlet {
         if (user.getMailstate() == 1) {
             Md5Encrypt md5 = new Md5Encrypt();
             MessageEmail messageEmail = new MessageEmail();
-            SendEmail sendEmail = new SendEmail();
             List<String> strs = new ArrayList<String>();
             strs.add(user.getEmail());
             messageEmail.setFrom("1632029393@qq.com");
@@ -347,16 +346,16 @@ public class UserServlet extends HttpServlet {
             key = UUIDUtils.getUUID();
             HttpSession session = request.getSession();
             session.setAttribute(username + email, key);
-            session.setAttribute("token", username + email);
+            session.setAttribute(username+"token", username + email);
             session.setMaxInactiveInterval(60 * 5);
-            messageEmail.setMsg(sendEmail.sendMsg("http://www.lidiwen.club/muke_Web/userServlet/passwordResetByemail", random, username, key, email));
+            messageEmail.setMsg(SendEmail.sendMsg("http://www.lidiwen.club/muke_Web/userServlet/passwordResetByemail", random, username, key, email));
             try {
                 random = md5.Encrypt(random);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             try {
-                if (sendEmail.sslSend(messageEmail)) {
+                if (SendEmail.sslSend(messageEmail)) {
                     session.setAttribute(username + "random", random);
                     response.getWriter().print("{\"res\": 1, \"info\":\"尊敬的用户：用户验证成功，发送邮件成功，请你及时登录邮箱查看\"}");
                     return;
@@ -387,7 +386,7 @@ public class UserServlet extends HttpServlet {
         if (user != null) {
             if (user.getEmail().equals(email) && user.getMailstate() == 1) {
                 try {
-                    if (session.getAttribute("token").equals(username+email)) {
+                    if (session.getAttribute(username+"token").equals(username+email)) {
                         if (session.getAttribute(username + email).equals(key)) {
                             if (session.getAttribute(username + "check") == null) {
                                 user.setPassword((String) session.getAttribute(username + "random"));
@@ -480,15 +479,14 @@ public class UserServlet extends HttpServlet {
             return;
         }
         MessageEmail messageEmail = new MessageEmail();
-        SendEmail sendEmail = new SendEmail();
         List<String> strs = new ArrayList<String>();
         strs.add(email);
         messageEmail.setFrom("1632029393@qq.com");
         messageEmail.setTo(strs);
-        messageEmail.setMsg(sendEmail.sendbindingmail(random, IPUtil.getIP(request), user.getUsername()));
+        messageEmail.setMsg(SendEmail.sendbindingmail(random, IPUtil.getIP(request), user.getUsername()));
         try {
             try {
-                if (sendEmail.sslSend(messageEmail)) {
+                if (SendEmail.sslSend(messageEmail)) {
                     response.getWriter().print("{\"res\": 1, \"info\":\"尊敬的用户：用户验证成功，发送邮件成功，请你及时登录邮箱查看\"}");
                     session.setAttribute("email", email);
                     session.setAttribute("username", username);
@@ -709,14 +707,13 @@ public class UserServlet extends HttpServlet {
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
                     String time = df.format(new Date());
                     MessageEmail messageEmail = new MessageEmail();
-                    SendEmail sendEmail = new SendEmail();
                     List<String> strs = new ArrayList<String>();
                     strs.add(user.getEmail());
                     messageEmail.setFrom("1632029393@qq.com");
                     messageEmail.setTo(strs);
-                    messageEmail.setMsg(sendEmail.sendlogin("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
+                    messageEmail.setMsg(SendEmail.sendlogin("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
                     try {
-                        sendEmail.sslSend(messageEmail);//发送邮件
+                        SendEmail.sslSend(messageEmail);//发送邮件
                     } catch (SMTPAddressFailedException e) {
                         System.out.println("登录时发送邮件异常");
                     } catch (SendFailedException e) {
@@ -815,14 +812,13 @@ public class UserServlet extends HttpServlet {
 //                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
 //                String time = df.format(new Date());
 //                MessageEmail messageEmail = new MessageEmail();
-//                SendEmail sendEmail = new SendEmail();
 //                List<String> str = new ArrayList<String>();
 //                str.add(mail);
 //                messageEmail.setFrom("1632029393@qq.com");
 //                messageEmail.setTo(str);
-//                messageEmail.setMsg(sendEmail.sendupdatepass2("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
+//                messageEmail.setMsg(SendEmail.sendupdatepass2("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
 //                try {
-//                    sendEmail.sslSend(messageEmail);//发送邮件
+//                    SendEmail.sslSend(messageEmail);//发送邮件
 //                    return;
 //                } catch (SendFailedException e) {
 //                    System.out.println("修改密码时发送邮件失败");
@@ -1087,14 +1083,13 @@ public class UserServlet extends HttpServlet {
                         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
                         String time = df.format(new Date());
                         MessageEmail messageEmail = new MessageEmail();
-                        SendEmail sendEmail = new SendEmail();
                         List<String> strs = new ArrayList<String>();
                         strs.add(user.getEmail());
                         messageEmail.setFrom("1632029393@qq.com");
                         messageEmail.setTo(strs);
-                        messageEmail.setMsg(sendEmail.sendlogin("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
+                        messageEmail.setMsg(SendEmail.sendlogin("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
                         try {
-                            sendEmail.sslSend(messageEmail);//发送邮件
+                            SendEmail.sslSend(messageEmail);//发送邮件
                         } catch (SMTPAddressFailedException e) {
                             System.out.println("登录时发送邮件异常");
                         } catch (SendFailedException e) {
