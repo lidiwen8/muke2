@@ -21,42 +21,42 @@ public class SendEmail {
     private static Executor executor = Executors.newFixedThreadPool(10);
 
     public static String sendMsg(String adress, String password, String username, String key, String email) throws MessagingException {
-        String msg2 = "<p>【爱之家科技有限公司】提醒你：您好 O(∩_∩)O~~<br>用户名：" + username + "<br>新密码：" + password + "<br>请在5分钟内点击下面的链接新密码才能生效：<br><a href='http://www.lidiwen.club/muke_Web/password_reset.jsp?username=" + username + "&key=" + key + "&email=" + email + "'>http://www.lidiwen.club/muke_Web/password_reset.jsp?username=" + username + "&key=" + key + "&email=" + email + "</a><br>如非本人操作,请忽略该邮件。</p>";
-        return msg2;
+        String msg = "<p>【爱之家科技有限公司】提醒你：您好 O(∩_∩)O~~<br>用户名：" + username + "<br>新密码：" + password + "<br>请在5分钟内点击下面的链接新密码才能生效：<br><a href='http://www.lidiwen.club/muke_Web/password_reset.jsp?username=" + username + "&key=" + key + "&email=" + email + "'>http://www.lidiwen.club/muke_Web/password_reset.jsp?username=" + username + "&key=" + key + "&email=" + email + "</a><br>如非本人操作,请忽略该邮件。</p>";
+        return msg;
     }
 
     public static String sendlogin(String adress, String ip, String username, String time) throws MessagingException {
-        String msg = "         【爱之家科技有限公司】尊敬的" + username + "用户:您于" + time + "登录爱之家网站答疑平台<a href='" + adress + "'>" + adress + "</a>,登录地址:" + ip + "。如非本人操作,请立即登录修改密码。";
+        String msg = "         <p>【爱之家科技有限公司】尊敬的" + username + "用户:<br>&nbsp;&nbsp;&nbsp;&nbsp;您于" + time + "登录爱之家网站答疑平台<a href='" + adress + "'>" + adress + "</a>,登录地址:" + ip + "。如非本人操作,请立即登录修改密码。</p>";
         return msg;
     }
 
     public static String sendupdatepass(String adress, String ip, String username, String time) throws MessagingException {
-        String msg = "         【爱之家科技有限公司】尊敬的" + username + "用户:您于" + time + "登录爱之家网站答疑平台<a href='" + adress + "'>" + adress + "</a>,登录地址:" + ip + "。如非本人操作,请立即使用你注册时绑定的邮箱进行密码找回。";
+        String msg = "         <p>【爱之家科技有限公司】尊敬的" + username + "用户:<br>&nbsp;&nbsp;&nbsp;&nbsp;您于" + time + "登录爱之家网站答疑平台<a href='" + adress + "'>" + adress + "</a>,登录地址:" + ip + "。如非本人操作,请立即使用你注册时绑定的邮箱进行密码找回。</p>";
         return msg;
     }
 
     public static String sendupdatepass2(String adress, String ip, String username, String time) throws MessagingException {
-        String msg = "         【爱之家科技有限公司】尊敬的" + username + "用户:您于" + time + "在爱之家网站答疑平台<a href='" + adress + "'>" + adress + "</a>修改了你的密码,操作地址:" + ip + "。如非本人操作,请立即使用你注册时绑定的邮箱进行密码找回。";
+        String msg = "         <p>【爱之家科技有限公司】尊敬的" + username + "用户:<br>&nbsp;&nbsp;&nbsp;&nbsp;您于" + time + "在爱之家网站答疑平台<a href='" + adress + "'>" + adress + "</a>修改了你的密码,操作地址:" + ip + "。如非本人操作,请立即使用你注册时绑定的邮箱进行密码找回。</p>";
         return msg;
     }
 
     public static String sendbindingmail(String code, String ip, String username) throws MessagingException {
-        String msg = "         【爱之家科技有限公司】尊敬的" + username + "用户:欢迎您绑定你的邮箱账号，请将此验证码：《" + code + "》填写到绑定邮箱页面。操作地址:" + ip + "。如非本人操作,请忽略该邮件。";
+        String msg = "         <p>【爱之家科技有限公司】尊敬的" + username + "用户:<br>&nbsp;&nbsp;欢迎您绑定你的邮箱账号，请将此验证码：《" + code + "》填写到绑定邮箱页面。操作地址:" + ip + "。如非本人操作,请忽略该邮件。</p>";
         return msg;
     }
 
     public static String SendDeleteMsgmail(String url, String title, String username, String email, String time) throws MessagingException {
-        String msg = "         【爱之家科技有限公司】尊敬的用户:你回复的帖子(" + title + ") :<a href='" + url + "'>" + url + "</a>，已经被该贴楼主<" + username + ">于" + time + "暂时屏蔽了，无法查看，如有意见请联系该贴楼主邮箱：" + email + "。";
+        String msg = "         <p>【爱之家科技有限公司】尊敬的用户:<br>&nbsp;&nbsp;你回复的帖子："  +"<a href='" + url + "'>"+ title +"</a>，已经被该贴楼主<" + username + ">于" + time + "暂时屏蔽了，无法查看，如有意见请联系该贴楼主邮箱：" + email + "。</p>";
         return msg;
     }
 
     public static String SendDeleteMsgmail2(String url, String title, String username, String email, String time) throws MessagingException {
-        String msg = "         【爱之家科技有限公司】尊敬的用户:你回复的帖子<" + title + ">:<a href='" + url + "'>" + url + "</a>，已经被该贴楼主<" + username + ">于" + time + "暂时屏蔽了，无法查看；由于该楼主邮箱未绑定，如对楼主屏蔽掉帖子有意见请联系管理员邮箱：" + email + "。";
+        String msg = "         <p>【爱之家科技有限公司】尊敬的用户:<br>&nbsp;&nbsp;&nbsp;&nbsp;你回复的帖子："  +"<a href='" + url + "'>"+ title +"</a>，已经被该贴楼主<" + username + ">于" + time + "暂时屏蔽了，无法查看；由于该楼主邮箱未绑定，如对楼主屏蔽掉帖子有意见请联系管理员邮箱：" + email + "。</p>";
         return msg;
     }
 
     public static String SendDeleteMsgmail3(String url, String title, String time) throws MessagingException {
-        String msg = "         【爱之家科技有限公司】尊敬的用户:你回复的帖子<" + title + ">:<a href='" + url + "'>" + url + "</a>，已经被管理员于" + time + "暂时屏蔽了，无法查看；如对管理员屏蔽掉帖子有意见请联系管理员邮箱：163202933@qq.com。";
+        String msg = "         <p>【爱之家科技有限公司】尊敬的用户:<br>&nbsp;&nbsp;&nbsp;&nbsp;你回复的帖子："  +"<a href='" + url + "'>"+ title +"</a>，已经被管理员于" + time + "暂时屏蔽了，无法查看；如对管理员屏蔽掉帖子有意见请联系管理员邮箱：163202933@qq.com。</P>";
         return msg;
     }
 

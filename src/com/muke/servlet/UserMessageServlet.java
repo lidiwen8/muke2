@@ -247,7 +247,8 @@ public class UserMessageServlet extends HttpServlet {
         if (msgid == null || msgid.equals("")) {
             msgid = "-1";
         }
-        MessageInfo messageInfo = messageservice.getMsgNoincreaseCount(Integer.parseInt(msgid));
+        int finalMsgid = Integer.parseInt(msgid);
+        MessageInfo messageInfo = messageservice.getMsgNoincreaseCount(finalMsgid);
         if(messageInfo!=null) {
             if (userid == messageInfo.getUserid()) {//只有本人才有资格删除自己的问题
                 //管理员已禁用的帖子不允许用户自己操作
@@ -255,11 +256,11 @@ public class UserMessageServlet extends HttpServlet {
                     response.getWriter().print("{\"res\":-1,\"info\":\"该帖子由于存在不良信息已被管理员屏蔽，你暂时没有删除权限!如有疑问，请联系管理员QQ:1632029393!\"}");
                     return;
                 }
-                int res = messageservice.userdeleteMsg(Integer.parseInt(msgid));
+                int count = iCountService.getReplyCount(finalMsgid);
+                int res = messageservice.userdeleteMsg(finalMsgid);
                 if (res == 1) {
                     response.getWriter().print("{\"res\": 1, \"info\":\"删除成功\"}");
-                    if (messageInfo.getReplyCount() > 0) {
-                        int finalMsgid = Integer.parseInt(msgid);
+                    if (count > 0) {
                         Thread t = new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -300,11 +301,13 @@ public class UserMessageServlet extends HttpServlet {
                         return;
                     }
                 } else {
-                    response.getWriter().print("{\"res\": " + res + ", \"info\":\"删除失败\"}");
+                    response.getWriter().print("{\"res\": " + res + ", \"info\":\"删除失败！\"}");
                 }
             } else {
-                response.getWriter().print("{\"res\":-1,\"info\":\"权限不足，删除失败\"}");
+                response.getWriter().print("{\"res\":-1,\"info\":\"权限不足，删除失败！\"}");
             }
+        }else {
+            response.getWriter().print("{\"res\":-1,\"info\":\"该帖子信息不存在，删除失败！\"}");
         }
     }
 

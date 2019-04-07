@@ -113,27 +113,28 @@ public class AdminMessageServlet extends HttpServlet {
             msgid = "-1";
         }
         int finalMsgid = Integer.parseInt(msgid);
-        int count=iCountService.getReplyCount(finalMsgid);
-        String msgtopic=iMessageService.getMsgNoincreaseCount(finalMsgid).getMsgtopic();
-        int res = iMessageService.deleteMsg(finalMsgid);
-        if (res == 1) {
-            response.getWriter().print("{\"res\": 1, \"info\":\"删除成功\"}");
-            Thread t2 = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    List emailList=null;
-                    if(count>0){
-                         emailList = iReplyService.AdmingetReplyUseremail(finalMsgid);
-                    }else {
-                        emailList=iReplyService.AdmingetMsgUseremail(finalMsgid);
-                    }
+        try {
+            int count = iCountService.getReplyCount(finalMsgid);
+            String msgtopic = iMessageService.getMsgNoincreaseCount(finalMsgid).getMsgtopic();
+            int res = iMessageService.deleteMsg(finalMsgid);
+            if (res == 1) {
+                response.getWriter().print("{\"res\": 1, \"info\":\"删除成功\"}");
+                Thread t2 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List emailList = null;
+                        if (count > 0) {
+                            emailList = iReplyService.AdmingetReplyUseremail(finalMsgid);
+                        } else {
+                            emailList = iReplyService.AdmingetMsgUseremail(finalMsgid);
+                        }
                         if (emailList.size() != 0 && emailList != null) {
                             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
                             String time = df.format(new Date());
                             MessageEmail messageEmail = new MessageEmail();
                             messageEmail.setFrom("1632029393@qq.com");
                             try {
-                                messageEmail.setMsg(SendEmail.SendDeleteMsgmail3("http://www.lidiwen.club/muke_Web/message.jsp?msgid="+ finalMsgid, msgtopic, time));
+                                messageEmail.setMsg(SendEmail.SendDeleteMsgmail3("http://www.lidiwen.club/muke_Web/message.jsp?msgid=" + finalMsgid, msgtopic, time));
                             } catch (MessagingException e) {
                                 e.printStackTrace();
                             }
@@ -149,14 +150,17 @@ public class AdminMessageServlet extends HttpServlet {
                                 System.out.println("管理员删除帖子时发送邮件失败");
                                 return;
                             }
-                        }else {
+                        } else {
                             return;
                         }
                     }
-            });
-            t2.start();
-        } else {
-            response.getWriter().print("{\"res\": " + res + ", \"info\":\"删除失败\"}");
+                });
+                t2.start();
+            } else {
+                response.getWriter().print("{\"res\": " + res + ", \"info\":\"删除失败\"}");
+            }
+        }catch (NullPointerException e){
+            response.getWriter().print("{\"res\": " + -1 + ", \"info\":\"删除失败\"}");
         }
     }
 
