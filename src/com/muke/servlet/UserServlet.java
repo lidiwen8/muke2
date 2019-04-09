@@ -343,10 +343,11 @@ public class UserServlet extends HttpServlet {
             strs.add(user.getEmail());
             messageEmail.setFrom("1632029393@qq.com");
             messageEmail.setTo(strs);
+            messageEmail.setSubject("[爱之家科技有限公司]重置密码通知");
             key = UUIDUtils.getUUID();
             HttpSession session = request.getSession();
             session.setAttribute(username + email, key);
-            session.setAttribute(username+"token", username + email);
+            session.setAttribute(username + "token", username + email);
             session.setMaxInactiveInterval(60 * 5);
             messageEmail.setMsg(SendEmail.sendMsg("http://www.lidiwen.club/muke_Web/userServlet/passwordResetByemail", random, username, key, email));
             try {
@@ -386,7 +387,7 @@ public class UserServlet extends HttpServlet {
         if (user != null) {
             if (user.getEmail().equals(email) && user.getMailstate() == 1) {
                 try {
-                    if (session.getAttribute(username+"token").equals(username+email)) {
+                    if (session.getAttribute(username + "token").equals(username + email)) {
                         if (session.getAttribute(username + email).equals(key)) {
                             if (session.getAttribute(username + "check") == null) {
                                 user.setPassword((String) session.getAttribute(username + "random"));
@@ -395,7 +396,7 @@ public class UserServlet extends HttpServlet {
                                 session.setMaxInactiveInterval(60 * 5);
                                 response.getWriter().print("{\"res\": 1, \"info\":\"重置的密码已经生效，请用新密码登录！\"}");
                                 return;
-                            }else {
+                            } else {
                                 response.getWriter().print("{\"res\": -1, \"info\":\"该链接是一次性的，重复点击无效！\"}");
                                 return;
                             }
@@ -409,7 +410,7 @@ public class UserServlet extends HttpServlet {
                     response.getWriter().print("{\"res\": -2, \"info\":\"该链接已过期，请重新通过系统向你绑定的邮箱发送找回密码的链接！\"}");
                     return;
                 }
-            }else {
+            } else {
                 response.getWriter().print("{\"res\": -1, \"info\":\"该链接是无效的！\"}");
                 return;
             }
@@ -483,6 +484,7 @@ public class UserServlet extends HttpServlet {
         strs.add(email);
         messageEmail.setFrom("1632029393@qq.com");
         messageEmail.setTo(strs);
+        messageEmail.setSubject("[爱之家科技有限公司]绑定邮箱通知");
         messageEmail.setMsg(SendEmail.sendbindingmail(random, IPUtil.getIP(request), user.getUsername()));
         try {
             try {
@@ -544,12 +546,17 @@ public class UserServlet extends HttpServlet {
                 return;
             }
         }
-        if (!email.equals((String) session.getAttribute("email"))) {
-            response.getWriter().print("{\"res\": 10, \"info\":\"尊敬的用户:你输入的邮箱或验证码不正确，请重新输入！\"}");
-            return;
-        }
-        if (!username.equals((String) session.getAttribute("username"))) {
-            response.getWriter().print("{\"res\": 10, \"info\":\"尊敬的用户:你输入的账户是无效的，请重新输入！\"}");
+        try {
+            if (!email.equals((String) session.getAttribute("email"))) {
+                response.getWriter().print("{\"res\": 10, \"info\":\"尊敬的用户:你输入的邮箱或验证码不正确，请重新输入！\"}");
+                return;
+            }
+            if (!username.equals((String) session.getAttribute("username"))) {
+                response.getWriter().print("{\"res\": 10, \"info\":\"尊敬的用户:你输入的账户是无效的，请重新输入！\"}");
+                return;
+            }
+        } catch (NullPointerException e) {
+            response.getWriter().print("{\"res\": -1, \"info\":\"尊敬的用户:你输入的邮箱或验证码不正确，请重新输入！\"}");
             return;
         }
         User user = userService.username(username);
@@ -711,6 +718,7 @@ public class UserServlet extends HttpServlet {
                     strs.add(user.getEmail());
                     messageEmail.setFrom("1632029393@qq.com");
                     messageEmail.setTo(strs);
+                    messageEmail.setSubject("[爱之家科技有限公司]登录提醒");
                     messageEmail.setMsg(SendEmail.sendlogin("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
                     try {
                         SendEmail.sslSend(messageEmail);//发送邮件
@@ -731,31 +739,18 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    //忘记密码
+    //忘记密码通过绑定的邮箱重置密码
     private void updatePw2(HttpServletRequest request, HttpServletResponse response) throws IOException, MessagingException {
-        User user;
-        String username = request.getParameter("username");
+        String code = request.getParameter("code");
         String mail = request.getParameter("mail");
         String password = request.getParameter("newpassword");
         String password2 = request.getParameter("newpassword2");
 
-        if (username.equals(null) || username.equals("")) {
-            response.getWriter().print("{\"res\": 3, \"info\":\"尊敬的用户:用户账号不能为空，请重新输入！\"}");
+        if (code == null || code == "") {
+            response.getWriter().print("{\"res\": 3, \"info\":\"尊敬的用户:验证码不能为空，请重新输入！\"}");
             return;
         }
-        if (username != null) {
-            boolean flag = false;
-            Pattern p3 = null;
-            Matcher m1 = null;
-            p3 = Pattern.compile("^[A-Za-z0-9]+$");
-            m1 = p3.matcher(username);
-            flag = m1.matches();
-            if (flag == false || username.length() < 6 || username.length() > 30) {
-                response.getWriter().print("{\"res\": 8, \"info\":\"尊敬的用户:用户账号长度必须在6到30之间且不包含特殊符号与中文，请重新输入！\"}");
-                return;
-            }
-        }
-        if (mail.equals(null) || mail.equals("")) {
+        if (mail == null || mail.equals("")) {
             response.getWriter().print("{\"res\": 6, \"info\":\"尊敬的用户:邮箱号输入不能为空，请重新输入！\"}");
             return;
         }
@@ -771,7 +766,7 @@ public class UserServlet extends HttpServlet {
                 return;
             }
         }
-        if (password.equals(null) || password.equals("") || password.length() < 6 || password.length() > 30) {
+        if (password == null || password.equals("") || password.length() < 6 || password.length() > 30) {
             response.getWriter().print("{\"res\": 4, \"info\":\"尊敬的用户:新密码长度必须在6到30之间，请重新输入！\"}");
             return;
         }
@@ -787,7 +782,7 @@ public class UserServlet extends HttpServlet {
                 return;
             }
         }
-        if (password2.equals(null) || password2.equals("") || password2.length() < 6 || password2.length() > 30) {
+        if (password2 == null || password2.equals("") || password2.length() < 6 || password2.length() > 30) {
             response.getWriter().print("{\"res\": 9, \"info\":\"尊敬的用户:确认密码长度必须在6到30之间，且要跟新密码一致，请重新输入确认密码！\"}");
             return;
         }
@@ -795,44 +790,102 @@ public class UserServlet extends HttpServlet {
             response.getWriter().print("{\"res\": 5, \"info\":\"尊敬的用户:你输入的确认密码跟新密码不匹配，请仔细核对确认密码后再输入！\"}");
             return;
         }
-        user = userService.userPass(username, mail);
-        if (user != null) {
-            if (user.getMailstate() == 1) {
-                response.getWriter().print("{\"res\": -1, \"info\":\"暂时不能通过该方式修改密码，请使用你已经激活的邮箱找回密码！\"}");
-//                user.setUsername(username);
-//                Md5Encrypt md5 = new Md5Encrypt();
-//                try {
-//                    password = md5.Encrypt(password);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                user.setPassword(password);
-//                userService.updatePw(user);
-//                response.getWriter().print("{\"res\": 1, \"info\":\"修改成功！请用修改后的密码登录\"}");
-//                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
-//                String time = df.format(new Date());
-//                MessageEmail messageEmail = new MessageEmail();
-//                List<String> str = new ArrayList<String>();
-//                str.add(mail);
-//                messageEmail.setFrom("1632029393@qq.com");
-//                messageEmail.setTo(str);
-//                messageEmail.setMsg(SendEmail.sendupdatepass2("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
-//                try {
-//                    SendEmail.sslSend(messageEmail);//发送邮件
-//                    return;
-//                } catch (SendFailedException e) {
-//                    System.out.println("修改密码时发送邮件失败");
-//                    return;
-//                }
+        if (!userService.isExistmailBind(mail)) {
+            response.getWriter().print("{\"res\": -1, \"info\":\"邮箱或验证码错误！\"}");
+            return;
+        }
+        try {
+            HttpSession session = request.getSession();
+            if (session.getAttribute(mail + "resetPassCode").equals(code + mail)) {
+                Md5Encrypt md5 = new Md5Encrypt();
+                try {
+                    password = md5.Encrypt(password);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (userService.updatePwBynewPass(password, mail) > 0) {
+                    response.getWriter().print("{\"res\": 1, \"info\":\"重置密码成功！请用修改后的密码登录\"}");
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");//设置日期格式
+                    String time = df.format(new Date());
+                    MessageEmail messageEmail = new MessageEmail();
+                    List<String> str = new ArrayList<String>();
+                    str.add(mail);
+                    messageEmail.setFrom("1632029393@qq.com");
+                    messageEmail.setSubject("[爱之家科技有限公司]登录密码修改成功");
+                    messageEmail.setTo(str);
+                    messageEmail.setMsg(SendEmail.sendupdatepass2("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), userService.useremail(mail).getUsername(), time));
+                    try {
+                        SendEmail.sslSend(messageEmail);//发送邮件
+                        return;
+                    } catch (SendFailedException e) {
+                        System.out.println("修改密码时发送邮件失败");
+                        return;
+                    }
+                } else {
+                    response.getWriter().print("{\"res\": -1, \"info\":\"系统出了点小问题，重置密码失败！请稍后重试\"}");
+                    return;
+                }
             } else {
-                response.getWriter().print("{\"res\": 27, \"info\":\"你的该邮箱账号并没有被激活，不能通过此方式来更改密码，请激活后再修改！\"}");
+                response.getWriter().print("{\"res\": -1, \"info\":\"邮箱或验证码错误！\"}");
                 return;
             }
-        } else {
-            response.getWriter().print("{\"res\": 2, \"info\":\"你输入的账户或者邮箱账号跟你注册时的信息不匹配，请改正后再提交！\"}");
+        } catch (NullPointerException e) {
+            response.getWriter().print("{\"res\": -1, \"info\":\"验证码错误！\"}");
             return;
         }
     }
+
+    private void sendResetPassCode(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, MessagingException {
+        String random = (int) ((Math.random() * 9 + 1) * 100000) + "";
+        String mail = request.getParameter("mail");
+        if (mail == null || mail.equals("")) {
+            response.getWriter().print("{\"res\": -1, \"info\":\"无效邮箱！\"}");
+            return;
+        }
+        if (mail != null && mail != "") {
+            boolean flag1 = false;
+            Pattern p3 = null;
+            Matcher m1 = null;
+            p3 = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+            m1 = p3.matcher(mail);
+            flag1 = m1.matches();
+            if (flag1 == false) {
+                response.getWriter().print("{\"res\": -1, \"info\":\"无效邮箱！\"}");
+                return;
+            }
+        }
+        if (userService.isExistmail(mail)) {
+            response.getWriter().print("{\"res\": -1, \"info\":\"邮箱未注册过，请重填\"}");
+            return;
+        }
+        if (userService.isExistmailBind(mail)) {
+            MessageEmail messageEmail = new MessageEmail();
+            List<String> str = new ArrayList<String>();
+            str.add(mail);
+            messageEmail.setFrom("1632029393@qq.com");
+            messageEmail.setTo(str);
+            messageEmail.setSubject("[爱之家科技有限公司]重置密码通知");
+            messageEmail.setMsg(SendEmail.sendforgetpass(random, IPUtil.getIP(request), "http://www.lidiwen.club/muke_Web"));
+            try {
+                SendEmail.sslSend(messageEmail);//发送邮件
+                HttpSession session = request.getSession();
+                session.setAttribute(mail + "resetPassCode", random + mail);
+                session.setMaxInactiveInterval(60 * 30);//30分钟内有效
+                response.getWriter().print("{\"res\": 1, \"info\":\"用户验证成功，发送邮件成功！请你及时登录邮箱查看。若您没有收到邮件，请一分钟后核对邮箱重新验证！\"}");
+                return;
+            } catch (SendFailedException e) {
+                System.out.println("重置密码时发送邮件失败");
+                response.getWriter().print("{\"res\": -1, \"info\":\"邮件发送失败，请稍后重试！\"}");
+                return;
+            }
+
+        } else {
+            response.getWriter().print("{\"res\": -2, \"info\":\"邮箱已注册但未被绑定，请先去绑定后才能通过该方式重置密码\"}");
+            return;
+        }
+
+    }
+
 
     // 查看用户个人中心信息
     private void getUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
@@ -1087,6 +1140,7 @@ public class UserServlet extends HttpServlet {
                         strs.add(user.getEmail());
                         messageEmail.setFrom("1632029393@qq.com");
                         messageEmail.setTo(strs);
+                        messageEmail.setSubject("[爱之家科技有限公司]登录提醒");
                         messageEmail.setMsg(SendEmail.sendlogin("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
                         try {
                             SendEmail.sslSend(messageEmail);//发送邮件

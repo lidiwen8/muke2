@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class MessageEmail {
     //@NameCN("发件人地址")
-    private String  from="cn_edu_njust@163.com";
+    private String  from="1632029393@qq.com";
 
   //  @NameCN("收件人地址")
     private List<String> to;

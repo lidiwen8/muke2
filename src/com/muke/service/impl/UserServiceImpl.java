@@ -110,6 +110,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public int updatePwBynewPass(String newPassword, String email) {
+        return iUserDao.updatePwBynewPass(newPassword, email);
+    }
+
+    @Override
     public int modifyUser(int userid, int state) {
         return iUserDao.updateState(userid, state);
     }
@@ -122,6 +127,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean isExistmail(String mail) {
         return iUserDao.isExistmail(mail);
+    }
+
+    @Override
+    public boolean isExistmailBind(String mail) {
+        return iUserDao.isExistmailBind(mail);
     }
 
     @Override

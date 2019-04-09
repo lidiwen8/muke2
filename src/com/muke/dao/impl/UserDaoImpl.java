@@ -103,7 +103,7 @@ public class UserDaoImpl implements IUserDao {
         String sql = "INSERT INTO user (username, password, realname, sex, hobbys, birthday, city, email, qq, user_img,logintime,loginNum) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         Object[] params = {user.getUsername(), user.getPassword(), user.getRealname(), user.getSex(),
-                user.getHobbys(), user.getBirthday(), user.getCity(), user.getEmail(), user.getQq(), user.getUser_img(),user.getLogintime(),user.getLoginNum()};
+                user.getHobbys(), user.getBirthday(), user.getCity(), user.getEmail(), user.getQq(), user.getUser_img(), user.getLogintime(), user.getLoginNum()};
         int res = 0;
         try {
             res = dbutil.execute(sql, params);
@@ -244,7 +244,7 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public Page queryUserlogbyUserid(int userid,Page page){
+    public Page queryUserlogbyUserid(int userid, Page page) {
         String sql = "select userid,ip,logintime,place from userlog where userid=? order by id desc";
         Object[] params = {userid};
         Page respage = null;
@@ -256,6 +256,19 @@ public class UserDaoImpl implements IUserDao {
     public int updatePw(User user) {
         String sql = "UPDATE `user` SET  `password`=?  WHERE (`username`=?) ";
         Object[] params = {user.getPassword(), user.getUsername()};
+        int rs = 0;
+        try {
+            rs = dbutil.execute(sql, params);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
+    @Override
+    public int updatePwBynewPass(String newPassword, String email){
+        String sql = "UPDATE user SET password=? WHERE email=? and mailstate=1";
+        Object[] params = {newPassword, email};
         int rs = 0;
         try {
             rs = dbutil.execute(sql, params);
@@ -298,6 +311,23 @@ public class UserDaoImpl implements IUserDao {
             e.printStackTrace();
         }
 
+        return result;
+    }
+
+    @Override
+    public boolean isExistmailBind(String mail) {
+        String sql = "select count(*) as count from user where email=? and mailstate=1";
+        boolean result = false;
+        Map<String, Object> map = null;
+        try {
+            map = dbutil.getObject(sql, new Object[]{mail});
+            int count = Integer.parseInt(map.get("count").toString());
+            if (count > 0) {
+                result = true;//邮箱号已存在且被绑定
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return result;
     }
 
@@ -358,7 +388,7 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public int insertlogintime(String name,String logintime) {
+    public int insertlogintime(String name, String logintime) {
         String sql = "update user set logintime =? where username =?";
         Object[] params = {logintime, name};
         int rs = 0;
@@ -371,9 +401,9 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public int insertloginLog(Userlog userlog){
+    public int insertloginLog(Userlog userlog) {
         String sql = "insert into userlog (userid,ip,place,logintime) VALUES (?,?,?,?)";
-        Object[] params = {userlog.getUserid(),userlog.getIp(),userlog.getPlace(),userlog.getLogintime()};
+        Object[] params = {userlog.getUserid(), userlog.getIp(), userlog.getPlace(), userlog.getLogintime()};
         int rs = 0;
         try {
             rs = dbutil.execute(sql, params);
@@ -393,11 +423,11 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public Page queryUserLog(Page page){
+    public Page queryUserLog(Page page) {
         String sql = "SELECT username,realname,userlog.logintime,ip,place from userlog,user WHERE userlog.userid=`user`.userid order by id desc";
         Object[] params = {};
         Page respage = null;
-        respage = dbutil.getQueryPage(UserlogInfo.class,sql,params, page);
+        respage = dbutil.getQueryPage(UserlogInfo.class, sql, params, page);
         return respage;
     }
 
@@ -557,13 +587,13 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public int queryReplyCountByMsgid(int msgid,int userid) {
+    public int queryReplyCountByMsgid(int msgid, int userid) {
         String sql = "SELECT count(*) as count from reply where msgid=? and userid not in (SELECT userid from reply where userid=?)";
-        Object[] params = {msgid,userid};
+        Object[] params = {msgid, userid};
         Map map = null;
         try {
-            map = dbutil.getObject(sql,params);
-            Number count =  (Number)map.get("count");
+            map = dbutil.getObject(sql, params);
+            Number count = (Number) map.get("count");
             return count.intValue();
         } catch (Exception e) {
             e.printStackTrace();

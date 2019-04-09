@@ -45,6 +45,9 @@ public interface IUserDao {
      */
     int updatePw(User user);
 
+
+    int updatePwBynewPass(String newPassword, String email);
+
     /**
      * 验证用户名是否存在
      *
@@ -54,6 +57,8 @@ public interface IUserDao {
     boolean isExist(String username);
 
     boolean isExistmail(String mail);//邮箱是不是已经存在
+
+    boolean isExistmailBind(String mail);//邮箱是不是已经存在且被绑定
 
     User query1(String username, String email);
 

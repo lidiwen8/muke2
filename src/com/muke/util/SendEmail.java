@@ -35,8 +35,13 @@ public class SendEmail {
         return msg;
     }
 
+    public static String sendforgetpass(String code, String ip,String url) throws MessagingException {
+        String msg = "         <p>【爱之家科技有限公司】尊敬的用户 ，你好！<br><br>你用于重置爱之家网站答疑平台密码的验证码为："+code+"，验证通过后即可重置,该验证码30分钟以内有效。<br>本邮件包含敏感信息，请勿转发他人，如非本人操作请忽略。<br>本次操作地址:" + ip + "。<br><a href='" + url + "'>"+ url +"</a>-爱之网站答疑平台！</p>";
+        return msg;
+    }
+
     public static String sendupdatepass2(String adress, String ip, String username, String time) throws MessagingException {
-        String msg = "         <p>【爱之家科技有限公司】尊敬的" + username + "用户:<br>&nbsp;&nbsp;&nbsp;&nbsp;您于" + time + "在爱之家网站答疑平台<a href='" + adress + "'>" + adress + "</a>修改了你的密码,操作地址:" + ip + "。如非本人操作,请立即使用你注册时绑定的邮箱进行密码找回。</p>";
+        String msg = "         <p>【爱之家科技有限公司】尊敬的" + username + "用户:<br>&nbsp;&nbsp;&nbsp;&nbsp;您于" + time + "在爱之家网站答疑平台<a href='" + adress + "'>" + adress + "</a>修改了你的账户登录密码,操作地址:" + ip + "。如非本人操作,请立即使用你注册时绑定的邮箱进行密码找回。</p>";
         return msg;
     }
 

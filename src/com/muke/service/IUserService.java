@@ -82,6 +82,8 @@ public interface IUserService {
     //修改密码
     int updatePw(User user);
 
+    int updatePwBynewPass(String newPassword,String email);
+
     int updatemail(String username, String mail, int state);//更新邮箱
 
     int modifyUser(int userid, int state);
@@ -95,6 +97,8 @@ public interface IUserService {
     boolean isExist(String username);
 
     boolean isExistmail(String mail);
+
+    boolean isExistmailBind(String mail);
 
     int saveAdvise(String advise, String number);
 

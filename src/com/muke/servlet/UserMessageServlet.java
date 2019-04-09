@@ -271,6 +271,7 @@ public class UserMessageServlet extends HttpServlet {
                                         String time = df.format(new Date());
                                         MessageEmail messageEmail = new MessageEmail();
                                         messageEmail.setFrom("1632029393@qq.com");
+                                        messageEmail.setSubject("[爱之家科技有限公司]删除帖子通知");
                                         try {
                                             messageEmail.setMsg(SendEmail.SendDeleteMsgmail("http://www.lidiwen.club/muke_Web/message.jsp?msgid=" + finalMsgid, messageInfo.getMsgtopic(), user.getUsername(), user.getEmail(), time));
                                         } catch (MessagingException e) {

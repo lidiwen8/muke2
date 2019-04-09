@@ -140,6 +140,7 @@ public class UserCenterServlet extends HttpServlet {
                     strs.add(user.getEmail());
                     messageEmail.setFrom("1632029393@qq.com");
                     messageEmail.setTo(strs);
+                    messageEmail.setSubject("[爱之家科技有限公司]登录密码修改成功");
                     messageEmail.setMsg(SendEmail.sendupdatepass("http://www.lidiwen.club/muke_Web", IPUtil.getIP(request), user.getUsername(), time));
                     try {
                         SendEmail.sslSend(messageEmail);//发送邮件

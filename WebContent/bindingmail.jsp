@@ -88,6 +88,45 @@
             });
         }
 
+        var InterValObj; //timer变量，控制时间
+        var count = 50; //间隔函数，1秒执行
+        var curCount;//当前剩余秒数
+        function sendCode(){
+            var username = $("input[name='username']").val();
+            var mail = $("input[name='mail']").val();
+            if(username==""){
+                alert("请输入用户名");
+                apper("请输入用户名");
+            }else if(mail==""){
+                alert("请输入邮箱");
+                apper("请输入邮箱");
+            }else if(!mail.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)){
+                alert("无效邮箱");
+                apper("无效邮箱");
+            }
+            else
+            {
+                send(username,mail);
+                curCount = count;
+                $("#verificationss").attr("disabled", "true");
+                $("#verificationss").text(curCount + "秒后重新获取");
+                InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次请求后台发送验证码 TODO
+            }
+        }
+
+        //timer处理函数
+        function SetRemainTime() {
+            if (curCount == 0) {
+                window.clearInterval(InterValObj);//停止计时器
+                $("#verificationss").removeAttr("disabled");//启用按钮
+                $("#verificationss").text("重新获取验证码");
+            }
+            else {
+                curCount--;
+                $("#verificationss").text(curCount + "秒后重新获取");
+            }
+        }
+
         function apper(info) {
             $("#notice").text(info);
             $("#notice").show();
@@ -96,9 +135,7 @@
             }, 2000);
         }
 
-        function send() {
-            var username = $("input[name='username']").val();
-            var mail = $("input[name='mail']").val();
+        function send(username,mail) {
             // ajax 用户异步请求绑定邮箱
             $.ajax({
                 url: "userServlet?action=bindingmail",
@@ -108,53 +145,53 @@
                 dataType: "json",
                 beforeSend: function () {
                     // 禁用按钮防止重复提交，发送前响应
-                    $("#verificationss").attr({disabled: "disabled"});
-                    $('#verificationss').text("验证码正在发送。。");
+                    // $("#verificationss").attr({disabled: "disabled"});
+                    // $('#verificationss').text("验证码正在发送。。");
                 },
                 success: function (data) {
                     if (data.res != 1) {
-                        $("#verificationss").removeAttr("disabled");
+                        curCount=0;
                     }
                     if (data.res == 1) {
                         alert(data.info);
-                        $('#verificationss').text("验证码发送成功");
-                        $("#verificationss").attr({disabled: "disabled"});
+                        // $('#verificationss').text("验证码发送成功");
+                        // $("#verificationss").attr({disabled: "disabled"});
                     }
                     else if (data.res == 6) {
                         alert(data.info);
-                        $('#verificationss').text("发送验证码");
+                        // $('#verificationss').text("发送验证码");
                         apper(data.info);
                     } else if (data.res == 10) {
                         alert(data.info);
-                        $('#verificationss').text("发送验证码");
+                        // $('#verificationss').text("发送验证码");
                         apper(data.info);
                     }
                     else if (data.res == 8) {
                         alert(data.info);
-                        $('#verificationss').text("邮件发送失败");
+                        // $('#verificationss').text("邮件发送失败");
                         apper(data.info);
                     } else if (data.res == 21) {
                         alert(data.info);
                         window.location.replace("login.jsp");
                     } else if (data.res == 3) {
                         alert(data.info);
-                        $('#verificationss').text("发送验证码");
+                        // $('#verificationss').text("发送验证码");
                         apper(data.info);
                     } else if (data.res == 9) {
                         alert(data.info);
-                        $('#verificationss').text("发送验证码");
+                        // $('#verificationss').text("发送验证码");
                         apper(data.info);
                     } else if (data.res == 2) {
                         alert(data.info);
-                        $('#verificationss').text("发送验证码");
+                        // $('#verificationss').text("发送验证码");
                         apper(data.info);
                     } else if (data.res == 23) {
                         alert(data.info);
-                        $('#verificationss').text("发送验证码");
+                        // $('#verificationss').text("发送验证码");
                         apper(data.info);
                     } else if (data.res == 17) {
                         alert(data.info);
-                        $('#verificationss').text("发送验证码");
+                        // $('#verificationss').text("发送验证码");
                         apper(data.info);
                     }
                     else {
@@ -270,9 +307,9 @@
             <label for="input1" class="col-sm-2 control-label">验证码：</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" name="input1" id="input1" placeholder="请输入邮箱验证码"/>
-                <button class="btn btn-success btn-block" onclick="send();" id="verificationss" name="verificationss"
+                <button class="btn btn-success btn-block" onclick="sendCode();" id="verificationss" name="verificationss"
                         style="color: #171719;width: 117px;background-color: #0044cc"><img src="images/youjian.png"
-                                                                                           style="width:15px;height:15px;margin-right:5px;margin-bottom:5px;">发送验证码
+                                                                                           style="width:15px;height:15px;margin-right:5px;margin-bottom:5px;">获取验证码
                 </button>
             </div>
         </div>
@@ -283,7 +320,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-4 col-xs-12">
-                <button type="button" class="btn btn-success btn-block" onclick="gg();" id="submitbutton"
+                <button type="submit" class="btn btn-success btn-block" onclick="gg();" id="submitbutton"
                         name="submitbutton">提交
                 </button>
             </div>
