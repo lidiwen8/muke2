@@ -27,10 +27,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
     <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-    <%--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">--%>
-    <%--<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>--%>
     <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="jquery/emoji.js"></script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+    <script >hljs.initHighlightingOnLoad();</script>
     <c:if test="${sessionScope.user!= null ||sessionScope.admin!=null }">
         <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
         <script type="text/javascript" src="ckeditor/ckeditor_config.js"></script>
@@ -118,6 +119,7 @@
                         msg.find(".city").text(message.city);
                         $('.emoji').emoji();
                         msg.find(".msgcontent").html("\uD83D\uDE4F" + message.msgcontents);
+                        hljs.initHighlightingOnLoad();
                         msg.find(".biaoti").text("\uD83C\uDFC6");
                         msg.find(".time").text(message.msgip + "•" + message.msgtime);
                         if (message.msgupdatetime != null && message.msgupdatetime != "") {
@@ -188,8 +190,7 @@
                         }
                         $('.emoji').emoji();
                         reply.find(".msgcontent").html(this.replycontents);//回复内容
-                        $('.emoji').emoji();
-                        reply.find(".msgcontent").html(this.replycontents);//回复内容
+                        hljs.initHighlightingOnLoad();
                         reply.find(".biaoti").text("\uD83D\uDD90");
                         reply.find(".time").text(this.replyip + "•" + this.replytime);//IP和时间
                         reply.find(".likecount").text("("+this.likecount+")");
@@ -535,7 +536,7 @@
     </div>
 </div>
 
-
+<c:if test="${sessionScope.user!= null ||sessionScope.admin!=null }">
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="reply" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -568,7 +569,6 @@
     </div><!-- /.modal -->
 </div>
 
-<c:if test="${sessionScope.user!= null ||sessionScope.admin!=null }">
     <!-- 模态框（Modal） -->
     <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
