@@ -29,9 +29,8 @@
     <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
     <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="jquery/emoji.js"></script>
-    <link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet">
-    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
-    <script >hljs.initHighlightingOnLoad();</script>
+    <link href="https://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
     <c:if test="${sessionScope.user!= null ||sessionScope.admin!=null }">
         <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
         <script type="text/javascript" src="ckeditor/ckeditor_config.js"></script>

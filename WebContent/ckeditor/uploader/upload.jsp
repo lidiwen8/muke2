@@ -8,6 +8,7 @@
 <%@ page import="com.muke.util.FileUtil" %>
 <%@ page import="java.io.IOException" %>
 <%@ page import="java.io.PrintWriter" %>
+<%@ page import="net.sf.json.JSONObject" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -33,7 +34,7 @@
             FileItemFactory factory = new DiskFileItemFactory();
             ServletFileUpload servletFileUpload = new ServletFileUpload(factory);
             servletFileUpload.setHeaderEncoding("UTF-8");  //解决中文乱码
-            String callback = request.getParameter("CKEditorFuncNum");
+            String callback = request.getParameter("ckCsrfToken");
             List<FileItem> fileItemsList = servletFileUpload.parseRequest(request);
             for (FileItem item : fileItemsList) {
                 if (!item.isFormField()) {
@@ -59,11 +60,17 @@
                     }
                     item.write(file);
 //                    response.addHeader("Content-Type", "text/html; charset=UTF-8");
-                    out.println("<script type=\"text/javascript\">");
-                    out.println("window.parent.CKEDITOR.tools.callFunction(" + callback + ",'" + clientPath + "',''" + ")");
-                    out.println("</script>");
-                    //打印一段JS，调用parent页面的CKEditor的函数，传递函数编号和上传后文件的路径；这句很重要，成败在此一句
-                    out.flush();
+//                    out.println("<script type=\"text/javascript\">");
+//                    out.println("window.parent.CKEDITOR.tools.callFunction(" + callback + ",'" + clientPath + "',''" + ")");
+//                    out.println("</script>");
+//                    //打印一段JS，调用parent页面的CKEditor的函数，传递函数编号和上传后文件的路径；这句很重要，成败在此一句
+//                    out.flush();
+
+                    JSONObject obj = new JSONObject();
+                    obj.put("uploaded", 1);
+                    obj.put("fileName", fileName);
+                    obj.put("url", clientPath);
+                    out.write(obj.toString());
                 }
             }
         }

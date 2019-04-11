@@ -96,7 +96,6 @@ public class XssHttpServletRequestWraper extends HttpServletRequestWrapper {
         }
 
         value = value.replaceAll("<", "<").replaceAll(">", ">");
-
         value = value.replaceAll("\\(", "(").replace("\\)", ")");
 
         value = value.replaceAll("'", "'");
@@ -107,7 +106,8 @@ public class XssHttpServletRequestWraper extends HttpServletRequestWrapper {
 
                 "\"\"");
 
-        value = value.replace("script", "");
+        value = value.replaceAll("script", "script&ensp;");
+        value = value.replaceAll("iframe", "iframe&ensp;");
 
         return value;
 

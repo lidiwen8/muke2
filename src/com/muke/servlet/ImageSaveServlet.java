@@ -78,7 +78,7 @@ public class ImageSaveServlet extends HttpServlet {
                             return;
                         }
                         String filetype = fileName.substring(fileName.indexOf("."), fileName.length());
-                        if (!(filetype.equals(".jpg") || filetype.equals(".png") || filetype.equals(".gif"))) {
+                        if (!(filetype.equals(".jpg") || filetype.equals(".png") || filetype.equals(".gif")||filetype.equals(".jpeg")||filetype.equals(".bmp"))) {
                             response.getWriter().print("{\"res\": -1, \"info\":\"你上传的图片格式不正确,请重新上传\"}");
                             return;
                         }

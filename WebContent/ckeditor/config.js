@@ -9,8 +9,6 @@ CKEDITOR.editorConfig = function( config ) {
      config.disableObjectResizing = true;
     config.disableNativeSpellChecker = true;
     config.disableNativeTableHandles = true; //默认为不开启
-    config.extraPlugins = 'codesnippet';
-    codeSnippet_theme: 'zenburn';
     config.image_previewText=' '; //预览区域显示内容
     config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Subscript,Superscript';
     codeSnippet_theme: 'zenburn';
@@ -18,9 +16,7 @@ CKEDITOR.editorConfig = function( config ) {
     config.filebrowserImageBrowseUrl = 'ckeditor/uploader/browse.jsp?type=Images';
     config.filebrowserFlashBrowseUrl = 'ckeditor/uploader/browse.jsp?type=Flashs';
     config.filebrowserUploadUrl = 'ckeditor/uploader/upload.jsp';
-    // config.filebrowserUploadUrl = 'uploadServlet';
     config.filebrowserImageUploadUrl = 'ckeditor/uploader/upload.jsp?type=Images';
-    // config.filebrowserImageUploadUrl = 'uploadServlet';
     config.filebrowserFlashUploadUrl = 'ckeditor/uploader/upload.jsp?type=Flashs';
     config.extraPlugins = 'lineutils,codesnippet,wordcount';
     config.wordcount = {
@@ -33,12 +29,11 @@ CKEDITOR.editorConfig = function( config ) {
 
         // Maximum allowed Word Count
         // maxWordCount: 4,
-
         // Maximum allowed Char Count
         maxCharCount: 100000
     };
     config.disableObjectResizing = true;
-    config.startupFocus = true;
+
     config.font_names = '宋体/SimSun;新宋体/NSimSun;黑体/SimHei;仿宋/FangSong_GB2312;楷体/KaiTi_GB2312;隶书/隶书;幼圆/幼圆;微软雅黑/Microsoft YaHei;Arial;Times New Roman;Verdana'+ config.font_names ;
     config.fontSize_style = {
          element   : 'span',
