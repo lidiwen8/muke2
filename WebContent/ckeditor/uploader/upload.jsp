@@ -34,7 +34,8 @@
             FileItemFactory factory = new DiskFileItemFactory();
             ServletFileUpload servletFileUpload = new ServletFileUpload(factory);
             servletFileUpload.setHeaderEncoding("UTF-8");  //解决中文乱码
-            String callback = request.getParameter("ckCsrfToken");
+            String callback = request.getParameter("CKEditorFuncNum");
+            System.out.println(callback);
             List<FileItem> fileItemsList = servletFileUpload.parseRequest(request);
             for (FileItem item : fileItemsList) {
                 if (!item.isFormField()) {

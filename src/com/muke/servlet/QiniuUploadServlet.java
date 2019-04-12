@@ -1,5 +1,6 @@
 package com.muke.servlet;
 
+import com.muke.util.CkeditorResponseUtil;
 import com.muke.util.QiniuCloudUtil;
 import com.qiniu.util.Auth;
 import net.sf.json.JSONObject;
@@ -35,8 +36,7 @@ public class QiniuUploadServlet extends HttpServlet {
         String action = request.getParameter("action");
         try {
             //使用反射定义方法
-            Method method = getClass().getDeclaredMethod(action, HttpServletRequest.class,
-                    HttpServletResponse.class);
+            Method method = getClass().getDeclaredMethod(action, HttpServletRequest.class, HttpServletResponse.class);
             //调用方法
             method.invoke(this, request, response);
         } catch (Exception e) {
@@ -49,7 +49,7 @@ public class QiniuUploadServlet extends HttpServlet {
      *
      * @throws Exception
      */
-    public void QiniuUpToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    private void QiniuUpToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setCharacterEncoding("UTF-8");
         Map<String, Object> result = new HashMap<String, Object>();
         String suffix = request.getParameter("suffix");
@@ -90,8 +90,10 @@ public class QiniuUploadServlet extends HttpServlet {
         }
     }
 
-    public void uploadImg(HttpServletRequest request, HttpServletResponse response,MultipartFile image) throws ServletException, IOException {
+    private void uploadImg(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 检测是否为多媒体上传
+      MultipartFile upload = null;
+        CkeditorResponseUtil ckeditorResponseUtil=new CkeditorResponseUtil();
         if (!ServletFileUpload.isMultipartContent(request)) {
             // 如果不是则停止
             PrintWriter writer = response.getWriter();
@@ -100,18 +102,20 @@ public class QiniuUploadServlet extends HttpServlet {
             response.getWriter().print("{\"res\": -1, \"info\":\"请选择一张图片上传！\"}");
             return;
         }
-        if (image.isEmpty()) {
+        if (upload.isEmpty()) {
             response.getWriter().print("{\"res\": -1, \"info\":\"请选择一张图片上传！\"}");
             return;
         }
-
         try {
-            byte[] bytes = image.getBytes();
+            byte[] bytes = upload.getBytes();
             String imageName = UUID.randomUUID().toString();
             try {
                 //使用base64方式上传到七牛云
                 String url = QiniuCloudUtil.put64image(bytes, imageName);
-                response.getWriter().print("{\"res\": 1, \"info\":\"图片上传成功！\"，\"url\":"+url+"}");
+                String success = ckeditorResponseUtil.success(1, imageName, url, "图片上传成功！");
+                response.getWriter().print(success);
+//                return;
+//                response.getWriter().print("{\"res\": 1, \"info\":\"图片上传成功！\"，\"url\":"+url+"}");
                 return;
 //                result.setCode(200);
 //                result.setMsg("文件上传成功");

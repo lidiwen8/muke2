@@ -33,7 +33,8 @@
     <script src="https://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
     <c:if test="${sessionScope.user!= null ||sessionScope.admin!=null }">
         <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
-        <script type="text/javascript" src="ckeditor/ckeditor_config.js"></script>
+        <script type="text/javascript" src="ckeditor/config.js"></script>
+        <script type="text/javascript" src="http://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script>
     </c:if>
     <link href="css/Style.css" rel="stylesheet" type="text/css"/>
     <script src="js/scroll_tools.js" type="text/javascript"></script>
