@@ -18,9 +18,9 @@ CKEDITOR.editorConfig = function( config ) {
     config.filebrowserUploadUrl = 'ckeditor/uploader/upload.jsp';
     // config.filebrowserImageUploadUrl = 'QiniuUploadServlet?action=uploadImg&type=Images';
     // config.filebrowserFlashUploadUrl = 'QiniuUploadServlet?action=uploadImg&type=Flashs';
-    config.filebrowserImageUploadUrl = 'http://localhost:8081/CkeditoruploadImg?type=Images';
-    config.filebrowserFlashUploadUrl = 'http://localhost:8081/CkeditoruploadImg?type=Flashs';
-    config.extraPlugins = 'lineutils,codesnippet,wordcount,uploadimage';
+    config.filebrowserImageUploadUrl = '/CkeditoruploadImg?type=Images';
+    config.filebrowserFlashUploadUrl = '/CkeditoruploadFlash?type=Flashs';
+    config.extraPlugins = 'lineutils,codesnippet,wordcount,uploadimage,html5video';
     config.wordcount = {
 
         // Whether or not you want to show the Word Count

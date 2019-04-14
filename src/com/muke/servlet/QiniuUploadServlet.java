@@ -92,7 +92,7 @@ public class QiniuUploadServlet extends HttpServlet {
 
     private void uploadImg(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 检测是否为多媒体上传
-      MultipartFile upload = null;
+        MultipartFile upload = null;
         CkeditorResponseUtil ckeditorResponseUtil=new CkeditorResponseUtil();
         if (!ServletFileUpload.isMultipartContent(request)) {
             // 如果不是则停止

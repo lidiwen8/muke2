@@ -1,4 +1,5 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%
     String path = request.getContextPath();
@@ -14,6 +15,13 @@
     <link rel="stylesheet" href="bootstrapvalidator/css/bootstrapValidator.css">
     <link rel="stylesheet" href="css/site.css">
     <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
+    <c:if test="${sessionScope.user!= null}">
+        <script type="text/javascript">
+            $(function () {
+                window.location.href="index.jsp";
+            });
+        </script>
+    </c:if>
     <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
     <!-- 表单验证 -->
     <script src="bootstrapvalidator/js/bootstrapValidator.js" type="text/javascript"></script>

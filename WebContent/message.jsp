@@ -31,10 +31,9 @@
     <script type="text/javascript" src="jquery/emoji.js"></script>
     <link href="https://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
-    <c:if test="${sessionScope.user!= null ||sessionScope.admin!=null }">
+      <c:if test="${sessionScope.user!= null ||sessionScope.admin!=null }">
         <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
-        <script type="text/javascript" src="ckeditor/config.js"></script>
-        <script type="text/javascript" src="http://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script>
+        <%--<script type="text/javascript" src="http://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script>--%>
     </c:if>
     <link href="css/Style.css" rel="stylesheet" type="text/css"/>
     <script src="js/scroll_tools.js" type="text/javascript"></script>
@@ -433,7 +432,7 @@
     </script>
 </head>
 <body>
-<jsp:include flush="fasle" page="header.jsp"/>
+<jsp:include flush="true" page="header.jsp"/>
 <div class="scrolltools">
             <span>
                 <a title="返回顶部" class="toTop"></a>
@@ -602,7 +601,7 @@
     </div>
 </c:if>
 <input type="hidden" id="userid" value="${sessionScope.user.userid}">
-<jsp:include flush="fasle" page="footer.jsp"/>
+<jsp:include flush="false" page="footer.jsp"/>
 </body>
 <script type="text/javascript" src="jquery/emoji.js"></script>
 </html>

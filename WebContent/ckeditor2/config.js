@@ -16,9 +16,9 @@ CKEDITOR.editorConfig = function( config ) {
     config.filebrowserImageBrowseUrl = 'ckeditor/uploader/browse.jsp?type=Images';
     config.filebrowserFlashBrowseUrl = 'ckeditor/uploader/browse.jsp?type=Flashs';
     config.filebrowserUploadUrl = 'ckeditor/uploader/upload.jsp';
-    config.filebrowserImageUploadUrl = 'ckeditor/uploader/upload.jsp?type=Images';
-    config.filebrowserFlashUploadUrl = 'ckeditor/uploader/upload.jsp?type=Flashs';
-    config.extraPlugins = 'lineutils,codesnippet,wordcount';
+    config.filebrowserImageUploadUrl = '/CkeditoruploadImg?type=Images';
+    config.filebrowserFlashUploadUrl = '/CkeditoruploadImg?type=Flashs';
+    config.extraPlugins = 'lineutils,codesnippet,wordcount,html5video';
     config.wordcount = {
 
         // Whether or not you want to show the Word Count
