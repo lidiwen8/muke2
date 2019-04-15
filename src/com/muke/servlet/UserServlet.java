@@ -1121,7 +1121,6 @@ public class UserServlet extends HttpServlet {
                 }
                 if (user.getMailstate() == 0) {
                     response.getWriter().print("{\"res\": 2, \"info\":\"尊敬的" + user.getUsername() + "用户:登录成功，但是你的邮箱账号还没被激活，是否前去激活！\"}");
-                    return;
                 } else {
                     response.getWriter().print("{\"res\": 1, \"data\":" + dataJSON + "}");
                 }//已经被激活的邮箱才在登录时发送到激活邮箱账号提醒用户登录
@@ -1158,6 +1157,7 @@ public class UserServlet extends HttpServlet {
                 userlog.setIp(ip);
                 userlog.setPlace(PlaceUtil.baiduGetCityCode(ip));
                 userService.insertloginLog(userlog);//插入登陆日志
+                return;
             }
         } else {
             // 验证失败
