@@ -59,11 +59,11 @@ public class DESUtils {
 	
 	public static void main(String[] args) {
 		System.out.println(getEncryptString("root"));
-		System.out.println(getEncryptString(""));
+		System.out.println(getEncryptString("lidiwen"));
 		System.out.println(getEncryptString("1632029393@qq.com"));
 		System.out.println(getEncryptString("ghxxwuyinxxqcajf"));
 		System.out.println(getDecryptString("nb5wxK5LxdA="));
-		System.out.println(getDecryptString("LmMquVF++HM="));
+		System.out.println(getDecryptString("QdtyL8Y3FDISpZ54wXYTMhXNOTUTUiCT"));
 	}
 
 }

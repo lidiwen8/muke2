@@ -238,7 +238,7 @@
             //执行实例
             var uploadInst = upload.render({
                 elem: '#test1', //绑定元素
-                url: '/ImageSaveServlet', //上传接口
+                url: 'user/QiniuUploadServlet', //上传接口
                 exts: 'gif|jpg|jpeg|png|bmp',//允许上传的文件类型
                 size: 1024, //最大允许上传的文件大小
                 before: function (obj) {

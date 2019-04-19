@@ -66,6 +66,7 @@ public class ImageSaveServlet extends HttpServlet {
             if (formItems != null && formItems.size() > 0) {
                 // 迭代表单数据
                 for (FileItem item : formItems) {
+
                     // 处理不在表单中的字段
                     if (item.isFormField()) {
                         name = item.getString();
@@ -77,7 +78,7 @@ public class ImageSaveServlet extends HttpServlet {
                             response.getWriter().print("{\"res\": -1, \"info\":\"请选择一张图片上传！\"}");
                             return;
                         }
-                        String filetype = fileName.substring(fileName.indexOf("."), fileName.length());
+                        String filetype = "." + fileName.substring(fileName.lastIndexOf(".") + 1);
                         if (!(filetype.equals(".jpg") || filetype.equals(".png") || filetype.equals(".gif")||filetype.equals(".jpeg")||filetype.equals(".bmp"))) {
                             response.getWriter().print("{\"res\": -1, \"info\":\"你上传的图片格式不正确,请重新上传\"}");
                             return;
@@ -89,15 +90,13 @@ public class ImageSaveServlet extends HttpServlet {
                             response.getWriter().print("{\"res\": -1, \"info\":\"上传的图片大小最大不能超过1M！\"}");
                             return;
                         }
-                        // 获取文件名后缀, 返回 "."在文件名最后出现的索引, 就是文件后缀名
-                        String prefix = fileName.substring(fileName.lastIndexOf(".") + 1);
                         // 存储的文件名根据获取的id来唯一确定, 这里测试使用 "test"
                         // id可以绑定到session或request变量等等，自己根据需要来扩展
                         //删除之前上传的图片
                         if (!(user_img.equals("image/nan.png") || user_img.equals("image/nu.png"))) {
                             FileUtil.deleteFile(user_img);
                         }
-                        String fileSaveName = FileUtil.getRandomFileName() + "." + prefix; // id.后缀
+                        String fileSaveName = FileUtil.getRandomFileName() + "." + filetype; // id.后缀
                         // 获取文件输入流
                         InputStream inputStream = item.getInputStream();
                         // 创建文件输出流，用于向指定文件名的文件写入数据

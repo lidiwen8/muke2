@@ -411,15 +411,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/WebContent/WEB-INF/lib/qiniu-java-sdk-7.1.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/WebContent/WEB-INF/lib/okhttp-3.14.0.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -438,15 +429,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/WebContent/WEB-INF/lib/okio-1.9.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/WebContent/WEB-INF/lib/spring-core-5.1.5.RELEASE.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -457,6 +439,24 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/WebContent/WEB-INF/lib/fastjson-1.2.57.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/WebContent/WEB-INF/lib/qiniu-java-sdk-7.2.18.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/WebContent/WEB-INF/lib/okio-1.14.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
