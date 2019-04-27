@@ -84,6 +84,23 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
+   public ShortMessageInfo getMsg(int msgid){
+        String sql = "SELECT message.msgid,accessCount,msgtopic,msgtime,thename,likecount,replyCount,message.state FROM message,count,theme  WHERE message.msgid= ? and message.msgid=count.msgid and theme.theid=message.theid and state>=0 and state<3";
+        Object[] params = {msgid};
+
+        ShortMessageInfo shortMessageInfo = null;
+
+        try {
+            shortMessageInfo = (ShortMessageInfo) dbutil.getObject(ShortMessageInfo.class, sql, params);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return shortMessageInfo;
+    }
+
+    @Override
     public User queryuserbyid(int userid) {
         String sql = "SELECT * FROM user WHERE userid = ?";
         Object[] params = {userid};

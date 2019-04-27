@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.muke.pojo.MessageEmail;
+import com.muke.pojo.ShortMessageInfo;
 import com.muke.pojo.User;
 import com.muke.service.IUserService;
 import com.muke.service.impl.UserServiceImpl;
@@ -306,6 +307,107 @@ public class UserCenterServlet extends HttpServlet {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
         String dataJSON = gson.toJson(resPage);
         response.getWriter().print("{\"res\": 1, \"data\":" + dataJSON + "}");
+    }
+
+    //用户收藏帖子
+    private void UsercollectionMsgid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String msgid = request.getParameter("msgid");
+        HttpSession session = request.getSession();
+        try {
+            User user = (User) session.getAttribute("user");
+            List list = userService.getLikeMsgid(user.getUserid());
+            String likemsgid = list.get(0).toString().substring(11, list.get(0).toString().length() - 1);
+            if (!likemsgid.equals("null")) {
+                String Msgid[] = likemsgid.split(",");
+                for (int i = 0; i < Msgid.length; i++) {
+                    if (msgid.equals(Msgid[i])) {
+                        response.getWriter().print("{\"res\":-1,\"info\":\"你已经收藏过该帖子了！\"}");
+                        return;
+                    }
+                }
+                if (userService.updateLikemsgid(user.getUserid(),likemsgid + msgid + ",") > 0) {
+                    response.getWriter().print("{\"res\":1,\"info\":\"此帖子已经添加到你的个人中心收藏中，并且仅你自己可见！\"}");
+                } else {
+                    response.getWriter().print("{\"res\":-1,\"info\":\"收藏失败\"}");
+                }
+            } else {
+                if (userService.updateLikemsgid(user.getUserid(), msgid + ",") > 0) {
+                    response.getWriter().print("{\"res\":1,\"info\":\"此帖子已经添加到你的个人中心收藏中，并且仅你自己可见！\"}");
+                } else {
+                    response.getWriter().print("{\"res\":-1,\"info\":\"收藏失败\"}");
+                }
+            }
+        } catch (NullPointerException e) {
+            response.getWriter().print("{\"res\":-1,\"info\":\"管理员不可收藏帖子！\"}");
+        }
+    }
+
+
+    //用户删除收藏的帖子
+    private void UserCancelLikeMsgid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String msgid = request.getParameter("msgid");
+        HttpSession session = request.getSession();
+        try {
+            User user = (User) session.getAttribute("user");
+            List list = userService.getLikeMsgid(user.getUserid());
+            boolean flag=false;
+            String likemsgid = list.get(0).toString().substring(11, list.get(0).toString().length() - 1);
+            if (likemsgid!=null&&likemsgid!=""&&likemsgid!="null") {
+                String Msgid[] = likemsgid.split(",");
+                String newlikemsgid = "";
+                for (int i = 0; i < Msgid.length; i++) {
+                    if (msgid .equals(Msgid[i])) {
+                        flag=true;
+                    }else {
+                        newlikemsgid=newlikemsgid+Msgid[i]+",";
+                    }
+                }
+                if(flag){
+                    if (userService.updateLikemsgid(user.getUserid(),newlikemsgid) > 0) {
+                        response.getWriter().print("{\"res\":1,\"info\":\"该帖子已取消收藏\"}");
+                    } else {
+                        response.getWriter().print("{\"res\":-1,\"info\":\"该帖子取消收藏失败\"}");
+                    }
+                }else {
+                    response.getWriter().print("{\"res\":-1,\"info\":\"你之前并没有收藏该帖子，不可取消！\"}");
+                    return;
+                }
+            } else {
+                response.getWriter().print("{\"res\":-1,\"info\":\"你之前并没有收藏该帖子，不可取消！\"}");
+                return;
+            }
+        } catch (NullPointerException e) {
+            response.getWriter().print("{\"res\":-1,\"info\":\"管理员不可取消收藏帖子！\"}");
+        }
+    }
+
+    //获取用户收藏的帖子信息,仅自己可看
+    private void getUserLikeMsgid(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        HttpSession session = request.getSession();
+        try {
+            User user = (User) session.getAttribute("user");
+            int userid = user.getUserid();
+            List list = userService.getLikeMsgid(userid);
+            String likemsgid = list.get(0).toString().substring(11, list.get(0).toString().length() - 1);
+            List<ShortMessageInfo> shortmsginfo = new ArrayList<ShortMessageInfo>();
+            int likeMsgCount = 0;
+            if (!(likemsgid.equals("null") || likemsgid.equals(null) || likemsgid.equals(""))) {
+                String Msgid[] = likemsgid.split(",");
+                likeMsgCount = Msgid.length;
+                for (int i = 0; i < Msgid.length; i++) {
+                    shortmsginfo.add(userService.getMsg(Integer.parseInt(Msgid[i])));
+                }
+                Gson gson = new GsonBuilder().setDateFormat("yy-MM-dd").create();
+                String json = gson.toJson(shortmsginfo);
+                response.getWriter().print("{\"res\":1,\"message\":" + json + ",\"likeMsgCount\":" + likeMsgCount + "}");
+            } else {
+                response.getWriter().print("{\"res\":-1,\"info\":\"这人很懒，没有收藏过一个帖子...！\"}");
+                return;
+            }
+        }catch (NullPointerException e){
+            response.getWriter().print("{\"res\":-1,\"info\":\"管理员暂时无法查看...！\"}");
+            return;
+        }
     }
 
     /**

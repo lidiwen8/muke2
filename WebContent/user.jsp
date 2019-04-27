@@ -85,6 +85,10 @@
             });
             getUser();
             getReply();
+            //仅本人可查看自己收藏的帖子
+            <c:if test="${sessionScope.user != null&&sessionScope.user.username==param.username}">
+               getUserLikeMsgid();
+            </c:if>
         });
         function getUser() {
             $.get("userServlet", {"action": "getUser","username": "${param.username}","pageNum":pageNum}, function (data) {
@@ -231,6 +235,45 @@
                 } else {
                     // alert(data.message);
                     window.location.href="index.jsp";
+                }
+            }, "json");
+        }
+
+        function getUserLikeMsgid() {
+            $.get("user/userCenterServlet", {"action": "getUserLikeMsgid","username": "${param.username}","pageNum":pageNum2}, function (data) {
+                var message = data.message;
+                if (data.res == 1) {
+                    $.each(message,function(index,element){
+                        var msg=$("#template4").clone();//复制模版
+                        msg.show();//显示
+                        msg.removeClass("template");//移除模版
+                        msg.find("#t4").text(element.msgtopic);//帖子标题
+                        //添加href属性
+                        msg.find("#t4").attr("href", "<%=basePath%>message.jsp?msgid=" + element.msgid);
+                        msg.find("#time4").text(element.msgtime);//发帖时间
+                        msg.find("#count4").text(element.accessCount+" • "+element.replyCount+" • "+element.likecount);//浏览量和回复量
+                        <c:if test="${sessionScope.user != null&&sessionScope.user.username==param.username}">
+                         msg.find("#canceLike").attr("onclick","canceLike("+element.msgid+")");
+                        </c:if>
+                        $("#list4").append(msg);//将帖子信息添加到list中
+                    });
+                    //加载更多
+                    pageNum2++;
+                    $("#k4").text("收藏过的帖子-"+data.likeMsgCount+"个");
+                } else {
+                    $("#loadmore4").html("这人很懒，没有收藏过一个帖子...");
+                    $("#loadmore4").attr("disabled","disabled");
+                }
+            }, "json");
+        }
+
+        function canceLike(msgid) {
+            $.get("user/userCenterServlet", {"action": "UserCancelLikeMsgid","msgid": msgid}, function (data) {
+                if (data.res == 1) {
+                   alert(data.info);
+                    location.reload();//重新加载页面
+                } else {
+                 alert(data.info);
                 }
             }, "json");
         }
@@ -425,6 +468,45 @@
                             </div>
                         </div>
                     </div>
+                   <c:if test="${sessionScope.user != null&&sessionScope.user.username==param.username}">
+                    <br>
+                    <div id="sv_container4">
+                        <div class="row">
+                            <div class="col-sm-12 msgtitle"><h3 id="k4">收藏的帖子</h3></div>
+                        </div>
+                        <br>
+                        <div class="row">
+                                <div class="col-sm-6 col-xs-8"><h4>标题</h4></div>
+                            <div class="col-sm-2 col-xs-4 text-center"><h4>时间</h4></div>
+                            <div class="col-sm-2 hidden-xs text-center"><h4>浏览 • 回复 • 点赞</h4></div>
+                            <div class="col-sm-2 col-xs-2 text-center"><h4>操作</h4></div>
+                        </div>
+                        <div class="row msglist template" id="template4">
+                            <div class="col-sm-12">
+                                      <div class="col-sm-6 col-xs-8 text-limit">
+                                    <a class="title" id="t4">标题标题标题标题标题标题</a>
+                                </div>
+                                <div class="col-sm-2  col-xs-4 text-center time" id="time4">时间</div>
+                                <div class="col-sm-2 hidden-xs text-center count" id="count4">浏览/回复</div>
+                                    <div class="col-sm-2 hidden-xs text-center">
+                                      <button id="canceLike" class="btn btn-danger btn-sm delete_btn">取消收藏</button>
+                                    </div>
+
+
+                            </div>
+                        </div>
+                        <div class="list" id="list4">
+
+                        </div>
+                        <div class="row p">
+                            <div class="col-sm-12">
+                                <br/>
+                                <button id="loadmore4" disabled="disabled" type="button" class="btn btn-default btn-lg btn-block"
+                                        onclick="javascript:getUserLikeMsgid();">加载更多...</button>
+                            </div>
+                        </div>
+                    </div>
+                            </c:if>
 
                 </div>
             </div>

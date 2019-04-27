@@ -1,6 +1,7 @@
 package com.muke.dao;
 
 import com.muke.pojo.Advise;
+import com.muke.pojo.ShortMessageInfo;
 import com.muke.pojo.User;
 import com.muke.pojo.Userlog;
 import com.muke.util.Page;
@@ -109,4 +110,6 @@ public interface IUserDao {
     List getLikeMsgid(int userid);//得到用户收藏的帖子列表
 
     int updateLikemsgid(int userid,String likemsgid);//用户收藏帖子
+
+    ShortMessageInfo getMsg(int msgid);
 }

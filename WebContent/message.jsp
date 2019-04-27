@@ -429,6 +429,21 @@
             }
             ;
         }
+
+        function collection(){
+            $.get("user/userCenterServlet",
+                {
+                    "action": "UsercollectionMsgid",
+                    "msgid": msgId
+                },
+                function (data) {
+                    if (data.res == 1) {
+                        alert(data.info);
+                    } else {
+                        alert(data.info);
+                    }
+        }, "json");
+        }
     </script>
 </head>
 <body>
@@ -460,6 +475,14 @@
                     <button type="button" class="btn btn-success" data-toggle="modal"
                             data-target="#reply">回复
                     </button>
+                </c:if>
+                <c:if test="${sessionScope.user == null}">
+                    <button type="button" class="btn btn-info" data-toggle="modal"
+                            onclick="alert('请先登录！')">收藏
+                    </button>
+                </c:if>
+                <c:if test="${sessionScope.user != null}">
+                    <button type="button" class="btn btn-info" onclick="collection()">收藏</button>
                 </c:if>
 
             </div>

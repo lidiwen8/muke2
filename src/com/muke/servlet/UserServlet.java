@@ -29,8 +29,6 @@ import com.muke.service.impl.MessageServiceImpl;
 import com.muke.service.impl.UserServiceImpl;
 import com.muke.util.*;
 import com.sun.mail.smtp.SMTPAddressFailedException;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 @WebServlet("/userServlet")
 public class UserServlet extends HttpServlet {
@@ -1413,6 +1411,40 @@ public class UserServlet extends HttpServlet {
         }
 
     }
+
+//    //获取用户收藏的帖子信息
+//    private void getUserLikeMsgid(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+//        String username = request.getParameter("username");
+//        User user = userService.username(username);
+//        if (username.equals(null) || username == "" || user == null) {
+//            response.getWriter().print("{\"res\":-1,\"message\":\"该用户不存在！\"}");
+//            return;
+//        }
+////        String pageNum = request.getParameter("pageNum");
+////        if (pageNum == null || pageNum.equals("")) {
+////            pageNum = "1";
+////        }
+////        Page page = new Page();
+////        page.setCurPage(Integer.parseInt(pageNum));
+//        int userid = user.getUserid();
+//        List list = userService.getLikeMsgid(userid);
+//        String likemsgid = list.get(0).toString().substring(11, list.get(0).toString().length() - 1);
+//        List<ShortMessageInfo> shortmsginfo=new ArrayList<ShortMessageInfo>();
+//        int likeMsgCount=0;
+//        if (!(likemsgid.equals("null")||likemsgid.equals(null)||likemsgid.equals(""))) {
+//            String Msgid[] = likemsgid.split(",");
+//            likeMsgCount=Msgid.length;
+//            for (int i = 0; i < Msgid.length; i++) {
+//                shortmsginfo.add(userService.getMsg(Integer.parseInt(Msgid[i])));
+//            }
+//            Gson gson = new GsonBuilder().setDateFormat("yy-MM-dd").create();
+//            String json = gson.toJson(shortmsginfo);
+//            response.getWriter().print("{\"res\":1,\"message\":" + json+",\"likeMsgCount\":"+likeMsgCount+"}");
+//        }else {
+//            response.getWriter().print("{\"res\":-1,\"info\":\"这人很懒，没有收藏过一个帖子...！\"}");
+//            return;
+//        }
+//    }
 
 
     /**

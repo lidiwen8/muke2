@@ -1,6 +1,7 @@
 package com.muke.service;
 
 import com.muke.pojo.Advise;
+import com.muke.pojo.ShortMessageInfo;
 import com.muke.pojo.User;
 import com.muke.pojo.Userlog;
 import com.muke.util.Page;
@@ -32,6 +33,8 @@ public interface IUserService {
     User queryuserbyid(int userid);
 
     User username(String username);
+
+    ShortMessageInfo getMsg(int msgid);
 
     Advise getAdvisedetails(int id);
 

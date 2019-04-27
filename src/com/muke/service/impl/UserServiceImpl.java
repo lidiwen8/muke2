@@ -3,6 +3,7 @@ package com.muke.service.impl;
 import com.muke.dao.IUserDao;
 import com.muke.dao.impl.UserDaoImpl;
 import com.muke.pojo.Advise;
+import com.muke.pojo.ShortMessageInfo;
 import com.muke.pojo.User;
 import com.muke.pojo.Userlog;
 import com.muke.service.IUserService;
@@ -35,6 +36,11 @@ public class UserServiceImpl implements IUserService {
     public User username(String username) {
         // TODO Auto-generated method stub
         return iUserDao.queryusername(username);
+    }
+
+    @Override
+    public ShortMessageInfo getMsg(int msgid){
+        return iUserDao.getMsg(msgid);
     }
 
     @Override
