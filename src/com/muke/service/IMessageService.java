@@ -101,4 +101,6 @@ public interface IMessageService {
 
     List getMessagelikeUserid(int msgid);
 
+    int upadateReplyident(int msgid,int replyident);//更新帖子状态是否允许回复
+
 }

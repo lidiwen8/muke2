@@ -97,7 +97,7 @@ public class MessageServiceImpl implements IMessageService {
     }
 
     @Override
-    public Page searchUserMyMsg(MessageCriteria messageCriteria, Page page){
+    public Page searchUserMyMsg(MessageCriteria messageCriteria, Page page) {
         return messagedao.searchUserMyMsg(messageCriteria, page);
     }
 
@@ -173,4 +173,8 @@ public class MessageServiceImpl implements IMessageService {
         return messagedao.updateMessagelike(message);
     }
 
+    @Override
+    public int upadateReplyident(int msgid, int replyident) {
+        return messagedao.upadateReplyident(msgid, replyident);
+    }
 }

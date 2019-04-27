@@ -137,6 +137,12 @@ public interface IUserService {
     int updateCountReplyCount(int msgid, int replyCount);//更新count表的replyCount字段
 
     List queryMsgid(int userid);//先找到要删除用户之前回复过的所有帖子得到列表msgid（自己发的帖子忽略不计）
+
+
+    List getLikeMsgid(int userid);//得到用户收藏的帖子列表
+
+
+    int updateLikemsgid(int userid,String likemsgid);//用户收藏帖子
 }
 
  

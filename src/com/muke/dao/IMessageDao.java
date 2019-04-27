@@ -48,6 +48,15 @@ public interface IMessageDao {
     int updateState(int msgid, int state);
 
     /**
+     * 更新帖子状态是否允许被回复
+     *
+     * @param msgid 帖子ID
+     * @return
+     */
+    int upadateReplyident(int msgid,int replyident);
+
+
+    /**
      * 查询指定帖子信息
      *
      * @param msgid 帖子ID

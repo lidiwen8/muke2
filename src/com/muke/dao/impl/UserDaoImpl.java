@@ -601,4 +601,33 @@ public class UserDaoImpl implements IUserDao {
         return 0;
     }
 
+    @Override
+    public List getLikeMsgid(int userid){
+        String sql = "SELECT likemsgid FROM user where userid=?";
+        Object[] params = {userid};
+        List list = null;
+        try {
+            list = dbutil.getQueryList(sql, params);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    @Override
+    public int updateLikemsgid(int userid,String likemsgid){
+        String sql = "update user set likemsgid=? where userid=?";
+        Object[] params = {likemsgid,userid};
+        int rs = 0;
+        try {
+            rs = dbutil.execute(sql, params);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
 }

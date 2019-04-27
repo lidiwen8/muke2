@@ -105,4 +105,8 @@ public interface IUserDao {
     List queryMsgid(int userid);
 
     int queryReplyCountByMsgid(int msgid, int userid);//根据msgid统计回复数量，自己回复的reply记录不算
+
+    List getLikeMsgid(int userid);//得到用户收藏的帖子列表
+
+    int updateLikemsgid(int userid,String likemsgid);//用户收藏帖子
 }

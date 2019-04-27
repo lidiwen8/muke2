@@ -27,6 +27,7 @@ public class User implements Cloneable{
 	private String logintime;//最后一次登陆时间
 	private String description;
 	private int loginNum;//登陆次数
+	private String likemsgid;//收藏帖子
 
 	
 	public int getUserid() {
@@ -159,5 +160,13 @@ public class User implements Cloneable{
 
 	public void setLoginNum(int loginNum) {
 		this.loginNum = loginNum;
+	}
+
+	public String getLikemsgid() {
+		return likemsgid;
+	}
+
+	public void setLikemsgid(String likemsgid) {
+		this.likemsgid = likemsgid;
 	}
 }

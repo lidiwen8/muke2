@@ -228,4 +228,14 @@ public class UserServiceImpl implements IUserService {
     public List queryMsgid(int userid) {
         return iUserDao.queryMsgid(userid);
     }
+
+    @Override
+    public List getLikeMsgid(int userid){
+        return iUserDao.getLikeMsgid(userid);
+    }
+
+    @Override
+    public int updateLikemsgid(int userid,String likemsgid){
+        return iUserDao.updateLikemsgid(userid,likemsgid);
+    }
 }

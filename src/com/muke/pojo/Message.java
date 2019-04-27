@@ -21,6 +21,8 @@ public class Message {
     private String likeuserid;      //点赞用户
     private Long msgupdatetime;    //帖子最近一次被用户修改时间
 
+    private int replyident; //是否允许回复，默认0允许回复，-1代表不能回复
+
     public int getMsgid() {
         return msgid;
     }
@@ -116,4 +118,11 @@ public class Message {
                 + "]";
     }
 
+    public int getReplyident() {
+        return replyident;
+    }
+
+    public void setReplyident(int replyident) {
+        this.replyident = replyident;
+    }
 }

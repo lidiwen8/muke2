@@ -14,6 +14,8 @@ import com.muke.pojo.ShortMessageInfo;
 import com.muke.util.DBUtil;
 import com.muke.util.Page;
 
+import javax.servlet.annotation.WebServlet;
+
 public class MessageDaoImpl implements IMessageDao {
     DBUtil dbutil = new DBUtil();
 
@@ -64,6 +66,22 @@ public class MessageDaoImpl implements IMessageDao {
     public int updateState(int msgid, int state) {
         String sql = "update message set state=? where msgid=?";
         Object[] params = {state, msgid};
+
+        int result = 0;
+
+        try {
+            result = dbutil.execute(sql, params);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public int upadateReplyident(int msgid,int replyident){
+        String sql = "update message set replyident=? where msgid=?";
+        Object[] params = {replyident, msgid};
 
         int result = 0;
 
