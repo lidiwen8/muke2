@@ -231,8 +231,19 @@ public class UserServiceImpl implements IUserService {
         return iUserDao.updateCountReplyCount(msgid, replyCount);
     }
 
+    @Override
     public List queryMsgid(int userid) {
         return iUserDao.queryMsgid(userid);
+    }
+
+    @Override
+    public int queryUseridByMsgid(int msgid){
+        return iUserDao.queryUseridByMsgid(msgid);
+    }
+
+    @Override
+    public int queryMsgStateByMsgid(int msgid){
+        return iUserDao.queryMsgStateByMsgid(msgid);
     }
 
     @Override

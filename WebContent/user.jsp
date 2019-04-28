@@ -502,7 +502,7 @@
                             <div class="col-sm-12">
                                 <br/>
                                 <button id="loadmore4" disabled="disabled" type="button" class="btn btn-default btn-lg btn-block"
-                                        onclick="javascript:getUserLikeMsgid();">加载更多...</button>
+                                        onclick="javascript:getUserLikeMsgid();">我也是有底线的...</button>
                             </div>
                         </div>
                     </div>

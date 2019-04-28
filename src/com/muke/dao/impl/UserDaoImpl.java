@@ -647,4 +647,34 @@ public class UserDaoImpl implements IUserDao {
         return rs;
     }
 
+    @Override
+    public int queryUseridByMsgid(int msgid){
+        String sql = "select userid from message where msgid=?";
+        Object[] params = {msgid};
+        Map map = null;
+        try {
+            map = dbutil.getObject(sql, params);
+            int userid = (int) map.get("userid");
+            return userid;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
+    public int queryMsgStateByMsgid(int msgid){
+        String sql = "select state from message where msgid=?";
+        Object[] params = {msgid};
+        Map map = null;
+        try {
+            map = dbutil.getObject(sql, params);
+            int state = (int) map.get("state");
+            return state;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -3;
+    }
+
 }

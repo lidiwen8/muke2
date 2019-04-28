@@ -15,6 +15,7 @@ public class ShortMessageInfo {
     private int likecount;          // 帖子点赞数
     private int replyCount;            // 回复量
     private int state;                // 帖子状态
+    private int replyident;  //是否允许回复
     public int getAccessCount() {
         return accessCount;
     }
@@ -77,5 +78,13 @@ public class ShortMessageInfo {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public int getReplyident() {
+        return replyident;
+    }
+
+    public void setReplyident(int replyident) {
+        this.replyident = replyident;
     }
 }

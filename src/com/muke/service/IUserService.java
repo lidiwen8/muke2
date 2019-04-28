@@ -85,7 +85,7 @@ public interface IUserService {
     //修改密码
     int updatePw(User user);
 
-    int updatePwBynewPass(String newPassword,String email);
+    int updatePwBynewPass(String newPassword, String email);
 
     int updatemail(String username, String mail, int state);//更新邮箱
 
@@ -142,10 +142,14 @@ public interface IUserService {
     List queryMsgid(int userid);//先找到要删除用户之前回复过的所有帖子得到列表msgid（自己发的帖子忽略不计）
 
 
+    int queryUseridByMsgid(int msgid);
+
+    int queryMsgStateByMsgid(int msgid);
+
     List getLikeMsgid(int userid);//得到用户收藏的帖子列表
 
 
-    int updateLikemsgid(int userid,String likemsgid);//用户收藏帖子
+    int updateLikemsgid(int userid, String likemsgid);//用户收藏帖子
 }
 
  

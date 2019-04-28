@@ -112,4 +112,8 @@ public interface IUserDao {
     int updateLikemsgid(int userid,String likemsgid);//用户收藏帖子
 
     ShortMessageInfo getMsg(int msgid);
+
+    int queryUseridByMsgid(int msgid);
+
+    int queryMsgStateByMsgid(int msgid);
 }

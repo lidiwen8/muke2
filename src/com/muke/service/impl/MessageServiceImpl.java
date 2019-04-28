@@ -126,6 +126,11 @@ public class MessageServiceImpl implements IMessageService {
         return messagedao.queryCountBy();
     }
 
+    @Override
+    public int queryMsgReplyident(int msgid){
+        return messagedao.queryMsgReplyident(msgid);
+    }
+
 
     @Override
     public long queryMsgCount(int state) {

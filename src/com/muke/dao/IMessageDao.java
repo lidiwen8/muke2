@@ -147,4 +147,6 @@ public interface IMessageDao {
     int updateMessagelike(Message message);
 
     List getMessagelikeUserid(int msgid);
+
+    int queryMsgReplyident(int msgid);
 }

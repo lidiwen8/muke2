@@ -128,23 +128,47 @@ public class UserMessageServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         int userid = user.getUserid();//用户ID
-        String replyip = IPUtil.getIP(request);//获取IP
-        replycontent = EmojiUtil.resolveToByteFromEmoji(replycontent);//表情包转化为编码
+        try {
+            int state = messageservice.queryMsgState(Integer.parseInt(msgId));
+            int Msguserid=messageservice.getMsgNoincreaseCount(Integer.parseInt(msgId)).getUserid();
+            if (state == -1) {
+                response.getWriter().print("{\"res\":-1,\"message\":\"该帖子已经被管理员屏蔽了,你无法回复！如有疑问，请联系管理员QQ:1632029393!\"}");
+                return;
+            } else if (state == 3) {
+                if (messageservice.getMsgNoincreaseCount(Integer.parseInt(msgId)).getUserid() != userid) {
+                    response.getWriter().print("{\"res\":-1,\"message\":\"该帖子已经被楼主屏蔽了,你无法回复！如有疑问，请联系楼主邮箱:" + user.getEmail() + "!\"}");
+                    return;
+                }
+            }
+            if (messageservice.queryMsgReplyident(Integer.parseInt(msgId)) == -1&&Msguserid!=userid) {
+                if (user.getMailstate() == 1) {
+                    response.getWriter().print("{\"res\":-1,\"info\":\"该帖子已经被该楼主关闭回复了，你暂时无法回复！如有疑问，请联系楼主邮箱：" + user.getEmail() + "！\"}");
+                    return;
+                }
+                response.getWriter().print("{\"res\":-1,\"info\":\"该帖子已经被该楼主关闭回复了，你暂时无法回复！\"}");
+                return;
+            }
+            String replyip = IPUtil.getIP(request);//获取IP
+            replycontent = EmojiUtil.resolveToByteFromEmoji(replycontent);//表情包转化为编码
 //		replycontent=HTMLReplace.replace(replycontent);
-        if (replycontent.replaceAll("(?:&nbsp;|<p>|</p>)", "").trim().equals("") || replycontent.replaceAll("(?:&nbsp;|<p>|</p>)", "").trim().length() == 0 || replycontent.replaceAll("(?:&nbsp;|<p>|</p>)", "").trim().equals(null)) {
-            response.getWriter().print("{\"res\":2,\"info\":\"尊敬的" + user.getUsername() + "用户：不能全部输入空格或者回车,回帖失败\"}");
+            if (replycontent.replaceAll("(?:&nbsp;|<p>|</p>)", "").trim().equals("") || replycontent.replaceAll("(?:&nbsp;|<p>|</p>)", "").trim().length() == 0 || replycontent.replaceAll("(?:&nbsp;|<p>|</p>)", "").trim().equals(null)) {
+                response.getWriter().print("{\"res\":2,\"info\":\"尊敬的" + user.getUsername() + "用户：不能全部输入空格或者回车,回帖失败\"}");
+                return;
+            }
+            Reply reply = new Reply();
+            reply.setUserid(userid);
+            reply.setMsgid(Integer.parseInt(msgId));
+            reply.setReplycontents(replycontent);
+            reply.setReplyip(replyip);
+            int rs = iReplyService.replyMsg(reply);
+            if (rs > 0) {
+                response.getWriter().print("{\"res\":1,\"info\":\"回帖成功\"}");
+            } else {
+                response.getWriter().print("{\"res\":-1,\"info\":\"回帖失败\"}");
+            }
+        }catch (NullPointerException e){
+            response.getWriter().print("{\"res\":-1,\"info\":\"未找到有关该帖子的任何信息，可能该帖子已经被管理员永久删除了！\"}");
             return;
-        }
-        Reply reply = new Reply();
-        reply.setUserid(userid);
-        reply.setMsgid(Integer.parseInt(msgId));
-        reply.setReplycontents(replycontent);
-        reply.setReplyip(replyip);
-        int rs = iReplyService.replyMsg(reply);
-        if (rs > 0) {
-            response.getWriter().print("{\"res\":1,\"info\":\"回帖成功\"}");
-        } else {
-            response.getWriter().print("{\"res\":-1,\"info\":\"回帖失败\"}");
         }
     }
 
@@ -610,6 +634,54 @@ public class UserMessageServlet extends HttpServlet {
         }
     }
 
+    private void allowreply(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int msgid = Integer.parseInt(request.getParameter("msgid"));
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        int userid = user.getUserid();
+        if(messageservice.queryMsgState(msgid)==3){
+            response.getWriter().print("{\"res\": -2, \"info\":\"该帖子之前已经被你删除了，请先恢复再操作!\"}");
+            return;
+        }
+        if(messageservice.queryMsgReplyident(msgid)==0){
+            response.getWriter().print("{\"res\": 1, \"info\":\"该帖子之前已经开启回复了，无需重复操作!\"}");
+            return;
+        }
+        //允许回复
+        if(messageservice.upadateReplyident(msgid,0)>0){
+            response.getWriter().print("{\"res\": 1, \"info\":\"开启回复成功，允许所有人回复你的帖子!\"}");
+            return;
+        }else {
+            response.getWriter().print("{\"res\": -1, \"info\":\"开启回复失败!\"}");
+            return;
+        }
+    }
+
+    private void Notallowreply(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int msgid = Integer.parseInt(request.getParameter("msgid"));
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        int userid = user.getUserid();
+        if(messageservice.queryMsgState(msgid)==3){
+            response.getWriter().print("{\"res\": -2, \"info\":\"该帖子之前已经被你删除了，请先恢复再操作!\"}");
+            return;
+        }
+        if(messageservice.queryMsgReplyident(msgid)==-1){
+            response.getWriter().print("{\"res\": 1, \"info\":\"该帖子之前已经关闭回复了，无需重复操作!\"}");
+            return;
+        }
+        //允许回复
+        if(messageservice.upadateReplyident(msgid,-1)>0){
+            response.getWriter().print("{\"res\": 1, \"info\":\"关闭回复成功，并且仅你自己可以回复，其它用户禁止回复该帖子!\"}");
+            return;
+        }else {
+            response.getWriter().print("{\"res\": -1, \"info\":\"关闭回复失败!\"}");
+            return;
+        }
+    }
+
+//
+//    }
 //    private void SendMail(HttpServletRequest request, HttpServletResponse response,int msgid,int userid,String title) throws ServletException, IOException {
 //
 //    }

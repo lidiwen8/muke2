@@ -315,6 +315,18 @@ public class UserCenterServlet extends HttpServlet {
         HttpSession session = request.getSession();
         try {
             User user = (User) session.getAttribute("user");
+            if(userService.queryUseridByMsgid(Integer.parseInt(msgid))==user.getUserid()){
+                response.getWriter().print("{\"res\":-1,\"info\":\"你不能收藏自己发布的帖子！\"}");
+                return;
+            }
+            int state=userService.queryMsgStateByMsgid(Integer.parseInt(msgid));
+            if(state==-1){
+                response.getWriter().print("{\"res\":-1,\"info\":\"该帖子已经被管理员暂时屏蔽了，你不能收藏该帖子！\"}");
+                return;
+            }else if(state==3){
+                response.getWriter().print("{\"res\":-1,\"info\":\"该帖子已经被楼主暂时屏蔽了，你不能收藏该帖子！\"}");
+                return;
+            }
             List list = userService.getLikeMsgid(user.getUserid());
             String likemsgid = list.get(0).toString().substring(11, list.get(0).toString().length() - 1);
             if (!likemsgid.equals("null")) {

@@ -87,6 +87,8 @@ public interface IMessageService {
 
     long queryMsgCountBy();//发帖总数
 
+    int queryMsgReplyident(int msgid);//查询帖子是否允许被回复
+
     long queryReplyCount(int userid);//根据userid查询回复总数
 
     long queryDistinctReplyCount(int userid);//根据userid查询回过帖的帖子数目，同一个帖子回复多次当成一次，帖子msgid不重复
@@ -102,5 +104,7 @@ public interface IMessageService {
     List getMessagelikeUserid(int msgid);
 
     int upadateReplyident(int msgid,int replyident);//更新帖子状态是否允许回复
+
+
 
 }

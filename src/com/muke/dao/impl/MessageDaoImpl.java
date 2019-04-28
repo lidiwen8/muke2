@@ -231,7 +231,7 @@ public class MessageDaoImpl implements IMessageDao {
     @Override
     public Page searchUserMyMsg(MessageCriteria messageCriteria, Page page) {
         StringBuffer sBuffer = new StringBuffer();
-        sBuffer.append(" select a.msgid, msgtopic, msgtime,likecount, a.state, ");
+        sBuffer.append(" select a.msgid, msgtopic, msgtime,likecount, replyident,a.state, ");
         sBuffer.append(" d.accessCount, d.replyCount ");
         sBuffer.append(" FROM message a ");
         sBuffer.append(" LEFT JOIN user b ON a.userid=b.userid ");
@@ -776,6 +776,21 @@ public class MessageDaoImpl implements IMessageDao {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    public int queryMsgReplyident(int msgid){
+        String sql = "SELECT replyident AS count FROM message where msgid=?";
+        Object[] params = {msgid};
+        Map map = null;
+        try {
+            map = dbutil.getObject(sql, params);
+            int count = (int) map.get("count");
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -2;
     }
 
     public long queryReplyCount(int userid) {
