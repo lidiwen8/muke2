@@ -153,8 +153,11 @@
                         $("#kk").text("我的问题-" + data.message.rows + "个");
                         $.each(data.message.data, function (index, element) {
                             var msg = $(".template").clone();//复制模版
+                            // var bootswitch=$(".bootstrapswitch").clone();
                             msg.show();//显示
                             msg.removeClass("template");//移除模版
+                            // bootswitch.removeClass("bootstrapswitch");
+                            // bootswitch.hide();
                             msg.find(".title").text(element.msgtopic);//帖子标题
                             //添加href属性
                             msg.find(".title").attr("href", "<%=basePath%>message.jsp?msgid=" + element.msgid);
@@ -163,10 +166,12 @@
                             msg.find(".edit_btn").attr("onclick", "getMsg(" + element.msgid + ")");
                             msg.find(".delete_btn").attr("onclick", "deleteMymsg(" + element.msgid + ",'" + element.msgtopic + "')");
                             msg.find(".restore_btn").attr("onclick", "restoreMymsg(" + element.msgid + ")");
+                            msg.find(".allowReply input").attr("class", "bootstrapswitch");
                             msg.find(".bootstrapswitch").attr("value", element.msgid);
                             if(element.replyident==0){
                                 msg.find(".bootstrapswitch").attr("checked","checked");
                             }
+                            bootstrapswitch();
                             if (element.state == 3) {
                                 msg.find(".edit_btn").hide();
                                 msg.find(".delete_btn").hide();
@@ -186,9 +191,7 @@
                         });
                         //加载更多
                         pageNum++;
-                        if(pageNum<=3){
-                            bootstrapswitch();
-                        }
+                        bootstrapswitch();
                         if (parseInt(data.message.totalPage) >= parseInt(pageNum)) {
 
                             $("#loadmore").html("加载更多...");
@@ -267,7 +270,7 @@
             <div class="col-sm-2 hidden-xs text-center count">浏览/回复</div>
             <div class="col-sm-2 col-xs-4 text-center allowReply">
                 <%--<input type="checkbox" class="bootstrapswitch" name="bootstrapswitch" checked>--%>
-                    <input type="checkbox" class="bootstrapswitch" name="bootstrapswitch">
+                    <input type="checkbox" name="bootstrapswitch">
                 <%--<button id="allowReply" class="btn btn-danger btn-sm delete_btn">不允许回复</button>--%>
             </div>
             <button class="btn btn-primary btn-sm edit_btn"><span class="glyphicon glyphicon-pencil">编辑</span></button>
