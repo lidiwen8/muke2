@@ -261,6 +261,7 @@
                     pageNum2++;
                     $("#k4").text("收藏过的帖子-"+data.likeMsgCount+"个");
                 } else {
+                    $("#k4").text("收藏过的帖子-"+0+"个");
                     $("#loadmore4").html("这人很懒，没有收藏过一个帖子...");
                     $("#loadmore4").attr("disabled","disabled");
                 }

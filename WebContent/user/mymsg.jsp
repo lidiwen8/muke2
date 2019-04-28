@@ -14,8 +14,7 @@
     <link rel="stylesheet" href="css/site.css">
     <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
     <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
-    <link href="http://love.lidiwen.club/bootstrap-switch.min.css"
-          rel="stylesheet">
+    <link href="http://love.lidiwen.club/bootstrap-switch.min.css" rel="stylesheet">
     <script src="http://love.lidiwen.club/bootstrap-switch.min.js"></script>
     <title>爱之家网站答疑平台</title>
     <style>
