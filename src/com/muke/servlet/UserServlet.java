@@ -3,12 +3,10 @@ package com.muke.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.mail.MessagingException;
@@ -335,7 +333,7 @@ public class UserServlet extends HttpServlet {
         User user = userService.useremail(email);
         String username = user.getUsername();
         if (user.getMailstate() == 1) {
-            Md5Encrypt md5 = new Md5Encrypt();
+//            Md5Encrypt md5 = new Md5Encrypt();
             MessageEmail messageEmail = new MessageEmail();
             List<String> strs = new ArrayList<String>();
             strs.add(user.getEmail());
@@ -343,19 +341,35 @@ public class UserServlet extends HttpServlet {
             messageEmail.setTo(strs);
             messageEmail.setSubject("[爱之家科技有限公司]重置密码通知");
             key = UUIDUtils.getUUID();
-            HttpSession session = request.getSession();
-            session.setAttribute(username + email, key);
-            session.setAttribute(username + "token", username + email);
-            session.setMaxInactiveInterval(60 * 5);
+//            HttpSession session = request.getSession();
+//            session.setAttribute(username + email, key);
+//            session.setAttribute(username + "token", username + email);
             messageEmail.setMsg(SendEmail.sendMsg("http://www.lidiwen.club/muke_Web/userServlet/passwordResetByemail", random, username, key, email));
             try {
-                random = md5.Encrypt(random);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
                 if (SendEmail.sslSend(messageEmail)) {
-                    session.setAttribute(username + "random", random);
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    userService.updateMailLinkInfo(username,key,df.format(new Date()),random);
+//                    try {
+//                        random = md5.Encrypt(random);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    session.setAttribute(username + "random", random);
+//                    try {
+//                        //TimerTask实现5分钟后从session中删除code
+//                        final Timer timer=new Timer();
+//                        timer.schedule(new TimerTask() {
+//                            @Override
+//                            public void run() {
+//                                session.removeAttribute(username + "token");
+//                                session.removeAttribute(username + email);
+//                                session.removeAttribute(username + "random");
+//                                timer.cancel();
+//                            }
+//                        },5*60*1000);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
                     response.getWriter().print("{\"res\": 1, \"info\":\"尊敬的用户：用户验证成功，发送邮件成功，请你及时登录邮箱查看\"}");
                     return;
                 } else {
@@ -372,42 +386,92 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    private void passwordResetByemail(HttpServletRequest request, HttpServletResponse response) throws IOException, MessagingException {
+    private void passwordResetByemail(HttpServletRequest request, HttpServletResponse response) throws IOException, MessagingException, ParseException {
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String key = request.getParameter("key");
         User user = userService.username(username);
-        HttpSession session = request.getSession();
         if (email == null || username == null || key == null || email == "" || username == "" || key == "") {
             response.getWriter().print("{\"res\": -1, \"info\":\"该链接是无效的！\"}");
             return;
         }
         if (user != null) {
             if (user.getEmail().equals(email) && user.getMailstate() == 1) {
-                try {
-                    if (session.getAttribute(username + "token").equals(username + email)) {
-                        if (session.getAttribute(username + email).equals(key)) {
-                            if (session.getAttribute(username + "check") == null) {
-                                user.setPassword((String) session.getAttribute(username + "random"));
-                                userService.updatePw(user);
-                                session.setAttribute(username + "check", true);
-                                session.setMaxInactiveInterval(60 * 5);
-                                response.getWriter().print("{\"res\": 1, \"info\":\"重置的密码已经生效，请用新密码登录！\"}");
-                                return;
-                            } else {
-                                response.getWriter().print("{\"res\": -1, \"info\":\"该链接是一次性的，重复点击无效！\"}");
-                                return;
-                            }
-                        }
-                    } else {
-                        response.getWriter().print("{\"res\": -1, \"info\":\"没有找回密码，或已经找回密码且新密码已经生效！\"}");
-                        return;
-                    }
-
-                } catch (NullPointerException e) {
-                    response.getWriter().print("{\"res\": -2, \"info\":\"该链接已过期，请重新通过系统向你绑定的邮箱发送找回密码的链接！\"}");
+                UserMailLinkInfo userMailLinkInfo=userService.queryMailLinkInfo(username);
+                if(userMailLinkInfo.getActive_time()==null||userMailLinkInfo.getActive_time().equals("")){
+                    response.getWriter().print("{\"res\": -1, \"info\":\"没有找回密码，或已经找回密码且新密码已经生效！\"}");
                     return;
                 }
+                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                long min = (new Date().getTime() - sdf1.parse(userMailLinkInfo.getActive_time()).getTime()) % (1000 * 24 * 60 * 60) % (1000 * 60 * 60) / (1000 * 60);
+                if(min>5){
+                    response.getWriter().print("{\"res\": -2, \"info\":\"该链接已过期，请重新通过系统向你绑定的邮箱发送找回密码的链接！\"}");
+                    return;
+                }else {
+                    if(userMailLinkInfo.getActive_key().equals(key)){
+                        String random=null;
+                        try {
+                            random = Md5Encrypt.Encrypt(userMailLinkInfo.getNew_pass());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        user.setPassword(random);
+                        userService.updatePw(user);
+                        userService.updateMailLinkInfo(username,null,null,null);
+                        response.getWriter().print("{\"res\": 1, \"info\":\"重置的密码已经生效，请用新密码登录！\"}");
+                        return;
+                    }else {
+                        response.getWriter().print("{\"res\": -1, \"info\":\"该链接是无效的！\"}");
+                        return;
+                    }
+                }
+//                try {
+//                    if (session.getAttribute(username + "token").equals(username + email)) {
+//                        if (session.getAttribute(username + email).equals(key)) {
+//                            if (session.getAttribute(username + "check") == null) {
+//                                if(session.getAttribute(username + "random")!=null){
+//                                    user.setPassword((String) session.getAttribute(username + "random"));
+//                                    userService.updatePw(user);
+//                                    session.setAttribute(username + "check", true);
+//                                    try {
+//                                        //TimerTask实现5分钟后从session中删除code
+//                                        final Timer timer=new Timer();
+//                                        timer.schedule(new TimerTask() {
+//                                            @Override
+//                                            public void run() {
+//                                                session.removeAttribute(username + "random");
+//                                                session.removeAttribute(username + "token");
+//                                                session.removeAttribute(username + "check");
+//                                                System.out.println("code删除成功");
+//                                                timer.cancel();
+//                                            }
+//                                        },5*60*1000);
+//                                    } catch (Exception e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                    response.getWriter().print("{\"res\": 1, \"info\":\"重置的密码已经生效，请用新密码登录！\"}");
+//                                    return;
+//                                }else {
+//                                    response.getWriter().print("{\"res\": -2, \"info\":\"该链接已过期，请重新通过系统向你绑定的邮箱发送找回密码的链接！\"}");
+//                                    return;
+//                                }
+//                            } else {
+//                                response.getWriter().print("{\"res\": -1, \"info\":\"该链接是一次性的，重复点击无效！\"}");
+//                                return;
+//                            }
+//                        }else {
+//                            response.getWriter().print("{\"res\": -1, \"info\":\"该链接是无效的！\"}");
+//                            return;
+//                        }
+//                    } else {
+//                        response.getWriter().print("{\"res\": -1, \"info\":\"没有找回密码，或已经找回密码且新密码已经生效！\"}");
+//                        return;
+//                    }
+//
+//                } catch (NullPointerException e) {
+//                    response.getWriter().print("{\"res\": -2, \"info\":\"该链接已过期，请重新通过系统向你绑定的邮箱发送找回密码的链接！\"}");
+//                    return;
+//                }
             } else {
                 response.getWriter().print("{\"res\": -1, \"info\":\"该链接是无效的！\"}");
                 return;
@@ -868,7 +932,19 @@ public class UserServlet extends HttpServlet {
                 SendEmail.sslSend(messageEmail);//发送邮件
                 HttpSession session = request.getSession();
                 session.setAttribute(mail + "resetPassCode", random + mail);
-                session.setMaxInactiveInterval(60 * 30);//30分钟内有效
+                try {
+                    //TimerTask实现30分钟后从session中删除code
+                    final Timer timer=new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            session.removeAttribute(mail + "resetPassCode");
+                            timer.cancel();
+                        }
+                    },30*60*1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 response.getWriter().print("{\"res\": 1, \"info\":\"用户验证成功，发送邮件成功！请你及时登录邮箱查看。若您没有收到邮件，请一分钟后核对邮箱重新验证！\"}");
                 return;
             } catch (SendFailedException e) {

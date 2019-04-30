@@ -2,10 +2,7 @@ package com.muke.service.impl;
 
 import com.muke.dao.IUserDao;
 import com.muke.dao.impl.UserDaoImpl;
-import com.muke.pojo.Advise;
-import com.muke.pojo.ShortMessageInfo;
-import com.muke.pojo.User;
-import com.muke.pojo.Userlog;
+import com.muke.pojo.*;
 import com.muke.service.IUserService;
 import com.muke.util.Page;
 
@@ -254,5 +251,15 @@ public class UserServiceImpl implements IUserService {
     @Override
     public int updateLikemsgid(int userid,String likemsgid){
         return iUserDao.updateLikemsgid(userid,likemsgid);
+    }
+
+    @Override
+    public int updateMailLinkInfo(String username,String active_key, String active_time,String new_pass){
+        return iUserDao.updateMailLinkInfo(username,active_key, active_time,new_pass);
+    }
+
+    @Override
+    public UserMailLinkInfo queryMailLinkInfo(String username){
+        return iUserDao.queryMailLinkInfo(username);
     }
 }

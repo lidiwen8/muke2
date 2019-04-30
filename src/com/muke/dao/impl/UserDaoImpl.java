@@ -677,4 +677,33 @@ public class UserDaoImpl implements IUserDao {
         return -3;
     }
 
+    @Override
+    public int updateMailLinkInfo(String username,String active_key, String active_time,String new_pass){
+        String sql = "update user set active_key=?,active_time=?,new_pass=? where username=?";
+        Object[] params = {active_key,active_time,new_pass,username};
+        int rs = 0;
+        try {
+            rs = dbutil.execute(sql, params);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
+    @Override
+    public UserMailLinkInfo queryMailLinkInfo(String username){
+        String sql = "SELECT username,active_key,active_time,new_pass FROM user WHERE username = ?";
+        Object[] params = {username};
+        UserMailLinkInfo userMailLinkInfo = null;
+        try {
+            userMailLinkInfo = (UserMailLinkInfo) dbutil.getObject(UserMailLinkInfo.class, sql, params);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return userMailLinkInfo;
+    }
+
 }

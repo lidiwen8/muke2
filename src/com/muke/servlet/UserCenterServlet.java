@@ -407,7 +407,9 @@ public class UserCenterServlet extends HttpServlet {
                 String Msgid[] = likemsgid.split(",");
                 likeMsgCount = Msgid.length;
                 for (int i = 0; i < Msgid.length; i++) {
-                    shortmsginfo.add(userService.getMsg(Integer.parseInt(Msgid[i])));
+                    if(userService.getMsg(Integer.parseInt(Msgid[i]))!=null){
+                        shortmsginfo.add(userService.getMsg(Integer.parseInt(Msgid[i])));
+                    }
                 }
                 Gson gson = new GsonBuilder().setDateFormat("yy-MM-dd").create();
                 String json = gson.toJson(shortmsginfo);

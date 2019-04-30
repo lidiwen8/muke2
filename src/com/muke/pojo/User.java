@@ -169,4 +169,5 @@ public class User implements Cloneable{
 	public void setLikemsgid(String likemsgid) {
 		this.likemsgid = likemsgid;
 	}
+
 }

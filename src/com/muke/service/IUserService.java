@@ -1,9 +1,6 @@
 package com.muke.service;
 
-import com.muke.pojo.Advise;
-import com.muke.pojo.ShortMessageInfo;
-import com.muke.pojo.User;
-import com.muke.pojo.Userlog;
+import com.muke.pojo.*;
 import com.muke.util.Page;
 
 import java.util.List;
@@ -150,6 +147,13 @@ public interface IUserService {
 
 
     int updateLikemsgid(int userid, String likemsgid);//用户收藏帖子
+
+
+    int updateMailLinkInfo(String username,String active_key, String active_time,String new_pass);
+
+    UserMailLinkInfo queryMailLinkInfo(String username);
+
+
 }
 
  
