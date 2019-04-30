@@ -96,6 +96,7 @@
                 var message2 = data.message2;
                 var replycount=data.replycount;
                 var replydistinctcount=data.replydistinctcount;
+                var collectionMsg=data.collectionMsg;
                 var createtime=data.createtime;
                 var flag=data.flag;
                 if (data.res == 1) {
@@ -154,6 +155,10 @@
                     $("#sex").text(message.sex);
                     $("#hobbys").text(message.hobbys);
                     $("#k2").text("发布的帖子-"+message2.rows+"个");
+                    $("#k5").text("收藏的帖子-"+collectionMsg+"个");
+                    if(collectionMsg==0){
+                        $("#k6").html("这人很懒，没有收藏过一个帖子...");
+                    }
                     $("#msg").text(message2.rows);
                     $("#createtime").text(createtime);
                     $("#logintime").text(message.logintime);
@@ -469,6 +474,31 @@
                             </div>
                         </div>
                     </div>
+
+                   <c:if test="${sessionScope.user == null||(sessionScope.user != null&&sessionScope.user.username!=param.username)}">
+                       <br>
+                       <div id="sv_container4">
+                           <div class="row">
+                               <div class="col-sm-12 msgtitle"><h3 id="k5">收藏的帖子</h3></div>
+                           </div>
+                           <br>
+                           <div class="row">
+                               <div class="col-sm-6 col-xs-8"><h4>标题</h4></div>
+                               <div class="col-sm-2 col-xs-4 text-center"><h4>时间</h4></div>
+                               <div class="col-sm-2 hidden-xs text-center"><h4>浏览 • 回复 • 点赞</h4></div>
+                               <div class="col-sm-2 col-xs-2 text-center"><h4>操作</h4></div>
+                           </div>
+                           <div class="list" id="list5">
+                           </div>
+                           <div class="row p">
+                               <div class="col-sm-12">
+                                   <br/>
+                                   <button disabled="disabled" id="k6" type="button" class="btn btn-default btn-lg btn-block">仅用户本人可见...</button>
+                               </div>
+                           </div>
+                       </div>
+                   </c:if>
+
                    <c:if test="${sessionScope.user != null&&sessionScope.user.username==param.username}">
                     <br>
                     <div id="sv_container4">

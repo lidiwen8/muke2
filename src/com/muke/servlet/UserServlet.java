@@ -993,12 +993,19 @@ public class UserServlet extends HttpServlet {
         gson = new GsonBuilder().setDateFormat("yy-MM-dd").create();
         String json2 = gson.toJson(page);
         long replycount = messageservice.queryReplyCount(userid);//回复总数
+        String likemsgid = userService.getLikeMsgid(userid).get(0).toString().substring(11);
+        int collectionMsg;//收藏帖子总数
+        if(!(likemsgid.equals("null") || likemsgid.equals(null) || likemsgid.equals(""))){
+            collectionMsg=(likemsgid.split(",")).length-1;
+        }else{
+            collectionMsg=0;
+        }
         long replydistinctcount = messageservice.queryDistinctReplyCount(userid);//回复帖子数量
         int flag = 0;
         if (user.getDescription() != null && user.getDescription().trim().length() > 0) {
             flag = 1;
         }
-        response.getWriter().print("{\"res\":1,\"message\":" + json + ",\"message2\":" + json2 + ",\"replycount\":" + replycount + ",\"replydistinctcount\":" + replydistinctcount + ",\"flag\":" + flag + ",\"createtime\":\"" + createtime + "\"}");
+        response.getWriter().print("{\"res\":1,\"message\":" + json + ",\"message2\":" + json2 + ",\"replycount\":" + replycount + ",\"replydistinctcount\":" + replydistinctcount + ",\"flag\":" + flag + ",\"createtime\":\"" + createtime + "\",\"collectionMsg\":"+collectionMsg+"}");
     }
 
     //获取回复过的帖子信息
