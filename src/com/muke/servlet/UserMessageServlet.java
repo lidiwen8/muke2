@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.mail.MessagingException;
 import javax.servlet.ServletException;
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.*;
+import javax.websocket.server.ServerEndpoint;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,9 +33,12 @@ import com.muke.service.impl.MessageServiceImpl;
 import com.muke.service.impl.ThemeServiceImpl;
 import com.muke.util.*;
 
+
 /**
  * Servlet implementation class UserMessageServlet
  */
+//该注解用来指定一个URI，客户端可以通过这个URI来连接到WebSocket，类似Servlet的注解mapping；
+@ServerEndpoint(value = "/websocket")
 @WebServlet("/user/userMessageServlet")
 public class UserMessageServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -40,7 +46,10 @@ public class UserMessageServlet extends HttpServlet {
     private IThemeService themeService = new ThemeServiceImpl();
     private IReplyService iReplyService = new IReplyServiceImpl();
     private ICountService iCountService = new ICountServiceImpl();
-
+    //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
+    private static CopyOnWriteArraySet<UserMessageServlet> webSocketSet = new CopyOnWriteArraySet<UserMessageServlet>();
+    //这个session不是Httpsession，相当于用户的唯一标识，用它进行与指定用户通讯
+    private Session session=null;
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
@@ -90,6 +99,8 @@ public class UserMessageServlet extends HttpServlet {
         message.setMsgip(msgip);
         int rs = messageservice.addMsg(message);
         if (rs > 0) {
+            //发送更新信号
+            sendMessage("add");
             response.getWriter().print("{\"res\":1,\"info\":\"发帖成功\"}");
             int count = messageservice.msgCountBytheid(Integer.parseInt(theid));
             themeService.updateCount(count, Integer.parseInt(theid));
@@ -162,6 +173,8 @@ public class UserMessageServlet extends HttpServlet {
             reply.setReplyip(replyip);
             int rs = iReplyService.replyMsg(reply);
             if (rs > 0) {
+                //发送帖子更新的信号
+                sendMessage(msgId);
                 response.getWriter().print("{\"res\":1,\"info\":\"回帖成功\"}");
             } else {
                 response.getWriter().print("{\"res\":-1,\"info\":\"回帖失败\"}");
@@ -225,6 +238,8 @@ public class UserMessageServlet extends HttpServlet {
             messageInfo.setMsgupdatetime(System.currentTimeMillis());//插入修改时间戳
             int rs = messageservice.updateMsg(messageInfo);
             if (rs > 0) {
+                //向客户端发送更新信号
+                sendMessage("add"+msgId);
                 response.getWriter().print("{\"res\":1,\"info\":\"更新成功\"}");
                 //如果主题theid编辑了,要重新统计主题帖子数,过去的theid以及现在的theid都要
                 if(!flag3){
@@ -284,6 +299,8 @@ public class UserMessageServlet extends HttpServlet {
                 int res = messageservice.userdeleteMsg(finalMsgid);
                 if (res == 1) {
                     response.getWriter().print("{\"res\": 1, \"info\":\"删除成功\"}");
+                    //发送更新信号
+                    sendMessage("add"+msgid);
                     if (count > 0) {
                         Thread t = new Thread(new Runnable() {
                             @Override
@@ -353,6 +370,8 @@ public class UserMessageServlet extends HttpServlet {
             int res = messageservice.restoreMsg(Integer.parseInt(msgid));
             if (res == 1) {
                 response.getWriter().print("{\"res\": 1, \"info\":\"恢复成功\"}");
+                //发送更新信号
+                sendMessage("add"+msgid);
             } else {
                 response.getWriter().print("{\"res\": " + res + ", \"info\":\"恢复失败\"}");
             }
@@ -411,6 +430,8 @@ public class UserMessageServlet extends HttpServlet {
                 int rs = iReplyService.updateReply(reply);
                 if (rs > 0) {
                     response.getWriter().print("{\"res\":1,\"info\":\"编辑回复信息成功\"}");
+                    //发送更新信号
+                    sendMessage(reply.getMsgid()+"");
                 } else {
                     response.getWriter().print("{\"res\":-1,\"info\":\"编辑回复信息失败\"}");
                 }
@@ -431,6 +452,8 @@ public class UserMessageServlet extends HttpServlet {
             int rs = iReplyService.updateReply2(reply);
             if (rs > 0) {
                 response.getWriter().print("{\"res\":1,\"info\":\"编辑回复信息成功\"}");
+                //发送更新信号
+                sendMessage(reply.getMsgid()+"");
             } else {
                 response.getWriter().print("{\"res\":-1,\"info\":\"编辑回复信息失败\"}");
             }
@@ -459,6 +482,8 @@ public class UserMessageServlet extends HttpServlet {
                 reply.setLikeuserid(likeuserid + user.getUserid() + ",");
                 if (iReplyService.updateReplylike(reply) > 0) {
                     response.getWriter().print("{\"res\":1,\"info\":\"操作成功\"}");
+                    //发送更新信号
+                    sendMessage(iReplyService.queryid(replyid).getMsgid()+"");
                 } else {
                     response.getWriter().print("{\"res\":-1,\"info\":\"操作失败\"}");
                 }
@@ -468,6 +493,8 @@ public class UserMessageServlet extends HttpServlet {
                 reply.setLikeuserid(user.getUserid() + ",");
                 if (iReplyService.updateReplylike(reply) > 0) {
                     response.getWriter().print("{\"res\":1,\"info\":\"操作成功\"}");
+                    //发送更新信号
+                    sendMessage(iReplyService.queryid(replyid).getMsgid()+"");
                 } else {
                     response.getWriter().print("{\"res\":-1,\"info\":\"操作失败\"}");
                 }
@@ -542,6 +569,8 @@ public class UserMessageServlet extends HttpServlet {
                 message.setLikeuserid(likeuserid + user.getUserid() + ",");
                 if (messageservice.updateMessagelike(message) > 0) {
                     response.getWriter().print("{\"res\":1,\"info\":\"操作成功\"}");
+                    //发送更新信号
+                    sendMessage(msgid+"");
                 } else {
                     response.getWriter().print("{\"res\":-1,\"info\":\"操作失败\"}");
                 }
@@ -550,6 +579,8 @@ public class UserMessageServlet extends HttpServlet {
                 message.setLikeuserid(user.getUserid() + ",");
                 if (messageservice.updateMessagelike(message) > 0) {
                     response.getWriter().print("{\"res\":1,\"info\":\"操作成功\"}");
+                    //发送更新信号
+                    sendMessage(msgid+"");
                 } else {
                     response.getWriter().print("{\"res\":-1,\"info\":\"操作失败\"}");
                 }
@@ -614,6 +645,8 @@ public class UserMessageServlet extends HttpServlet {
                     int res2 = iCountService.updateReplyCount(reply.getMsgid());
                     if (res == 1 && res2 == 1) {
                         response.getWriter().print("{\"res\": 1, \"info\":\"删除成功!\"}");
+                        //发送更新信号
+                        sendMessage(reply.getMsgid()+"");
                     } else {
                         response.getWriter().print("{\"res\": " + res + ", \"info\":\"删除失败!\"}");
                     }
@@ -628,6 +661,8 @@ public class UserMessageServlet extends HttpServlet {
             int res2 = iCountService.updateReplyCount(reply.getMsgid());
             if (res == 1 && res2 == 1) {
                 response.getWriter().print("{\"res\": 1, \"info\":\"管理员删除成功!\"}");
+                //发送更新信号
+                sendMessage(reply.getMsgid()+"");
             } else {
                 response.getWriter().print("{\"res\": " + res + ", \"info\":\"管理员删除失败!\"}");
             }
@@ -688,6 +723,78 @@ public class UserMessageServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
+    }
+
+    /**
+     * @OnOpen allows us to intercept the creation of a new session.
+     * The session class allows us to send data to the user.
+     * In the method onOpen, we'll let the user know that the handshake was
+     * successful.
+     * 建立websocket连接时调用
+     */
+    @OnOpen
+    public void onOpen(Session session){
+//        System.out.println("Session " + session.getId() + " has opened a connection");
+        try {
+            this.session=session;
+            webSocketSet.add(this);     //加入set中
+            session.getBasicRemote().sendText("Connection Established");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * When a user sends a message to the server, this method will intercept the message
+     * and allow us to react to it. For now the message is read as a String.
+     * 接收到客户端消息时使用，这个例子里没用
+     */
+    @OnMessage
+    public void onMessage(String message, Session session){
+        System.out.println("Message from " + session.getId() + ": " + message);
+    }
+
+    /**
+     * The user closes the connection.
+     *
+     * Note: you can't send messages to the client from this method
+     * 关闭连接时调用
+     */
+    @OnClose
+    public void onClose(Session session){
+        webSocketSet.remove(this);  //从set中删除
+//        System.out.println("Session " +session.getId()+" has closed!");
+    }
+
+    /**
+     * 注意: OnError() 只能出现一次.   其中的参数都是可选的。
+     * @param session
+     * @param t
+     */
+    @OnError
+    public void onError(Session session, Throwable t) {
+        t.printStackTrace();
+    }
+
+    /**
+     * 这个方法与上面几个方法不一样。没有用注解，是根据自己需要添加的方法。
+     * @throws IOException
+     * 发送自定义信号，“1”表示告诉前台，数据库发生改变了，需要刷新
+     * 1代表回复帖子的内容发生变化(回复帖子信息的删除编辑新增等，不包括帖子的删除，帖子的点赞，回复的点赞)
+     * 2代表有用户新发帖子或者删除帖子、恢复帖子(删除包括管理员删除、用户删除；恢复包括管理员恢复、用户恢复)
+     * 3代表帖子的问题头发生变化(包括帖子主题、帖子问题内容修改或者编辑)
+     */
+    public static void sendMessage(String info) throws IOException{
+        //群发消息
+        for(UserMessageServlet item: webSocketSet){
+            try {
+                item.session.getBasicRemote().sendText(info);
+            } catch (IOException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+
     }
 
 }

@@ -63,6 +63,9 @@
           <element id="file-copy" path="$PROJECT_DIR$/WebContent/WEB-INF/lib/okio-1.9.0.jar" />
           <element id="file-copy" path="$PROJECT_DIR$/WebContent/WEB-INF/lib/fastjson-1.2.57.jar" />
           <element id="file-copy" path="$PROJECT_DIR$/WebContent/WEB-INF/lib/spring-core-5.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/WebContent/WEB-INF/lib/websocket-api.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/WebContent/WEB-INF/lib/qiniu-java-sdk-7.2.18.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/WebContent/WEB-INF/lib/okio-1.14.0.jar" />
         </element>
       </element>
     </root>

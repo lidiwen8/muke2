@@ -971,7 +971,7 @@ public class UserServlet extends HttpServlet {
         }
         Gson gson = new Gson();
         user.setPassword("********");
-
+        user.setLikemsgid("*******");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String createtime = df.format(user.getCreatetime());
         String json = gson.toJson(user);
