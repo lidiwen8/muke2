@@ -55,23 +55,6 @@ public class AdminUserServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//		if(action.equals("getUser")) {
-//			getUser(request, response);
-//		} else if(action.equals("deleteUser")) {
-//			deleteUser(request, response);
-//		} else if("restoreUser".equals(action)){
-//			restoreUser(request, response);
-//		}else if("getAdvise".equals(action)){
-//			getAdvise(request, response);
-//		}else if("deleteAdvise".equals(action)){
-//			deleteAdvise(request, response);
-//		}else if("restoreAdvise".equals(action)){
-//			restoreAdvise(request,response);
-//		}else if("getAdvisedetails".equals(action)){
-//			getAdvisedetails(request,response);
-//		}else if("delete".equals(action)){
-//			delete(request,response);
-//		}
     }
 
     private void restoreUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -147,9 +130,9 @@ public class AdminUserServlet extends HttpServlet {
     public void cascadelete2(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String userid = request.getParameter("userid");
         if (iUserService.cascadeleteUserAndMessage(Integer.parseInt(userid)) == 1) {
-            response.getWriter().print("{\"res\": 1, \"info\":\"已成功级联删除！\"}");
             //发送更新信号
             UserMessageServlet.sendMessage("add");
+            response.getWriter().print("{\"res\": 1, \"info\":\"已成功级联删除！\"}");
             return;
         } else {
             response.getWriter().print("{\"res\": -1, \"info\":\"级联删除失败！\"}");
@@ -169,9 +152,9 @@ public class AdminUserServlet extends HttpServlet {
             iUserService.updateCountReplyCount(msgid, replyCount);
         }
         if (iUserService.cascadeleteUserAndReply(Integer.parseInt(userid)) == 1) {
-            response.getWriter().print("{\"res\": 1, \"info\":\"已成功级联删除！\"}");
             //发送更新信号
             UserMessageServlet.sendMessage("add");
+            response.getWriter().print("{\"res\": 1, \"info\":\"已成功级联删除！\"}");
             return;
         } else {
             response.getWriter().print("{\"res\": -1, \"info\":\"级联删除失败！\"}");
@@ -194,9 +177,9 @@ public class AdminUserServlet extends HttpServlet {
             iUserService.cascadeleteUserAndReplyAndMessage(Integer.parseInt(userid));
             iUserService.cascadeleteUserAndReply(Integer.parseInt(userid));
             iUserService.deleteReply(Integer.parseInt(userid));
-            response.getWriter().print("{\"res\": 1, \"info\":\"已成功级联删除！\"}");
             //发送更新信号
             UserMessageServlet.sendMessage("add");
+            response.getWriter().print("{\"res\": 1, \"info\":\"已成功级联删除！\"}");
             return;
         } catch (Exception e) {
             response.getWriter().print("{\"res\": -1, \"info\":\"级联删除失败！\"}");

@@ -70,6 +70,8 @@ public class AdminThemeServlet extends HttpServlet {
             theme.setThename(thename);
             int result = themeService.add(theme);
             if (result > 0) {
+                //发送更新信号
+                UserMessageServlet.sendMessage("add");
                 response.getWriter().print("{\"res\":1,\"info\":\"添加主题成功！\"}");
             } else {
                 response.getWriter().print("{\"res\":-1,\"info\":\"添加主题失败！\"}");
@@ -94,6 +96,8 @@ public class AdminThemeServlet extends HttpServlet {
                 theme.setTheid(theid);
                 int result = themeService.update(theme);
                 if (result > 0) {
+                    //发送更新信号
+                    UserMessageServlet.sendMessage("add");
                     response.getWriter().print("{\"res\":1,\"info\":\"编辑主题成功！\"}");
                 } else {
                     response.getWriter().print("{\"res\":-1,\"info\":\"编辑主题失败！\"}");
@@ -127,6 +131,8 @@ public class AdminThemeServlet extends HttpServlet {
         if (themeService.queryMessageBytheid(Integer.parseInt(theid)) == false) {
             int result = themeService.delete(Integer.parseInt(theid));
             if (result > 0) {
+                //发送更新信号
+                UserMessageServlet.sendMessage("add");
                 response.getWriter().print("{\"res\":1,\"info\":\"删除主题成功！\"}");
             } else {
                 response.getWriter().print("{\"res\":-1,\"info\":\"删除主题失败！\"}");
@@ -142,6 +148,8 @@ public class AdminThemeServlet extends HttpServlet {
         String theid = request.getParameter("theid");
         int result = themeService.delete(Integer.parseInt(theid));
         if (result > 0) {
+            //发送更新信号
+            UserMessageServlet.sendMessage("add");
             response.getWriter().print("{\"res\":1,\"info\":\"删除主题成功！\"}");
         } else {
             response.getWriter().print("{\"res\":-1,\"info\":\"删除主题失败！\"}");
