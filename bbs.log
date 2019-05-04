@@ -724,3 +724,69 @@ DEBUG 2019-04-07 18:31:27,600 GooGooStatementCache.java checkinAll  checkinAll()
 DEBUG 2019-04-07 18:31:27,600 BasicResourcePool.java trace  trace com.mchange.v2.resourcepool.BasicResourcePool@28975c28 [managed: 10, unused: 9, excluded: 0] (e.g. com.mchange.v2.c3p0.impl.NewPooledConnection@4eaa8f38)
 DEBUG 2019-04-07 18:31:27,600 GooGooStatementCache.java checkinAll  checkinAll(): com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 1; checked out: 0; num connections: 1; num keys: 1
 DEBUG 2019-04-07 18:31:27,600 C3P0PooledConnectionPool.java finerLoggingTestPooledConnection  Testing PooledConnection [com.mchange.v2.c3p0.impl.NewPooledConnection@4eaa8f38] on CHECKIN.
+INFO 2019-05-04 20:30:02,892 MLog.java <clinit>  MLog clients using log4j logging.
+INFO 2019-05-04 20:30:03,341 C3P0Registry.java banner  Initializing c3p0-0.9.1 [built 16-January-2007 14:46:42; debug? true; trace: 10]
+DEBUG 2019-05-04 20:30:03,356 DynamicPooledDataSourceManagerMBean.java reinitialize  MBean: com.mchange.v2.c3p0:type=PooledDataSource[1b61g6ua210ar2re17ztjvz|ea30797] registered.
+DEBUG 2019-05-04 20:30:03,937 BasicResourcePool.java incrementPendingAcquires  incremented pending_acquires: 1
+DEBUG 2019-05-04 20:30:03,938 BasicResourcePool.java incrementPendingAcquires  incremented pending_acquires: 2
+DEBUG 2019-05-04 20:30:03,938 BasicResourcePool.java incrementPendingAcquires  incremented pending_acquires: 3
+DEBUG 2019-05-04 20:30:03,938 BasicResourcePool.java incrementPendingAcquires  incremented pending_acquires: 4
+DEBUG 2019-05-04 20:30:03,938 BasicResourcePool.java incrementPendingAcquires  incremented pending_acquires: 5
+DEBUG 2019-05-04 20:30:03,938 BasicResourcePool.java incrementPendingAcquires  incremented pending_acquires: 6
+DEBUG 2019-05-04 20:30:03,938 BasicResourcePool.java incrementPendingAcquires  incremented pending_acquires: 7
+DEBUG 2019-05-04 20:30:03,938 BasicResourcePool.java incrementPendingAcquires  incremented pending_acquires: 8
+DEBUG 2019-05-04 20:30:03,938 BasicResourcePool.java incrementPendingAcquires  incremented pending_acquires: 9
+DEBUG 2019-05-04 20:30:03,938 BasicResourcePool.java incrementPendingAcquires  incremented pending_acquires: 10
+DEBUG 2019-05-04 20:30:03,939 BasicResourcePool.java <init>  com.mchange.v2.resourcepool.BasicResourcePool@bd8db5a config: [start -> 10; min -> 5; max -> 200; inc -> 3; num_acq_attempts -> 30; acq_attempt_delay -> 100; check_idle_resources_delay -> 21600000; mox_resource_age -> 0; max_idle_time -> 1800000; excess_max_idle_time -> 0; destroy_unreturned_resc_time -> 0; expiration_enforcement_delay -> 450000; break_on_acquisition_failure -> false; debug_store_checkout_exceptions -> false]
+INFO 2019-05-04 20:30:03,939 AbstractPoolBackedDataSource.java getPoolManager  Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 3, acquireRetryAttempts -> 30, acquireRetryDelay -> 100, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 3000, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, dataSourceName -> 1b61g6ua210ar2re17ztjvz|ea30797, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> com.mysql.jdbc.Driver, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, identityToken -> 1b61g6ua210ar2re17ztjvz|ea30797, idleConnectionTestPeriod -> 21600, initialPoolSize -> 10, jdbcUrl -> jdbc:mysql://localhost:3306/muke?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&failOverReadOnly=false, lastAcquisitionFailureDefaultUser -> null, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 1800, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 200, maxStatements -> 10, maxStatementsPerConnection -> 0, minPoolSize -> 5, numHelperThreads -> 3, numThreadsAwaitingCheckoutDefaultUser -> 0, preferredTestQuery -> select 1, properties -> {user=******, password=******}, propertyCycle -> 0, testConnectionOnCheckin -> true, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, usesTraditionalReflectiveProxies -> false ]
+DEBUG 2019-05-04 20:30:03,939 BasicResourcePool.java prelimCheckoutResource  acquire test -- pool size: 0; target_pool_size: 10; desired target? 1
+DEBUG 2019-05-04 20:30:03,940 BasicResourcePool.java awaitAvailable  awaitAvailable(): [unknown]
+DEBUG 2019-05-04 20:30:03,940 BasicResourcePool.java trace  trace com.mchange.v2.resourcepool.BasicResourcePool@bd8db5a [managed: 0, unused: 0, excluded: 0]
+DEBUG 2019-05-04 20:30:04,128 GooGooStatementCache.java checkinAll  checkinAll(): com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 0; checked out: 0; num connections: 0; num keys: 0
+DEBUG 2019-05-04 20:30:04,128 GooGooStatementCache.java checkinAll  checkinAll(): com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 0; checked out: 0; num connections: 0; num keys: 0
+DEBUG 2019-05-04 20:30:04,128 GooGooStatementCache.java checkinAll  checkinAll(): com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 0; checked out: 0; num connections: 0; num keys: 0
+DEBUG 2019-05-04 20:30:04,128 C3P0PooledConnectionPool.java acquireResource  com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager@c6dfbcb.acquireResource() returning. 
+DEBUG 2019-05-04 20:30:04,128 C3P0PooledConnectionPool.java acquireResource  com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager@c6dfbcb.acquireResource() returning. 
+DEBUG 2019-05-04 20:30:04,128 C3P0PooledConnectionPool.java acquireResource  com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager@c6dfbcb.acquireResource() returning. 
+DEBUG 2019-05-04 20:30:04,129 BasicResourcePool.java trace  trace com.mchange.v2.resourcepool.BasicResourcePool@bd8db5a [managed: 1, unused: 1, excluded: 0]
+DEBUG 2019-05-04 20:30:04,129 BasicResourcePool.java decrementPendingAcquires  decremented pending_acquires: 9
+DEBUG 2019-05-04 20:30:04,129 BasicResourcePool.java trace  trace com.mchange.v2.resourcepool.BasicResourcePool@bd8db5a [managed: 2, unused: 1, excluded: 0] (e.g. com.mchange.v2.c3p0.impl.NewPooledConnection@30a381a4)
+DEBUG 2019-05-04 20:30:04,129 BasicResourcePool.java decrementPendingAcquires  decremented pending_acquires: 8
+DEBUG 2019-05-04 20:30:04,129 BasicResourcePool.java trace  trace com.mchange.v2.resourcepool.BasicResourcePool@bd8db5a [managed: 3, unused: 2, excluded: 0] (e.g. com.mchange.v2.c3p0.impl.NewPooledConnection@30a381a4)
+DEBUG 2019-05-04 20:30:04,129 BasicResourcePool.java decrementPendingAcquires  decremented pending_acquires: 7
+DEBUG 2019-05-04 20:30:04,129 BasicResourcePool.java trace  trace com.mchange.v2.resourcepool.BasicResourcePool@bd8db5a [managed: 3, unused: 2, excluded: 0] (e.g. com.mchange.v2.c3p0.impl.NewPooledConnection@30a381a4)
+DEBUG 2019-05-04 20:30:04,135 GooGooStatementCache.java checkinAll  checkinAll(): com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 0; checked out: 0; num connections: 0; num keys: 0
+DEBUG 2019-05-04 20:30:04,135 C3P0PooledConnectionPool.java acquireResource  com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager@c6dfbcb.acquireResource() returning. 
+DEBUG 2019-05-04 20:30:04,135 BasicResourcePool.java trace  trace com.mchange.v2.resourcepool.BasicResourcePool@bd8db5a [managed: 4, unused: 3, excluded: 0] (e.g. com.mchange.v2.c3p0.impl.NewPooledConnection@30a381a4)
+DEBUG 2019-05-04 20:30:04,135 BasicResourcePool.java decrementPendingAcquires  decremented pending_acquires: 6
+DEBUG 2019-05-04 20:30:04,136 GooGooStatementCache.java checkinAll  checkinAll(): com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 0; checked out: 0; num connections: 0; num keys: 0
+DEBUG 2019-05-04 20:30:04,136 C3P0PooledConnectionPool.java acquireResource  com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager@c6dfbcb.acquireResource() returning. 
+DEBUG 2019-05-04 20:30:04,136 BasicResourcePool.java trace  trace com.mchange.v2.resourcepool.BasicResourcePool@bd8db5a [managed: 5, unused: 4, excluded: 0] (e.g. com.mchange.v2.c3p0.impl.NewPooledConnection@30a381a4)
+DEBUG 2019-05-04 20:30:04,136 BasicResourcePool.java decrementPendingAcquires  decremented pending_acquires: 5
+DEBUG 2019-05-04 20:30:04,136 GooGooStatementCache.java checkinAll  checkinAll(): com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 0; checked out: 0; num connections: 0; num keys: 0
+DEBUG 2019-05-04 20:30:04,137 C3P0PooledConnectionPool.java acquireResource  com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager@c6dfbcb.acquireResource() returning. 
+DEBUG 2019-05-04 20:30:04,137 BasicResourcePool.java trace  trace com.mchange.v2.resourcepool.BasicResourcePool@bd8db5a [managed: 6, unused: 5, excluded: 0] (e.g. com.mchange.v2.c3p0.impl.NewPooledConnection@30a381a4)
+DEBUG 2019-05-04 20:30:04,137 BasicResourcePool.java decrementPendingAcquires  decremented pending_acquires: 4
+DEBUG 2019-05-04 20:30:04,141 GooGooStatementCache.java checkinAll  checkinAll(): com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 0; checked out: 0; num connections: 0; num keys: 0
+DEBUG 2019-05-04 20:30:04,141 C3P0PooledConnectionPool.java acquireResource  com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager@c6dfbcb.acquireResource() returning. 
+DEBUG 2019-05-04 20:30:04,141 BasicResourcePool.java trace  trace com.mchange.v2.resourcepool.BasicResourcePool@bd8db5a [managed: 7, unused: 6, excluded: 0] (e.g. com.mchange.v2.c3p0.impl.NewPooledConnection@30a381a4)
+DEBUG 2019-05-04 20:30:04,141 BasicResourcePool.java decrementPendingAcquires  decremented pending_acquires: 3
+DEBUG 2019-05-04 20:30:04,142 GooGooStatementCache.java checkinAll  checkinAll(): com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 0; checked out: 0; num connections: 0; num keys: 0
+DEBUG 2019-05-04 20:30:04,142 C3P0PooledConnectionPool.java acquireResource  com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager@c6dfbcb.acquireResource() returning. 
+DEBUG 2019-05-04 20:30:04,142 BasicResourcePool.java trace  trace com.mchange.v2.resourcepool.BasicResourcePool@bd8db5a [managed: 8, unused: 7, excluded: 0] (e.g. com.mchange.v2.c3p0.impl.NewPooledConnection@30a381a4)
+DEBUG 2019-05-04 20:30:04,142 GooGooStatementCache.java checkinAll  checkinAll(): com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 0; checked out: 0; num connections: 0; num keys: 0
+DEBUG 2019-05-04 20:30:04,142 BasicResourcePool.java decrementPendingAcquires  decremented pending_acquires: 2
+DEBUG 2019-05-04 20:30:04,142 C3P0PooledConnectionPool.java acquireResource  com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager@c6dfbcb.acquireResource() returning. 
+DEBUG 2019-05-04 20:30:04,143 BasicResourcePool.java trace  trace com.mchange.v2.resourcepool.BasicResourcePool@bd8db5a [managed: 9, unused: 8, excluded: 0] (e.g. com.mchange.v2.c3p0.impl.NewPooledConnection@30a381a4)
+DEBUG 2019-05-04 20:30:04,143 BasicResourcePool.java decrementPendingAcquires  decremented pending_acquires: 1
+DEBUG 2019-05-04 20:30:04,147 GooGooStatementCache.java checkinAll  checkinAll(): com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 0; checked out: 0; num connections: 0; num keys: 0
+DEBUG 2019-05-04 20:30:04,147 C3P0PooledConnectionPool.java acquireResource  com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager@c6dfbcb.acquireResource() returning. 
+DEBUG 2019-05-04 20:30:04,147 BasicResourcePool.java trace  trace com.mchange.v2.resourcepool.BasicResourcePool@bd8db5a [managed: 10, unused: 9, excluded: 0] (e.g. com.mchange.v2.c3p0.impl.NewPooledConnection@30a381a4)
+DEBUG 2019-05-04 20:30:04,147 BasicResourcePool.java decrementPendingAcquires  decremented pending_acquires: 0
+DEBUG 2019-05-04 20:30:04,153 GooGooStatementCache.java assimilateNewCheckedOutStatement  cxnStmtMgr.statementSet( com.mysql.jdbc.JDBC4Connection@25449c41 ).size(): 1
+DEBUG 2019-05-04 20:30:04,153 GooGooStatementCache.java checkoutStatement  checkoutStatement: com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 1; checked out: 1; num connections: 1; num keys: 1
+DEBUG 2019-05-04 20:30:04,281 GooGooStatementCache.java checkinStatement  checkinStatement(): com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 1; checked out: 0; num connections: 1; num keys: 1
+DEBUG 2019-05-04 20:30:04,281 GooGooStatementCache.java checkinAll  checkinAll(): com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 1; checked out: 0; num connections: 1; num keys: 1
+DEBUG 2019-05-04 20:30:04,281 BasicResourcePool.java trace  trace com.mchange.v2.resourcepool.BasicResourcePool@bd8db5a [managed: 10, unused: 9, excluded: 0] (e.g. com.mchange.v2.c3p0.impl.NewPooledConnection@30a381a4)
+DEBUG 2019-05-04 20:30:04,281 GooGooStatementCache.java checkinAll  checkinAll(): com.mchange.v2.c3p0.stmt.GlobalMaxOnlyStatementCache stats -- total size: 1; checked out: 0; num connections: 1; num keys: 1
+DEBUG 2019-05-04 20:30:04,281 C3P0PooledConnectionPool.java finerLoggingTestPooledConnection  Testing PooledConnection [com.mchange.v2.c3p0.impl.NewPooledConnection@30a381a4] on CHECKIN.

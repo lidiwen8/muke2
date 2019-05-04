@@ -760,6 +760,11 @@ public class UserMessageServlet extends HttpServlet {
     @OnMessage
     public void onMessage(String message, Session session){
         if(message.equals("ping")){
+            try {
+                session.getBasicRemote().sendText("pong");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }else{
 //            System.out.println("Message from " + session.getId() + ": " + message);
         }
@@ -773,7 +778,8 @@ public class UserMessageServlet extends HttpServlet {
      */
     @OnClose
     public void onClose(Session session){
-        webSocketSet.remove(this);  //从set中删除
+          this.session=session;
+          webSocketSet.remove(this);  //从set中删除
 //        System.out.println("Session " +session.getId()+" has closed!");
     }
 

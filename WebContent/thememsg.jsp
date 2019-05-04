@@ -88,6 +88,7 @@
         var websocket = null;
         var wsUrl = "ws://<%=basePath2%>/websocket";
         var lockReconnect = false;  //避免ws重复连接
+        var reconnectcount = 0;
         createWebSocket(wsUrl);   //连接ws
         //判断当前浏览器是否支持WebSocket
         function createWebSocket(wsUrl) {
@@ -143,8 +144,13 @@
         function reconnect(wsUrl) {
             if(lockReconnect) return;
             lockReconnect = true;
+            if(reconnectcount>=10){
+                websocket.close();//重连超过10次共30秒自动放弃连接请求
+                return;
+            }
             setTimeout(function () {     //没连接上会一直重连，设置延迟避免请求过多
                 createWebSocket(wsUrl);
+                reconnectcount++;
                 lockReconnect = false;
             }, 3000);
         }
