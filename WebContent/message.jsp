@@ -144,6 +144,10 @@
                     "pageNum": pageNum
                 },
                 function (data) {
+                    if (data.res == -1) {
+                        alert("未登录！");
+                    }else {
+
                     $('.emoji').emoji();
                     $.each(data.reply.data, function (index, element) {
                         var reply = $(".template").clone();
@@ -210,8 +214,10 @@
                         $("#loadmore").attr("disabled", "disabled");
                         $('.emoji').emoji();
                     }
+                }
                 }, "json");
             $('.emoji').emoji();
+
         }
 
         //传入时间戳单位秒
@@ -341,7 +347,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (data.res == 1) {
-                        location.reload();//重新加载页面
+                        // location.reload();//重新加载页面
                     } else {
                         alert(data.info);
                     }
@@ -639,6 +645,8 @@
     <div class="row">
         <div class="col-sm-12">
             <br/>
+            <c:choose>
+            <c:when test="${sessionScope.user!= null ||sessionScope.admin!=null }">
             <button id="loadmore" type="button" class="btn btn-default btn-lg btn-block"
                     onclick="javascript:getReply();" disabled="disabled">加载更多...
                 <br/>
@@ -646,6 +654,13 @@
                 <%--<script type="text/javascript" charset="utf-8" src="https://changyan.itc.cn/js/lib/jquery.js"></script>--%>
                 <%--<script type="text/javascript" charset="utf-8" src="https://changyan.sohu.com/js/changyan.labs.https.js?appid=cytLOVtYY"></script>--%>
             </button>
+            </c:when>
+            <c:otherwise>
+                <button id="loadmore" type="button" class="btn btn-default btn-lg btn-block" data-toggle="modal"
+                        onclick="alert('请先登录！登陆后查看更多内容')" disabled="disabled">登录后查看更多！
+                </button>
+            </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </div>

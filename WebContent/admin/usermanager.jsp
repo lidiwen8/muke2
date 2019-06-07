@@ -46,6 +46,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						user.removeClass("template");
 						user.find(".num").text(index+1);
 						user.find(".name").text(userItem.username);
+						user.find(".name").attr("onclik", "jumpUsercenter("+userItem.username+")");
+                        user.find(".name").css("cursor","pointer");
 						user.find(".realname").text(userItem.realname);
 						user.find(".name").text(userItem.username);
 						user.find(".sex").text(userItem.sex);
@@ -81,6 +83,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
 		});
 	}
+	function jumpUsercenter(username) {
+        window.location.href="user.jsp?username="+username;
+    }
 	function deleteUser(userid) {
         if (confirm("确认禁用吗？")) {
             $.ajax({

@@ -1,7 +1,6 @@
 package com.muke.filter;
 
 
-
 import com.muke.util.XssHttpServletRequestWraper;
 
 import java.io.IOException;
@@ -21,9 +20,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
 
-@WebFilter(filterName="XssFilter",urlPatterns = {"/*"})
+@WebFilter(filterName = "XssFilter", urlPatterns = {"/*"})
 public class XssFilter implements Filter {
-
 
 
     @Override
@@ -31,9 +29,7 @@ public class XssFilter implements Filter {
     public void destroy() {
 
 
-
     }
-
 
 
     @Override
@@ -41,13 +37,11 @@ public class XssFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
 
                          FilterChain chain) throws IOException, ServletException {
-
         chain.doFilter(new XssHttpServletRequestWraper(
 
-                (HttpServletRequest)request), response);//对request和response进行过滤
+                (HttpServletRequest) request), response);//对request和response进行过滤
 
     }
-
 
 
     @Override
@@ -55,9 +49,7 @@ public class XssFilter implements Filter {
     public void init(FilterConfig arg0) throws ServletException {
 
 
-
     }
-
 
 
 }

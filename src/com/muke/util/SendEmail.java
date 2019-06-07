@@ -65,7 +65,6 @@ public class SendEmail {
         return msg;
     }
 
-
     public static boolean sslSend(MessageEmail msg1)
             throws MessagingException, IOException {
 //        long startTime = System.currentTimeMillis();

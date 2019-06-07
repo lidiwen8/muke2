@@ -127,6 +127,11 @@
         window.onbeforeunload = function () {
             closeWebSocket();
         }
+
+        $(window).on('beforeunload unload', function() {
+            closeWebSocket();
+        });
+
         //将消息显示在网页上
         function setMessageInnerHTML(innerHTML) {
             $('message').innerHTML += innerHTML + '<br/>';

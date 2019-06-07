@@ -780,6 +780,11 @@ public class UserMessageServlet extends HttpServlet {
     public void onClose(Session session){
           this.session=session;
           webSocketSet.remove(this);  //从set中删除
+          try {
+            session.close();
+         } catch (IOException e) {
+            e.printStackTrace();
+        }
 //        System.out.println("Session " +session.getId()+" has closed!");
     }
 

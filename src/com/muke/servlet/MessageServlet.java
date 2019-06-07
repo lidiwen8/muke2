@@ -66,11 +66,10 @@ public class MessageServlet extends HttpServlet {
                 response.getWriter().print("{\"res\":-1,\"message\":\"该帖子不存在！\"}");
                 return;
             }
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             response.getWriter().print("{\"res\":-1,\"message\":\"该帖子不存在！\"}");
             return;
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             response.getWriter().print("{\"res\":-1,\"message\":\"该帖子不存在！\"}");
             return;
         }
@@ -118,13 +117,33 @@ public class MessageServlet extends HttpServlet {
         if (pageNum == null || pageNum.equals("")) {
             pageNum = "1";
         }
-        String msgId = request.getParameter("msgId");
-        Page page = new Page();
-        page.setCurPage(Integer.parseInt(pageNum));
-        page = iReplyService.getReply(Integer.parseInt(msgId), page);
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        String json = gson.toJson(page);
-        response.getWriter().print("{\"reply\":" + json + "}");
+        if (request.getSession().getAttribute("user")!=null||request.getSession().getAttribute("admin")!=null) {
+//            if(request.getSession().getAttribute("user")!=null||request.getSession().getAttribute("admin")!=null){
+                String msgId = request.getParameter("msgId");
+                Page page = new Page();
+                page.setCurPage(Integer.parseInt(pageNum));
+                page = iReplyService.getReply(Integer.parseInt(msgId), page);
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                String json = gson.toJson(page);
+                response.getWriter().print("{\"res\":1,\"reply\":" + json + "}");
+//            }else {
+//                response.getWriter().print("{\"res\":-1,\"message\":未登录！}");
+//                return;
+//            }
+        }else {
+            if(Integer.parseInt(pageNum)>1){
+                response.getWriter().print("{\"res\":-1,\"message\":未登录！}");
+                return;
+            }
+            String msgId = request.getParameter("msgId");
+            Page page = new Page();
+            page.setPageNumber(1);
+            page.setCurPage(Integer.parseInt(pageNum));
+            page = iReplyService.getReply(Integer.parseInt(msgId), page);
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            String json = gson.toJson(page);
+            response.getWriter().print("{\"reply\":" + json + "}");
+        }
     }
 
     //查询其它用户发表的帖子信息而且没有被自屏的
