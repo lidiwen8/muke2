@@ -469,6 +469,10 @@ public class UserMessageServlet extends HttpServlet {
         reply.setReplyid(replyid);
         try {
             User user = (User) session.getAttribute("user");
+            if(iReplyService.queryid(replyid).getUserid()==user.getUserid()){
+                response.getWriter().print("{\"res\":-1,\"info\":\"您不能对自己的回帖进行点赞！\"}");
+                return;
+            }
             List list = iReplyService.getReplylikeUserid(replyid);
             String likeuserid = list.get(0).toString().substring(12, list.get(0).toString().length() - 1);
             if (!(likeuserid.equals("null") || likeuserid.equals(""))) {
@@ -559,6 +563,10 @@ public class UserMessageServlet extends HttpServlet {
         message.setMsgid(msgid);
         try {
             User user = (User) session.getAttribute("user");
+            if(messageservice.getMsgNoincreaseCount(msgid).getUserid()==user.getUserid()){
+                response.getWriter().print("{\"res\":-1,\"info\":\"您不能对自己的帖子进行点赞！\"}");
+                return;
+            }
             List list = messageservice.getMessagelikeUserid(msgid);
             String likeuserid = list.get(0).toString().substring(12, list.get(0).toString().length() - 1);
             if (!(likeuserid.equals("null") || likeuserid.equals(""))) {

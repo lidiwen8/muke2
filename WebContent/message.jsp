@@ -83,6 +83,27 @@
         var userid;
         $(function () {
             getMsg();//查询帖子详细信息
+            $("#report_message").keyup(function(){
+                var len = $(this).val().length;
+                if(len > 199){
+                    $(this).val($(this).val().substring(0,200));
+                    $("#checklen").text(0);
+                }
+                var num = 200 - len;
+
+                if(num<0){
+                    $("#checklen").text(0);
+                }else{
+                    $("#checklen").text(num);
+                }
+            });
+
+            $('#report').on('hidden.bs.modal', function (){
+                document.getElementById("form_report").reset();
+                $('#report_other').css('display','none');
+                $('#report_msg').css('display','none');
+                $("#checklen").text(200);
+            });
         });
 
         function getMsg() {
@@ -127,6 +148,12 @@
                             msg.find(".relname").attr("href", "user.jsp?username=" + message.username);
                             msg.find(".relname").text(message.realname);
                         }
+                        <c:if test="${sessionScope.user!= null}">
+                        if ($("#userid").val() != message.userid) {
+                            msg.find(".showWindow").attr("onclick", "showWindow(" + -1 + "," + message.msgid+ ")");
+                            msg.find(".reportButton").attr("style", "display:block;");
+                        }
+                        </c:if>
                         msg.find(".likecount").text("("+message.likecount+")");
                         msg.find(".zan").attr("onclick", "messagezan(" + message.msgid + "," + message.likecount + ")");
                         $("#msgList").append(msg);
@@ -176,6 +203,9 @@
                             reply.find(".edit2").attr("style", "display:block;");
                             reply.find(".delete_btn").attr("onclick", "deleteReply(" + this.replyid + ",'" + this.replytime + "')");
                             reply.find(".delete_btn").attr("style", "display:block;");
+                        }else {
+                            reply.find(".showWindow").attr("onclick", "showWindow(" + this.replyid + "," + this.msgid+ ")");
+                            reply.find(".reportButton").attr("style", "display:block;");
                         }
                         </c:if>
                         </c:if>
@@ -338,6 +368,20 @@
             });
         }
 
+        function showWindow(replyid,msgid) {
+            if(replyid!=-1){
+                $("#reportSubmit").attr("onclick", "reportReply(" + replyid + "," + msgid+ ")");
+            }else {
+                $("#reportSubmit").attr("onclick", "reportMsg(" + msgid+ ")");
+            }
+        }
+        function reportMsg(msgid) {
+            alert("举报成功，我们会尽快处理！");
+        }
+        function reportReply(replyid,msgid) {
+            alert("举报成功，我们会尽快处理！");
+        }
+
         function messagezan(msgid, likecount) {
             $.ajax({
                 url: "user/userMessageServlet",
@@ -436,6 +480,10 @@
             ;
         }
 
+        function openReportMsg() {
+            $('#report_other').css('display','block');
+            $('#report_msg').css('display','block');
+        }
         function collection(){
             $.get("user/userCenterServlet",
                 {
@@ -629,6 +677,20 @@
                                                              style="height:17px; width:17px" title=""/>&nbsp;点赞&nbsp;
                         <span class="likecount"></span>
                     </button>
+                    <c:if test="${sessionScope.user == null}">
+                        <p style="display: block">
+                            <a href="javascript:;" id="mgc_post_15215922" onmouseover="showMenu(this.id)" class="showmenu" style="display: none;"></a>
+                            <a href="javascript:;" data-toggle="modal"
+                               onclick="alert('请先登录！')">举报</a>
+                        </p>
+                    </c:if>
+                    <c:if test="${sessionScope.user != null}">
+                        <p style="display: none" class="reportButton">
+                            <a href="javascript:;" id="mgc_post" onmouseover="showMenu(this.id)" class="showmenu" style="display: none;"></a>
+                            <a href="javascript:;" class="showWindow" data-toggle="modal"
+                               data-target="#report">举报</a>
+                        </p>
+                    </c:if>
                 </div>
                 <div class="biaoti"></div>
                 <script type="text/javascript">
@@ -725,6 +787,69 @@
                     </form>
                 </div>
                 <div class="modal-footer">
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="report" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modalcenter">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="关闭">&times;</button>
+                    <h4 class="modal-title" id="reportLabel">举报</h4>
+                    <table cellpadding="0" cellspacing="0" class="fwin">
+                        <tbody><tr><td class="t_l"></td><td class="t_c" style="cursor:move" onmousedown="dragMenu($('fwin_miscreport15215922'), event, 1)" ondblclick="hideWindow('miscreport15215922')"></td><td class="t_r"></td></tr><tr><td class="m_l" style="cursor:move" onmousedown="dragMenu($('fwin_miscreport15215922'), event, 1)" ondblclick="hideWindow('miscreport15215922')" )"="">&nbsp;&nbsp;</td><td class="m_c" id="fwin_content_miscreport15215922" fwin="miscreport15215922" style="">
+                            <h3 class="flb" id="fctrl_miscreport15215922" style="cursor: move;">
+                            </h3>
+                            <script type="text/javascript" reload="1">
+                                var reasons = ['广告垃圾','违规内容','恶意灌水','重复发帖','其他'];
+                                var reasonstring = '';
+                                for (i=0; i<reasons.length; i++) {
+                                    reasonstring += '<label><input type="radio" name="report_select" class="pr" onclick="$(\'report_other\').style.display=\'' + (i < reasons.length -1 ? 'none' : '') + '\';$(\'report_msg\').style.display=\'' + (i < reasons.length -1 ? 'none' : '') + '\'" value="' + reasons[i] + '"> ' + reasons[i] + '</label><br />';
+                                }
+                                $('report_reasons').innerHTML = reasonstring;
+                            </script>
+                        </td>
+                            <td class="m_r" style="cursor:move" onmousedown="dragMenu($('fwin_miscreport15215922'), event, 1)" ondblclick="hideWindow('miscreport15215922')">
+                        </tr>
+                        <tr>
+                            <td class="b_l"></td><td class="b_c" style="cursor:move" onmousedown="dragMenu($('fwin_miscreport15215922'), event, 1)" ondblclick="hideWindow('miscreport15215922')"></td><td class="b_r">
+                        </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-body">
+                    <form style="width:28em" method="post" autocomplete="off" id="form_report" name="form_miscreport15215922" action="misc.php?mod=report" onsubmit="if(!$('report_message').value) return false;ajaxpost(this.id, 'form_miscreport15215922');" fwin="miscreport15215922">
+                        <div class="reason_slct c" id="return_miscreport15215922" fwin="miscreport15215922">
+                            <p>请点击举报理由</p>
+                            <p class="mtn mbn" id="report_reasons" fwin="miscreport15215922"><label style="cursor: pointer"><input type="radio" name="report_select" class="pr" onclick="$('#report_other').css('display','none');$('#report_msg').css('display','none')" value="广告垃圾"> 广告垃圾</label><br><label style="cursor: pointer"><input type="radio" name="report_select" class="pr" onclick="$('#report_other').css('display','none');$('#report_msg').css('display','none')" value="违规内容"> 违规内容</label><br><label style="cursor: pointer"><input type="radio" name="report_select" class="pr" onclick="$('#report_other').css('display','none');$('#report_msg').css('display','none')" value="恶意灌水"> 恶意灌水</label><br><label style="cursor: pointer"><input type="radio" name="report_select" class="pr" onclick="$('#report_other').css('display','none');$('#report_msg').css('display','none')" value="重复发帖"> 重复发帖</label><br><label style="cursor: pointer"><input type="radio" name="report_select" class="pr" onclick="openReportMsg()" value="其他"> 其他</label><br></p>
+                            <div id="report_other" style="display:none;" fwin="miscreport15215922">
+                                <textarea placeholder="请填写举报内容" style="margin: 0px; width: 557px; height: 101px;" id="report_message" name="message" class="reasonarea pt mtn xg1" onfocus="this.innerHTML='';this.focus=null;this.className='reasonarea pt mtn'" onkeydown="ctrlEnter(event, 'reportsubmit', 1);" rows="4" fwin="miscreport15215922">请填写举报内容</textarea>
+                            </div>
+                        </div>
+                        <p class="o pns">
+                            <span id="report_msg" style="display:none" fwin="miscreport15215922"><span class="z">还可输入 <strong id="checklen" fwin="miscreport15215922">200</strong> 个字符</span></span>
+                        </p>
+                        <input type="hidden" name="referer" value="http://bbs.koolearn.com/forum.php?mod=viewthread&amp;tid=5666348">
+                        <input type="hidden" name="reportsubmit" value="true">
+                        <input type="hidden" name="rtype" value="post">
+                        <input type="hidden" name="rid" value="15215922">
+                        <input type="hidden" name="fid" value="100581">
+                        <input type="hidden" name="url" value="">
+                        <input type="hidden" name="inajax" value="1">
+                        <input type="hidden" name="handlekey" value="miscreport15215922"><input type="hidden" name="formhash" value="2ea33424">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-right">
+                        <span class="glyhicon"></span>
+                        <p></p>
+                        <button class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button class="btn btn-primary" id="reportSubmit" data-dismiss="modal">确定</button>
+                    </div>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
