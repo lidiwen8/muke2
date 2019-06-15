@@ -386,6 +386,10 @@
                         error('请填写举报内容!', 'sendReportMsg', true, 3000);
                         return;
                     }
+                    if(report_message=="请填写举报内容"){
+                        error('请填写举报内容!', 'sendReportMsg', true, 3000);
+                        return;
+                    }
                     if(report_message.trim().length<5){
                         error('请输入至少五个字', 'sendReportMsg', true, 3000);
                         return;
