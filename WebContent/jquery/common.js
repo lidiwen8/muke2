@@ -142,6 +142,7 @@ function error(msg, id, disappear, disTime) {
     dom.html(msg);
     // dom.css('background-color', 'red');
     dom.css('color', 'red');
+    dom.css('display', 'block');
     if (msg === '')
         dom.css('padding', '4px 0');
 

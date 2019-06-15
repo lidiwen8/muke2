@@ -248,6 +248,9 @@
                                 alert(data.info);
                                 captchaObj.reset();
                             }
+                        },
+                        error: function () {
+                            window.location.href = "login.jsp";
                         }
                     })
                 }
