@@ -61,10 +61,24 @@ public class UserReportServlet extends HttpServlet {
                 response.getWriter().print("{\"res\": -1, \"info\":\"举报失败,你不可以举报自己发布的帖子！\"}");
                 return;
             }
+            if(iUserRportService.queryBymsgid(Integer.parseInt(msgid),user.getUserid())==1){
+                response.getWriter().print("{\"res\": -1, \"info\":\"该主帖已有用户举报，正在处理中，谢谢您的参与！\"}");
+                return;
+            }else if(iUserRportService.queryBymsgid(Integer.parseInt(msgid),user.getUserid())==2){
+                response.getWriter().print("{\"res\": -1, \"info\":\"该主帖你在之前已经举报过了，正在处理中，谢谢您的参与！\"}");
+                return;
+            }
             report.setReportType("帖子举报");
         }else {
             if(iReplyService.queryid(Integer.parseInt(replyid)).getUserid()==user.getUserid()){
                 response.getWriter().print("{\"res\": -1, \"info\":\"举报失败,你不可以举报自己回复的内容！\"}");
+                return;
+            }
+            if(iUserRportService.queryByreplyid(Integer.parseInt(replyid),user.getUserid())==1){
+                response.getWriter().print("{\"res\": -1, \"info\":\"该回复已有用户举报，正在处理中，谢谢您的参与！\"}");
+                return;
+            }else if(iUserRportService.queryByreplyid(Integer.parseInt(replyid),user.getUserid())==2){
+                response.getWriter().print("{\"res\": -1, \"info\":\"该回复你在之前已经举报过了，正在处理中，谢谢您的参与！\"}");
                 return;
             }
             report.setReportType("回复举报");

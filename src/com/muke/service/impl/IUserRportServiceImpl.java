@@ -24,6 +24,16 @@ public class IUserRportServiceImpl implements IUserRportService {
     }
 
     @Override
+    public int queryByreplyid(int replyid,int uid) {
+        return reportdao.queryByreplyid(replyid,uid);
+    }
+
+    @Override
+    public int queryBymsgid(int msgid,int uid) {
+        return reportdao.queryBymsgid(msgid,uid);
+    }
+
+    @Override
     public Page queryRport(Page page) {
         return reportdao.queryRport(page);
     }

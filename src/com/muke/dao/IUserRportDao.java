@@ -13,5 +13,9 @@ public interface IUserRportDao {
 
     int changeState(int reid,int state);
 
+    int queryByreplyid(int replyid,int uid);
+
+    int queryBymsgid(int msgid,int uid);
+
     Page queryRport(Page page);
 }

@@ -5,6 +5,8 @@ import com.muke.pojo.Report;
 import com.muke.util.DBUtil;
 import com.muke.util.Page;
 
+import java.util.Map;
+
 
 /**
  * @Auther: lidiwen
@@ -44,6 +46,58 @@ public class UserRportDaoImpl implements IUserRportDao {
             e.printStackTrace();
         }
         return rs;
+    }
+
+    @Override
+    public int queryByreplyid(int replyid, int uid) {
+        String sql = "SELECT count(reid) AS count FROM report WHERE uid=? and replyid=?";
+        String sql2 = "SELECT count(reid) AS count FROM report WHERE replyid=?";
+        Object[] params = {uid,replyid};
+        Map map = null;
+        try {
+            map = dbutil.getObject(sql, params);
+            if((long)map.get("count")>0)
+            {
+                return 2;
+            }else {
+                Object[] params2 = {replyid};
+                map = dbutil.getObject(sql2, params2);
+                if((long)map.get("count")>0){
+                    return 1;
+                }else {
+                    return 0;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
+    public int queryBymsgid(int msgid, int uid) {
+        String sql = "SELECT count(reid) AS count FROM report WHERE uid=? and msgid=?";
+        String sql2 = "SELECT count(reid) AS count FROM report WHERE msgid=?";
+        Object[] params = {uid,msgid};
+        Map map = null;
+        try {
+            map = dbutil.getObject(sql, params);
+            if((long)map.get("count")>0)
+            {
+                return 2;
+            }else {
+                Object[] params2 = {msgid};
+                map = dbutil.getObject(sql2, params2);
+                if((long)map.get("count")>0){
+                    return 1;
+                }else {
+                    return 0;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     @Override

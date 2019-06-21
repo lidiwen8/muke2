@@ -5,6 +5,7 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
     String basePath2 = request.getServerName() + ":" + request.getServerPort() + path;
+    String basePath3 = request.getScheme() + "://" + request.getServerName() + path + "/";
 %>
 <%
     String msgId = request.getParameter("msgid");
@@ -104,6 +105,11 @@
                 $('#report_other').css('display','none');
                 $('#report_msg').css('display','none');
                 $("#checklen").text(200);
+            });
+
+            $('#report').on('show.bs.modal', function (e) {
+                $('#ReportType').text("回复");
+                $('#ReportLink').text("<%=basePath3%>message.jsp?msgid="+msgId);
             });
         });
 
@@ -866,10 +872,22 @@
                 <div class="modal-body">
                     <form style="width:28em" method="post" autocomplete="off" id="form_report" name="form_miscreport15215922" onsubmit="if(!$('report_message').value) return false;ajaxpost(this.id, 'form_miscreport15215922');" fwin="miscreport15215922">
                         <div class="reason_slct c" id="return_miscreport15215922" fwin="miscreport15215922">
+                            <tbody>
+                            <tr>
+                                <th><span style="font-weight: 400;font-size: 14px;color: #999;">类型:&nbsp;</span></th>
+                                <span id="ReportType"></span>
+                            </tr>
+                           <p></p>
+                            <tr>
+                                <th><span style="font-weight: 400;font-size: 14px;color: #999;">链接:&nbsp;</span></th>
+                                <span id="ReportLink"></span>
+                            </tr>
+                            <p></p>
+                            </tbody>
                             <p>请点击举报理由</p>
                             <p class="mtn mbn" id="report_reasons" fwin="miscreport15215922"><label style="cursor: pointer"><input type="radio" name="report_select" class="pr" onclick="$('#report_other').css('display','none');$('#report_msg').css('display','none')" value="广告垃圾"> 广告垃圾</label><br><label style="cursor: pointer"><input type="radio" name="report_select" class="pr" onclick="$('#report_other').css('display','none');$('#report_msg').css('display','none')" value="违规内容"> 违规内容</label><br><label style="cursor: pointer"><input type="radio" name="report_select" class="pr" onclick="$('#report_other').css('display','none');$('#report_msg').css('display','none')" value="恶意灌水"> 恶意灌水</label><br><label style="cursor: pointer"><input type="radio" name="report_select" class="pr" onclick="$('#report_other').css('display','none');$('#report_msg').css('display','none')" value="重复发帖"> 重复发帖</label><br><label style="cursor: pointer"><input type="radio" name="report_select" class="pr" onclick="openReportMsg()" value="其他"> 其他</label><br></p>
-                            <div id="report_other" style="display:none;" fwin="miscreport15215922">
-                                <textarea placeholder="请填写举报内容" style="margin: 0px; width: 557px; height: 101px;" id="report_message" name="message" class="reasonarea pt mtn xg1" onfocus="this.innerHTML='';this.focus=null;this.className='reasonarea pt mtn'" onkeydown="ctrlEnter(event, 'reportsubmit', 1);" rows="4" fwin="miscreport15215922"></textarea>
+                            <div class="panel-body" id="report_other" style="display:none;" fwin="miscreport15215922">
+                                <textarea placeholder="请填写举报内容" rows="5" cols="0"  onpropertychange= "this.style.posHeight=this.scrollHeight " style="width: 100%; height: 101px;overflow: auto;word-break: break-all;resize: none;" id="report_message" name="message" class="form-control" onfocus="this.innerHTML='';this.focus=null;this.className='reasonarea pt mtn'" onkeydown="ctrlEnter(event, 'reportsubmit', 1);" rows="4" fwin="miscreport15215922"></textarea>
                             </div>
                         </div>
                         <p class="o pns">
