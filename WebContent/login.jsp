@@ -4,6 +4,7 @@
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+    String msgId = request.getParameter("msgid");
 %>
 <!DOCTYPE>
 <html>
@@ -203,6 +204,7 @@
         <input class="btn" id="submit" type="hidden" value="提交">
     </form>
     <script>
+        var msgId =${param.msgid};
         var handler2 = function (captchaObj) {
             $("#submit").click(function (e) {
                 var result = captchaObj.getValidate();
@@ -228,10 +230,18 @@
                         success: function (data) {
                             if (data.res == 1) {
                                 alert("登录成功");
-                                window.location.replace("");
+                                if(msgId!=null&&msgId!=""){
+                                    window.location.replace("<%=basePath%>message.jsp?msgid="+msgId);
+                                }else{
+                                    window.location.replace("");
+                                }
                             } else if (data.res == 2) {
                                 alert(data.info);
-                                window.location.replace("bindingmail.jsp");
+                                if(msgId!=null&&msgId!="") {
+                                    window.location.replace("bindingmail.jsp?msgid=" + msgId);
+                                }else {
+                                    window.location.replace("bindingmail.jsp");
+                                }
                             }
                             else if (data.res == 6) {
                                 $('#btnLogin').attr('disabled',false);

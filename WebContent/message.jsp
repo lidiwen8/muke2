@@ -168,7 +168,10 @@
                     }
                 }, "json");
         }
-
+        function getMore() {
+            alert('请先登录！登陆后查看更多内容');
+            window.location.replace("<%=basePath%>login.jsp?msgid="+msgId);
+        }
         function getReply() {
             // Ajax 获取回复信息
             $.get("messageServlet",
@@ -767,7 +770,7 @@
             </c:when>
             <c:otherwise>
                 <button id="loadmore" type="button" class="btn btn-default btn-lg btn-block" data-toggle="modal"
-                        onclick="alert('请先登录！登陆后查看更多内容')" disabled="disabled">登录后查看更多！
+                        onclick="getMore()" disabled="disabled">登录后查看更多！
                 </button>
             </c:otherwise>
             </c:choose>
@@ -879,8 +882,10 @@
                             </tr>
                            <p></p>
                             <tr>
-                                <th><span style="font-weight: 400;font-size: 14px;color: #999;">链接:&nbsp;</span></th>
-                                <span id="ReportLink"></span>
+                                <th><span style="font-weight: 400;font-size: 14px;color: #999;">链接:&nbsp;</span>
+                                    <span id="ReportLink"></span>
+                                </th>
+
                             </tr>
                             <p></p>
                             </tbody>
