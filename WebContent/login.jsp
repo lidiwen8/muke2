@@ -5,6 +5,9 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
     String msgId = request.getParameter("msgid");
+    if (msgId == null || msgId.equals("")) {
+        msgId = "-1";
+    }
 %>
 <!DOCTYPE>
 <html>
@@ -204,7 +207,7 @@
         <input class="btn" id="submit" type="hidden" value="提交">
     </form>
     <script>
-        var msgId =${param.msgid};
+        var msgId =<%=msgId%>;
         var handler2 = function (captchaObj) {
             $("#submit").click(function (e) {
                 var result = captchaObj.getValidate();
@@ -230,14 +233,14 @@
                         success: function (data) {
                             if (data.res == 1) {
                                 alert("登录成功");
-                                if(msgId!=null&&msgId!=""){
+                                if(msgId!="-1"){
                                     window.location.replace("<%=basePath%>message.jsp?msgid="+msgId);
                                 }else{
                                     window.location.replace("");
                                 }
                             } else if (data.res == 2) {
                                 alert(data.info);
-                                if(msgId!=null&&msgId!="") {
+                                if(msgId!="-1") {
                                     window.location.replace("bindingmail.jsp?msgid=" + msgId);
                                 }else {
                                     window.location.replace("bindingmail.jsp");

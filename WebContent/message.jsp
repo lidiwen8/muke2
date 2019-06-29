@@ -172,6 +172,25 @@
             alert('请先登录！登陆后查看更多内容');
             window.location.replace("<%=basePath%>login.jsp?msgid="+msgId);
         }
+        function loadscript(url, callback){
+            var script = document.createElement ("script")
+            script.type = "text/javascript";
+            if (script.readyState){
+                script.onreadystatechange = function(){
+                    if (script.readyState == "loaded" || script.readyState == "complete"){
+                        script.onreadystatechange = null;
+                        callback();
+                    }
+                };
+            } else {
+                script.onload = function(){
+                    callback();
+                };
+            }
+            script.src = url;
+            document.getElementsByTagName("head")[0].appendChild(script);
+        }
+
         function getReply() {
             // Ajax 获取回复信息
             $.get("messageServlet",
@@ -184,7 +203,6 @@
                     if (data.res == -1) {
                         alert("未登录！");
                     }else {
-
                     $('.emoji').emoji();
                     $.each(data.reply.data, function (index, element) {
                         var reply = $(".template").clone();
@@ -234,7 +252,13 @@
                         }
                         $('.emoji').emoji();
                         reply.find(".msgcontent").html(this.replycontents);//回复内容
-                        hljs.initHighlightingOnLoad();
+                        if(pageNum>1){
+                            loadscript("https://cdn.bootcss.com/highlight.js/8.0/highlight.min.js",function () {
+                                hljs.initHighlighting();
+                            });
+                        }else {
+                            hljs.initHighlightingOnLoad();
+                        }
                         reply.find(".biaoti").text("\uD83D\uDD90");
                         reply.find(".time").text(this.replyip + "•" + this.replytime);//IP和时间
                         reply.find(".likecount").text("("+this.likecount+")");
@@ -257,7 +281,6 @@
                 }
                 }, "json");
             $('.emoji').emoji();
-
         }
 
         //传入时间戳单位秒

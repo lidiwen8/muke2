@@ -5,6 +5,9 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
     String msgId = request.getParameter("msgid");
+    if (msgId == null || msgId.equals("")) {
+        msgId = "-1";
+    }
 %>
 <!DOCTYPE>
 <html>
@@ -88,7 +91,7 @@
                 }
             });
         }
-        var msgId =${param.msgid};
+        var msgId =<%=msgId%>;
         var InterValObj; //timer变量，控制时间
         var count = 50; //间隔函数，1秒执行
         var curCount;//当前剩余秒数
@@ -223,7 +226,7 @@
                         $('#submitbutton').text("绑定邮箱成功");
                         $("#submitbutton").attr({disabled: "disabled"});
                         apper("");
-                        if(msgId!=null||msgId!=""){
+                        if(msgId!="-1"){
                             window.location.replace("<%=basePath%>message.jsp?msgid="+msgId);
                         }else {
                             window.location.replace("index.jsp");
