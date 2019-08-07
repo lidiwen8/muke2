@@ -154,7 +154,7 @@ CKEDITOR.dialog.add( 'html5video', function( editor ) {
         },
         {
             id: 'Upload',
-            hidden: true,
+            hidden: false,
             filebrowser: 'uploadButton',
             label: editor.lang.html5video.upload,
             elements: [ {

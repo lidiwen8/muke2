@@ -25,6 +25,8 @@ public interface IReplyService {
      */
     Page getReply(int msgid, Page page);
 
+    Page getAuthorReply(int msgid,int userid, Page page);//只得到楼主回复
+
     //根据帖子id查询总回复数
     long queryReplyConutBymsgid(int msgid);
 

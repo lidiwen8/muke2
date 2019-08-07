@@ -13,6 +13,8 @@ CKEDITOR.plugins.setLang( 'html5video', 'zh-cn', {
     advisorytitle: 'Advisory title',
     yes: '是',
     no: '否',
+	loop: 'Loop?',
     responsive: '自动宽度',
     controls: '显示控件？'
+	poster: 'Thumbnail'
 } );

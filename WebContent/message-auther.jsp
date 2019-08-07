@@ -165,7 +165,7 @@
                         msg.find(".likecount").text("("+message.likecount+")");
                         msg.find(".zan").attr("onclick", "messagezan(" + message.msgid + "," + message.likecount + ")");
                         $("#msgList").append(msg);
-                        getReply();//查询帖子回复信息
+                        getAuthorReply();//查询帖子楼主的回复信息
                     }
                 }, "json");
         }
@@ -196,7 +196,7 @@
             // Ajax 获取回复信息
             $.get("messageServlet",
                 {
-                    "action": "getReply",
+                    "action": "getAuthorReply",
                     "msgId": msgId,//帖子ID
                     "pageNum": pageNum
                 },
@@ -272,7 +272,7 @@
 
                         if (parseInt(data.reply.totalPage) > parseInt(pageNum)) {
                             $("#loadmore").html("加载更多...");
-                            $("#loadmore1").attr("onclik", "getAuthorReply()");
+                            $("#loadmore").attr("onclik", "getAuthorReply()");
                             $("#loadmore").removeAttr("disabled");
                             $('.emoji').emoji();
 
@@ -492,6 +492,7 @@
                             alert(data.info);
                             CKEDITOR.instances.replycontent.setData("<p></br></P>");
                             // pageNum=data.LastPage;
+                            window.location.href = "message.jsp?msgid="+msgId;
                         } else if (data.res == -1) {
                             alert(data.info);
                         } else {
@@ -863,8 +864,8 @@
                 }, this.timeout)
             }
         }
-        function getAuth() {
-            window.location.href = "message-auther.jsp?msgid="+msgId;
+        function getAll() {
+            window.location.href = "message.jsp?msgid="+msgId;
         }
     </script>
 </head>
@@ -906,7 +907,7 @@
                 <c:if test="${sessionScope.user != null}">
                     <button type="button" class="btn btn-info" onclick="collection()">收藏</button>
                 </c:if>
-                <button type="button" class="btn btn-warning" onclick="getAuth()">只看楼主</button>
+                <button type="button" class="btn btn-warning" onclick="getAll()">查看全部</button>
             </div>
         </div>
     </div>

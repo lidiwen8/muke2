@@ -60,6 +60,7 @@ public class DESUtils {
 	public static void main(String[] args) {
 		System.out.println(getEncryptString("root"));
 		System.out.println(getEncryptString("fuzhengyu"));
+		System.out.println(getEncryptString("lidiwen8@"));
 		System.out.println(getEncryptString("1632029393@qq.com"));
 		System.out.println(getEncryptString("ghxxwuyinxxqcajf"));
 		System.out.println(getDecryptString("nb5wxK5LxdA="));

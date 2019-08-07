@@ -24,6 +24,8 @@ public interface IReplyDao {
      */
     Page queryBymsgid(int msgid, Page page);
 
+    Page getAuthorReply(int msgid, int userid, Page page);
+
     long queryReplyConutBymsgid(int msgid);
 
     /**

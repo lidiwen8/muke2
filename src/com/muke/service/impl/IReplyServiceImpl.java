@@ -25,6 +25,11 @@ public class IReplyServiceImpl implements IReplyService {
     }
 
     @Override
+    public Page getAuthorReply(int msgid, int userid, Page page){
+        return replydao.getAuthorReply(msgid,userid, page);
+    }
+
+    @Override
     public long queryReplyConutBymsgid(int msgid) {
         return replydao.queryReplyConutBymsgid(msgid);
     }

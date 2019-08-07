@@ -146,6 +146,41 @@ public class MessageServlet extends HttpServlet {
         }
     }
 
+
+    private void getAuthorReply(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String pageNum = request.getParameter("pageNum");
+        if (pageNum == null || pageNum.equals("")) {
+            pageNum = "1";
+        }
+        if (request.getSession().getAttribute("user")!=null||request.getSession().getAttribute("admin")!=null) {
+//            if(request.getSession().getAttribute("user")!=null||request.getSession().getAttribute("admin")!=null){
+            String msgId = request.getParameter("msgId");
+            Page page = new Page();
+            page.setCurPage(Integer.parseInt(pageNum));
+            page = iReplyService.getAuthorReply(Integer.parseInt(msgId),messageservice.getMsgNoincreaseCount(Integer.parseInt(msgId)).getUserid(), page);
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            String json = gson.toJson(page);
+            response.getWriter().print("{\"res\":1,\"reply\":" + json + "}");
+//            }else {
+//                response.getWriter().print("{\"res\":-1,\"message\":未登录！}");
+//                return;
+//            }
+        }else {
+            if(Integer.parseInt(pageNum)>1){
+                response.getWriter().print("{\"res\":-1,\"message\":未登录！}");
+                return;
+            }
+            String msgId = request.getParameter("msgId");
+            Page page = new Page();
+            page.setPageNumber(1);
+            page.setCurPage(Integer.parseInt(pageNum));
+            page = iReplyService.getAuthorReply(Integer.parseInt(msgId),messageservice.getMsgNoincreaseCount(Integer.parseInt(msgId)).getUserid(), page);
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            String json = gson.toJson(page);
+            response.getWriter().print("{\"reply\":" + json + "}");
+        }
+    }
+
     //查询其它用户发表的帖子信息而且没有被自屏的
     private void searchUserMsg(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pageNum = request.getParameter("pageNum");

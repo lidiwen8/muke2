@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts</output-path>
     <root id="archive" name="muke_Web.war">
       <element id="artifact" artifact-name="muke:Web exploded" />
+      <element id="artifact" artifact-name="unnamed" />
     </root>
   </artifact>
 </component>

@@ -173,10 +173,19 @@ public class UserMessageServlet extends HttpServlet {
             reply.setReplycontents(replycontent);
             reply.setReplyip(replyip);
             int rs = iReplyService.replyMsg(reply);
+            int relpycout= (int) iReplyService.queryReplyConutBymsgid(Integer.parseInt(msgId));
+            int page;
+            if(relpycout<=5){
+                page=1;
+            }else if(relpycout%5==0){
+                page=relpycout/5;
+            }else {
+                page=relpycout/5+1;
+            }
             if (rs > 0) {
                 //发送帖子更新的信号
-                sendMessage(msgId);
-                response.getWriter().print("{\"res\":1,\"info\":\"回帖成功\"}");
+                sendMessage("ReplyAdd"+msgId+","+page);
+                response.getWriter().print("{\"res\":1,\"info\":\"回帖成功\",\"LastPage\":"+page+"}");
             } else {
                 response.getWriter().print("{\"res\":-1,\"info\":\"回帖失败\"}");
             }
@@ -429,9 +438,18 @@ public class UserMessageServlet extends HttpServlet {
                 reply.setReplyupdatetime(System.currentTimeMillis());//修改时间
                 reply.setReplycontents(replycontent);
                 int rs = iReplyService.updateReply(reply);
+                int relpycout= (int) iReplyService.queryReplyConutBymsgid(reply.getMsgid());
+                int page;
+                if(relpycout<=5){
+                    page=1;
+                }else if(relpycout%5==0){
+                    page=relpycout/5;
+                }else {
+                    page=relpycout/5+1;
+                }
                 if (rs > 0) {
                     //发送更新信号
-                    sendMessage(reply.getMsgid()+"");
+                    sendMessage("ReplyUpdate"+reply.getMsgid()+","+page);
                     response.getWriter().print("{\"res\":1,\"info\":\"编辑回复信息成功\"}");
                 } else {
                     response.getWriter().print("{\"res\":-1,\"info\":\"编辑回复信息失败\"}");
@@ -657,9 +675,18 @@ public class UserMessageServlet extends HttpServlet {
                 if (userid == reply.getUserid()) {//只有本人才有资格删除自己的回复信息
                     int res = iReplyService.deleteReply(replyid);
                     int res2 = iCountService.updateReplyCount(reply.getMsgid());
+                    int relpycout= (int) iReplyService.queryReplyConutBymsgid(reply.getMsgid());
+                    int page;
+                    if(relpycout<=5){
+                        page=1;
+                    }else if(relpycout%5==0){
+                        page=relpycout/5;
+                    }else {
+                        page=relpycout/5+1;
+                    }
                     if (res == 1 && res2 == 1) {
                         //发送更新信号
-                        sendMessage(reply.getMsgid()+"");
+                        sendMessage("ReplyDelete"+reply.getMsgid()+","+page);
                         response.getWriter().print("{\"res\": 1, \"info\":\"删除成功!\"}");
                     } else {
                         response.getWriter().print("{\"res\": " + res + ", \"info\":\"删除失败!\"}");

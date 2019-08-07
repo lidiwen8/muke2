@@ -42,6 +42,20 @@ public class ReplyDaoImpl implements IReplyDao {
     }
 
     @Override
+    public Page getAuthorReply(int msgid, int userid, Page page) {
+        StringBuffer sBuffer = new StringBuffer();
+        sBuffer.append(" SELECT replyid,msgid,replycontents,replytime,replyip, ");
+        sBuffer.append(" u.userid,u.username,realname,sex,city,user_img,replyupdatetime,likecount  ");
+        sBuffer.append(" FROM reply r");
+        sBuffer.append(" INNER JOIN user u on r.userid=u.userid ");
+        sBuffer.append(" WHERE r.msgid=? and r.userid=? ");
+        sBuffer.append("ORDER BY replytime ");
+        Page resPage = null;
+        resPage = dbutil.getQueryPage(ReplyInfo.class, sBuffer.toString(), new Object[]{msgid,userid}, page);
+        return resPage;
+    }
+
+    @Override
     public long queryReplyConutBymsgid(int msgid) {
         String sql = "SELECT count(*) AS count FROM reply r INNER JOIN user u on r.userid=u.userid WHERE r.msgid=? ORDER BY replytime";
         Object[] params = {msgid};
