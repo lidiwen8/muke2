@@ -30,6 +30,9 @@ public interface IReplyService {
     //根据帖子id查询总回复数
     long queryReplyConutBymsgid(int msgid);
 
+    //根据帖子的回复时间查询该回复在数据库中是第几条记录
+    long queryReplyConutInTotalByreplytime(int msgid,Date replytime);
+
     long queryReplyCountByDate(Date startDate, Date endDate);    // 根据时间回贴数量
 
     long queryReplyCountBy();//回复总数

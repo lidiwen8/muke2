@@ -28,6 +28,8 @@ public interface IReplyDao {
 
     long queryReplyConutBymsgid(int msgid);
 
+    long queryReplyConutInTotalByreplytime(int msgid,Date replytime);
+
     /**
      * 根据时间查询回帖数量
      *

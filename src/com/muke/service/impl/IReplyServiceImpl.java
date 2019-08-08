@@ -35,6 +35,11 @@ public class IReplyServiceImpl implements IReplyService {
     }
 
     @Override
+    public long queryReplyConutInTotalByreplytime(int msgid,Date replytime){
+        return replydao.queryReplyConutInTotalByreplytime(msgid,replytime);
+    }
+
+    @Override
     public long queryReplyCountByDate(Date startDate, Date endDate) {
         return replydao.queryCountByDate(startDate, endDate);
     }
