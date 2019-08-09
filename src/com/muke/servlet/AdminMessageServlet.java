@@ -101,7 +101,7 @@ public class AdminMessageServlet extends HttpServlet {
 
         if (res == 1) {
             //发送更新信号
-            UserMessageServlet.sendMessage("add"+msgid);
+            UserMessageServlet.sendMessage("restore"+msgid);
             response.getWriter().print("{\"res\": 1, \"info\":\"恢复成功\"}");
         } else {
             response.getWriter().print("{\"res\": " + res + ", \"info\":\"恢复失败\"}");
@@ -121,7 +121,7 @@ public class AdminMessageServlet extends HttpServlet {
             int res = iMessageService.deleteMsg(finalMsgid);
             if (res == 1) {
                 //发送更新信号
-                UserMessageServlet.sendMessage("add"+msgid);
+                UserMessageServlet.sendMessage("delete"+msgid);
                 response.getWriter().print("{\"res\": 1, \"info\":\"删除成功\"}");
                 Thread t2 = new Thread(new Runnable() {
                     @Override

@@ -310,7 +310,7 @@ public class UserMessageServlet extends HttpServlet {
                 int res = messageservice.userdeleteMsg(finalMsgid);
                 if (res == 1) {
                     //发送更新信号
-                    sendMessage("add"+msgid);
+                    sendMessage("delete"+msgid);
                     response.getWriter().print("{\"res\": 1, \"info\":\"删除成功\"}");
                     if (count > 0) {
                         Thread t = new Thread(new Runnable() {
@@ -381,7 +381,7 @@ public class UserMessageServlet extends HttpServlet {
             int res = messageservice.restoreMsg(Integer.parseInt(msgid));
             if (res == 1) {
                 //发送更新信号
-                sendMessage("add"+msgid);
+                sendMessage("addrestore"+msgid);
                 response.getWriter().print("{\"res\": 1, \"info\":\"恢复成功\"}");
             } else {
                 response.getWriter().print("{\"res\": " + res + ", \"info\":\"恢复失败\"}");

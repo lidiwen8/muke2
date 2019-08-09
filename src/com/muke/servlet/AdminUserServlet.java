@@ -81,6 +81,8 @@ public class AdminUserServlet extends HttpServlet {
         int res = iUserService.deleteUser(Integer.parseInt(userid));
 
         if (res == 1) {
+            //发送更新信号
+            UserMessageServlet.sendMessage("deleteUser"+userid);
             response.getWriter().print("{\"res\": 1, \"info\":\"禁用成功\"}");
         } else {
             response.getWriter().print("{\"res\": " + res + ", \"info\":\"禁用失败\"}");

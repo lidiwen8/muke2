@@ -121,6 +121,7 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                 userid=message.userid;  
 		$(".title").html(message.msgtopic);//帖子标题
 		$(".badge").html(message.thename);//主题名称
+        $("#theid").val( message.theid);
 		var msg=$(".template").clone();//复制模版
 		msg.show();
 		msg.removeClass("template");
@@ -740,7 +741,7 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                             location.reload();
                         }
 
-                    }else if(event.data.split(",")[0]=="messagezan"+msgid){
+                    }else if(event.data.split(",")[0]=="messagezan"+msgId){
                         var userid=event.data.split(",")[1];
                         if($("#userid").val()==null||$("#userid").val()=='') {
                             var messagezan = confirm("最新通知：该帖子被其它用户点赞了，是否查看最新点赞w(゜Д゜)w");
@@ -769,7 +770,37 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                         <%--<c:if test="${sessionScope.user!= null&&sessionScope.user.userid==userid}">--%>
                         <%--location.reload();--%>
                         <%--</c:if>--%>
-                    }                
+                    } else if(event.data=="delete"+msgId||event.data=="addrestore"+msgId||event.data=="restore"+msgId)  {
+                        if(event.data=="addrestore"+msgId){
+                            var messageVary=confirm("该帖子已经被楼主恢复，是否选择查看最新w(゜Д゜)w");
+                            if(messageVary==true||messageVary==false){
+                                location.reload();
+                            }
+                        }else if(event.data=="restore"+msgId){
+                            var messageVary=confirm("最新通知：该帖子已经被管理员恢复查看，是否选择查看最新w(゜Д゜)w");
+                            if(messageVary==true||messageVary==false){
+                                location.reload();
+                            }
+                        } else {
+                            location.reload();
+                        }
+                    } else if(event.data=="editTheme"+$("#theid").val()||event.data=="deleteTheme"+$("#theid").val()){
+                        if(event.data=="editTheme"+$("#theid").val()) {
+                            var messageVary = confirm("该帖子主题已更新，是否选择查看最新w(゜Д゜)w");
+                            if (messageVary == true) {
+                                location.reload();
+                            }
+                        }else {
+                            location.reload();
+                        }
+                    }
+                    if(event.data=="deleteUser"+$("#userid").val()){
+                        var messageVary = confirm("最新通知：你的当前账号已被管理员禁用！");
+                        if (messageVary == true||messageVary==false) {
+                            logout();
+                        }
+                    }
+
             }
                 //连接关闭的回调方法
                 websocket.onclose = function () {
@@ -836,6 +867,21 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
         // var e=document.getElementById("toBottom");
         // e.scrollTop=e.scrollHeight;
 
+    }
+    function logout(){
+        // Ajax 异步请求退出登录
+        $.ajax({
+            url:"userServlet?action=logout",
+            type : "POST",
+            async : "true",
+            dataType : "json",
+            success : function(data) {
+                if (data.res == 1){
+                    alert("你已经被强制退出！");
+                    window.location.replace("login.jsp");
+                }
+            }
+        });
     }
 
 </script>
@@ -1096,6 +1142,7 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
 
 </c:if>
 <input type="hidden" id="userid" value="${sessionScope.user.userid}">
+    <input type="hidden" id="theid">
 <span id="message"></span>
  <div id="backUp" title="返回顶部" style="z-index: 9999; position: fixed ! important; right: 5px; bottom: 70px;cursor: pointer">
         <img src="upload/top.png" />

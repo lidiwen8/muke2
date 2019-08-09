@@ -97,7 +97,7 @@ public class AdminThemeServlet extends HttpServlet {
                 int result = themeService.update(theme);
                 if (result > 0) {
                     //发送更新信号
-                    UserMessageServlet.sendMessage("add");
+                    UserMessageServlet.sendMessage("editTheme"+theid);
                     response.getWriter().print("{\"res\":1,\"info\":\"编辑主题成功！\"}");
                 } else {
                     response.getWriter().print("{\"res\":-1,\"info\":\"编辑主题失败！\"}");
@@ -132,7 +132,7 @@ public class AdminThemeServlet extends HttpServlet {
             int result = themeService.delete(Integer.parseInt(theid));
             if (result > 0) {
                 //发送更新信号
-                UserMessageServlet.sendMessage("add");
+                UserMessageServlet.sendMessage("deleteTheme"+theid);
                 response.getWriter().print("{\"res\":1,\"info\":\"删除主题成功！\"}");
             } else {
                 response.getWriter().print("{\"res\":-1,\"info\":\"删除主题失败！\"}");
@@ -149,7 +149,7 @@ public class AdminThemeServlet extends HttpServlet {
         int result = themeService.delete(Integer.parseInt(theid));
         if (result > 0) {
             //发送更新信号
-            UserMessageServlet.sendMessage("add");
+            UserMessageServlet.sendMessage("deleteTheme"+theid);
             response.getWriter().print("{\"res\":1,\"info\":\"删除主题成功！\"}");
         } else {
             response.getWriter().print("{\"res\":-1,\"info\":\"删除主题失败！\"}");

@@ -113,6 +113,12 @@
                     if(event.data.indexOf("add")!=-1){
                         location.reload();
                     }
+                    if(event.data=="deleteUser"+$("#userid").val()){
+                        var messageVary = confirm("最新通知：你的当前账号已被管理员禁用！");
+                        if (messageVary == true||messageVary==false) {
+                            logout();
+                        }
+                    }
                 }
                 //连接关闭的回调方法
                 websocket.onclose = function () {
@@ -174,6 +180,21 @@
                     }, self.timeout)
                 }, this.timeout)
             }
+        }
+        function logout() {
+            // Ajax 异步请求退出登录
+            $.ajax({
+                url: "userServlet?action=logout",
+                type: "POST",
+                async: "true",
+                dataType: "json",
+                success: function (data) {
+                    if (data.res == 1) {
+                        alert("你已经被强制退出！");
+                        window.location.replace("login.jsp");
+                    }
+                }
+            });
         }
 
     </script>
@@ -237,6 +258,7 @@
     </div>
 </div>
 <span id="message"></span>
+<input type="hidden" id="userid" value="${sessionScope.user.userid}">
 <jsp:include flush="fasle" page="footer.jsp"/>
 </body>
 </html>
