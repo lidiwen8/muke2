@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%  
 String path = request.getContextPath();  
@@ -10,10 +10,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+<link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
 <link rel="stylesheet" href="css/site.css">
-<script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+<script src="https://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
 <title>爱之家网站管理后台</title>
 <script type="text/javascript">
 	$(function (){
@@ -65,7 +65,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </script>
 </head>
 <body>
-	<jsp:include flush="fasle" page="header.jsp" />
+	<jsp:include flush="true" page="header.jsp" />
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-offset-2 col-sm-8 text-center">
@@ -142,6 +142,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
 	</div>
-	<jsp:include flush="fasle" page="footer.jsp" />
+	<jsp:include flush="true" page="footer.jsp" />
 </body>
 </html>

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
@@ -11,10 +11,10 @@
     <base href="<%=basePath%>">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
     <link rel="stylesheet" href="css/site.css">
-    <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+    <script src="https://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="page/pagetool.js" type="text/javascript"></script>
     <title>爱之家网站管理后台</title>
     <script type="text/javascript">
@@ -39,8 +39,8 @@
                             var advise = $(".template").clone();
                             advise.show();
                             advise.removeClass("template");
-                            // advise.find(".num").text(index+1);
-                            advise.find(".id").text(adviseItem.id);
+                           // advise.find(".num").text(index+1);
+                            advise.find(".num").text(adviseItem.id);
                             advise.find(".description").text(adviseItem.description.substring(0,6)+"....");
                             advise.find(".description").attr("href", "admin/advisedetails.jsp?id="+adviseItem.id);
                             if(adviseItem.number!=null&&adviseItem.number!=""){
@@ -76,8 +76,7 @@
                 }
             });
         }
-
-        function searchAdvise(pageNum){
+       function searchAdvise(pageNum){
             var	key=$("#description").val();//搜索关键字
             $("#description").val("");
             $.ajax({
@@ -86,18 +85,16 @@
                 data:{"action":"searchAdvise","key":key,"pageNum":pageNum},
                 dataType:"json",
                 success:function(data) {
-                        if(data.advise.totalPage==0){
+                          if(data.advise.totalPage==0){
                             alert("暂时没有相关:“"+key+"”的内容！");
                         }
-
                         $(".list").empty();//清空建议信息
                         $(data.advise.data).each(function (index, adviseItem) {
                             var advise = $(".template").clone();
-                            advise.show();
                             /* theme.show();//显示模版 */
                             advise.removeClass("template");//移除样式
 
-                            advise.find(".id").text(adviseItem.id);
+                            advise.find(".num").text(adviseItem.id);
                             advise.find(".description").text(adviseItem.description.substring(0,6)+"....");
                             advise.find(".description").attr("href", "admin/advisedetails.jsp?id="+adviseItem.id);
                             if(adviseItem.number!=null&&adviseItem.number!=""){
@@ -108,7 +105,7 @@
                             advise.find(".createDate").text(adviseItem.createDate);
                             advise.find(".delete").attr("onclick", "deleteAdvise(" + adviseItem.id + ")");//删除按钮
                             advise.find(".restore").attr("onclick", "restoreAdvise("+adviseItem.id+")");
-                            if (adviseItem.states == -1){
+                             if (adviseItem.states == -1){
                                 advise.find(".delete").hide();
                                 advise.find(".restore").show();
                             }
@@ -118,7 +115,7 @@
                             }
                             $(".list").append(advise);
                         });
-                    page = setPage(pageNum, data.data.rows, "getAdvise");
+                  pageNum=setPage(pageNum, data.data.totalPage, "getAdvise");
                 }
             });
 
@@ -163,6 +160,8 @@
                 }
             });
         }
+
+     
     </script>
 </head>
 <body>
@@ -192,8 +191,15 @@
         </table>
     </div>
     <table class="table table-striped">
+        <%--<tr class="template">--%>
+            <%--<th>编号</th>--%>
+            <%--<th>建议内容</th>--%>
+            <%--<th>联系方式</th>--%>
+            <%--<th>创建日期</th>--%>
+            <%--<th>操作</th>--%>
+        <%--</tr>--%>
         <tr class="template">
-            <td class="adviseinfo id">序号</td>
+            <td class="adviseinfo num">序号</td>
             <td><a class="adviseinfo description" target="_blank">建议</a></td>
             <td class="adviseinfo number">联系方式</td>
             <td class="adviseinfo createDate">创建日期</td>
@@ -220,7 +226,7 @@
             <div class="modal-body">
                 <form role="form">
                     <div class="form-group">
-                        <label for="description">关键字：</label>
+                        <label for="username">关键字：</label>
                         <input type="text" class="form-control" name="description" id="description" placeholder="">
                     </div>
                 </form>

@@ -1,23 +1,23 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%  
 String path = request.getContextPath();  
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";  
+%>  
 <!DOCTYPE>
+
 <html>
 <head>
 	<base href="<%=basePath%>">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+	<link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
 	<link rel="stylesheet" href="bootstrapvalidator/css/bootstrapValidator.css">
 	<link rel="stylesheet" href="css/site.css">
-	<script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-	<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+	<script src="https://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
 	<!-- 表单验证 -->
-	<script src="bootstrapvalidator/js/bootstrapValidator.js" type="text/javascript"></script>
-	<script type="text/javascript" src="ckeditor2/ckeditor.js"></script>
+	<script src="http://love.lidiwen.club/bootstrapValidator.min.js" type="text/javascript"></script>
 	<title>爱之家网站答疑平台</title>
 	<script type="text/javascript">
         $.fn.modal.Constructor.prototype.enforceFocus = function () {
@@ -69,8 +69,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             },
                             stringLength: {/*长度提示*/
                                 min: 6,
-                                max: 200,
-                                message: '标题长度必须在6到200之间'
+                                max: 20,
+                                message: '标题长度必须在6到20之间'
                             }/*最后一个没有逗号*/
 
                         }
@@ -111,7 +111,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         });
 
         function getTheme(){
-            // ajax 请求Servlet获取主题数据
+            // ajax 请求servlet获取 主题数据
             $.get("messageServlet",{"action":"getAllTheme"},
                 function(data){
                     var theme=$("select[name='theid']");
@@ -220,6 +220,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	</form>
 </div>
+<script type="text/javascript">
+   document.write("<scr"+"ipt src=\"http://www.lidiwen.club:8083/ckeditor2/ckeditor.js\" language=\"JavaScript\" charset=\"gb2312\"></sc"+"ript>")
+</script>
 <jsp:include flush="true" page="../footer.jsp" />
 </body>
 </html>

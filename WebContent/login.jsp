@@ -1,36 +1,36 @@
 ﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-    String msgId = request.getParameter("msgid");
-    if (msgId == null || msgId.equals("")) {
-        msgId = "-1";
-    }
-%>
+    pageEncoding="UTF-8"%>
+<%  
+String path = request.getContextPath();  
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/"; 
+String msgId = request.getParameter("msgid"); 
+if (msgId == null || msgId.equals("")){
+		msgId = "-1";
+	}
+%>  
 <!DOCTYPE>
 <html>
 <head>
-    <base href="<%=basePath%>">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
-    <link rel="stylesheet" href="bootstrapvalidator/css/bootstrapValidator.css">
-    <link rel="stylesheet" href="css/site.css">
-    <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-    <c:if test="${sessionScope.user!= null}">
+<base href="<%=basePath%>">  
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
+<link rel="stylesheet" href="bootstrapvalidator/css/bootstrapValidator.css">
+<link rel="stylesheet" href="css/site.css">
+<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+ <c:if test="${sessionScope.user!= null}">
         <script type="text/javascript">
             $(function () {
                 window.location.href="index.jsp";
             });
         </script>
     </c:if>
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
-    <!-- 表单验证 -->
-    <script src="bootstrapvalidator/js/bootstrapValidator.js" type="text/javascript"></script>
-    <script src="js/gt.js"></script>
-    <title>爱之家网站答疑平台</title>
+<script src="https://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
+<!-- 表单验证 -->
+<script src="http://love.lidiwen.club/bootstrapValidator.min.js" type="text/javascript"></script>
+<script src="js/gt.js"></script>
+<title>爱之家网站答疑平台</title>
     <style>
         .show1 {
             display: block;
@@ -233,15 +233,15 @@
                         success: function (data) {
                             if (data.res == 1) {
                                 alert("登录成功");
-                                if(msgId!="-1"){
-                                    window.location.replace("<%=basePath%>message.jsp?msgid="+msgId);
+                                 if(msgId!="-1"){
+                                    window.location.replace("<%=basePath%>message.jsp?msgid=<%=msgId%>");
                                 }else{
                                     window.location.replace("");
                                 }
                             } else if (data.res == 2) {
                                 alert(data.info);
-                                if(msgId!="-1") {
-                                    window.location.replace("bindingmail.jsp?msgid=" + msgId);
+                                 if(msgId!="-1") {
+                                    window.location.replace("bindingmail.jsp?msgid=<%=msgId%>");
                                 }else {
                                     window.location.replace("bindingmail.jsp");
                                 }
@@ -253,9 +253,8 @@
                             }
                             else if(data.info=="你的账号已被禁用！"){
                                 $('#btnLogin').attr('disabled',false);
-                                $(".text-warning").text("");
-                                captchaObj.reset();
                                 alert("你的账号由于违规发布不良信息已经被系统管理员禁用，如有疑问请联系管理员邮箱：1632029393@qq.com!");
+                                captchaObj.reset();
                             }else {
                                 $('#btnLogin').attr('disabled',false);
                                 alert(data.info);

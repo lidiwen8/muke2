@@ -1,4 +1,4 @@
-<%--
+﻿<%--
   Created by IntelliJ IDEA.
   User: lidiwen
   Date: 2019/2/20
@@ -15,11 +15,11 @@
     <base href="<%=basePath%>">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
-    <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
+    <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="jquery/emoji.js"></script>
     <link rel="stylesheet" href="css/site.css">
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
     <title>爱之家网站答疑平台</title>
     <script type="text/javascript">
         var page = 1;
@@ -105,7 +105,7 @@
     </script>
 </head>
 <body>
-<jsp:include flush="fasle" page="header.jsp"/>
+<jsp:include flush="true" page="header.jsp"/>
 <div id="to_top" title="返回顶部">
     <img src="images/top.png" width="40" height="40"/>
 </div>
@@ -135,6 +135,6 @@
         </div>
     </div>
 </div>
-<jsp:include flush="fasle" page="footer.jsp"/>
+<jsp:include flush="true" page="footer.jsp"/>
 </body>
 </html>

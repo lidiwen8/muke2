@@ -1,4 +1,4 @@
-<%--
+﻿<%--
   Created by IntelliJ IDEA.
   User: DuanJiaNing
   Date: 2018/4/6
@@ -16,13 +16,13 @@
     <base href="<%=basePath%>">
     <link rel="stylesheet" href="css/help_feedback.css">
     <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+   <link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrapvalidator/css/bootstrapValidator.css">
     <link rel="stylesheet" href="css/site.css">
-    <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+    <script src="https://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
     <!-- 表单验证 -->
-    <script src="bootstrapvalidator/js/bootstrapValidator.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js" type="text/javascript"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 要在最前面引入-->
     <script type="application/javascript" src="jquery/common.js"></script>
     <title>反馈内容</title>
@@ -62,25 +62,25 @@
 
         }
     </script>
-
 </head>
+
 <body>
-<jsp:include flush="fasle" page="header.jsp" />
+<jsp:include flush="false" page="header.jsp" />
 <div class="container border" style="min-height: 100%;background-color: white;padding: 5% 10%;">
     <div>
         <h3>建议详情页</h3>
         <hr class="default-line">
         <br>
         <p style="color: gray;font-size: smaller">建议内容</p>
-        <textarea style="width: 80%;height: auto;"  id="advise"  name="advise" class="jianshu-style-textarea" readonly="readonly"></textarea>
+        <textarea style="width: 80%;height: 200px"  id="advise"  name="advise" class="jianshu-style-textarea" disabled="disabled"></textarea>
         <br>
         <br>
         <p style="color: gray;font-size: smaller">联系方式</p>
-        <input type="text"  id="number" name="number" class="jianshu-style-input" readonly="readonly">
+        <input type="text"  id="number" name="number" class="jianshu-style-input" disabled="disabled">
         <br>
     </div>
 </div>
-<jsp:include flush="fasle" page="footer.jsp" />
+<jsp:include flush="false" page="footer.jsp" />
 </body>
 
 </html>

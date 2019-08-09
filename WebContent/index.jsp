@@ -1,84 +1,83 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-    String basePath2 = request.getServerName() + ":" + request.getServerPort() + path;
+String path = request.getContextPath();
+String basePath2 = request.getServerName() + ":" + request.getServerPort() + path;
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <base href="<%=basePath%>">
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
-    <link rel="stylesheet" href="css/site.css">
-    <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
-    <title>爱之家网站答疑平台</title>
-    <script language="javascript">
-        $(function () {
-            getNew();
-            getHot();
-            getTheme();
-        });
-
-        function getNew() {
-            // Ajax异步请求最新五条
-            $.get("messageServlet?action=homepageTopNew",
-                function (data) {
-                    $.each(data.newMsg.data, function (index, element) {
-                        var time = element.msgtime.split("/");
-                        var msg = $(".template").clone();
-                        msg.show();
-                        msg.removeClass("template");
-                        msg.find(".text-limit").text(element.msgtopic);
-                        msg.find(".text-limit").attr("href", "<%=basePath%>message.jsp?msgid=" + element.msgid + "");
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<%=basePath%>">
+<link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
+<link rel="stylesheet" href="css/site.css">
+<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+<script src="http://love.lidiwen.club/bootstrap.min.js" type="text/javascript"></script>
+<title>爱之家网站答疑平台</title>
+<script language="javascript">
+$(function() {
+	getNew();
+	getHot();
+	getTheme();
+});
+	function getNew() {
+		// Ajax异步请求最新五条
+		$.get("messageServlet?action=homepageTopNew",
+				function(data){
+			$.each(data.newMsg.data,function(index,element){
+			    var time=element.msgtime.split("/");
+				var msg=$(".template").clone();
+				msg.show();
+				msg.removeClass("template");
+				msg.find(".text-limit").text(element.msgtopic);
+				msg.find(".text-limit").attr("href","<%=basePath%>message.jsp?msgid="+element.msgid+"");
 //				msg.find(".badge").text(time[0]+"年"+time[1]+"月"+time[2]+"号");
-                        msg.find(".badge").text(element.msgtime);
-                        $(".newList").append(msg);
-                    });
-
-                }, "json");
-        }
-
-        function getHot() {
-
-            // Ajax异步请求最热五条,就是评论最多的五条
-            $.get("messageServlet?action=homepageTopHot",
-                function (data) {
-                    $.each(data.hotMsg.data, function (index, element) {
-                        var msg = $(".template").clone();
-                        msg.show();
-                        msg.removeClass("template");
-                        msg.find(".text-limit").text(element.msgtopic);
-                        msg.find(".text-limit").attr("href", "<%=basePath%>message.jsp?msgid=" + element.msgid + "");
-                        msg.find(".badge").text("浏览:" + element.accessCount + "次");
-                        $(".hotList").append(msg);
-                    });
-
-                }, "json");
-        }
-
-        function getTheme() {
-
-            // Ajax异步请求, 最热的五个主题
-            $.get("messageServlet?action=homepageTopTheme",
-                function (data) {
-                    $.each(data.themeMsg.data, function (index, element) {
-                        var msg = $(".template").clone();
-                        msg.show();
-                        msg.removeClass("template");
-                        msg.find(".text-limit").text(element.msgtopic);
-                        msg.find(".text-limit").attr("href", "<%=basePath%>message.jsp?msgid=" + element.msgid + "");
-                        msg.find(".badge").text(element.thename);
-                        $(".themeList").append(msg);
-                    });
-
-                }, "json");
-        }
-
+                msg.find(".badge").text(element.msgtime);
+				$(".newList").append(msg);
+			});
+		
+		},"json");
+	}
+	
+	function getHot() {
+		
+		// Ajax异步请求最热五条,就是评论最多的五条
+		$.get("messageServlet?action=homepageTopHot",
+				function(data){
+			$.each(data.hotMsg.data,function(index,element){
+				var msg=$(".template").clone();
+				msg.show();
+				msg.removeClass("template");
+				msg.find(".text-limit").text(element.msgtopic);
+				msg.find(".text-limit").attr("href","<%=basePath%>message.jsp?msgid="+element.msgid+"");
+				msg.find(".badge").text("浏览:"+element.accessCount+"次");
+				$(".hotList").append(msg);
+			});
+		
+		},"json");
+	}
+	
+	function getTheme() {
+		
+		// Ajax异步请求, 最热的五个主题
+		$.get("messageServlet?action=homepageTopTheme",
+				function(data){
+			$.each(data.themeMsg.data,function(index,element){
+				var msg=$(".template").clone();
+				msg.show();
+				msg.removeClass("template");
+				msg.find(".text-limit").text(element.msgtopic);
+				msg.find(".text-limit").attr("href","<%=basePath%>message.jsp?msgid="+element.msgid+"");
+				msg.find(".badge").text(element.thename);
+				$(".themeList").append(msg);
+			});
+		
+		},"json");
+	}
+	
         var websocket = null;
         var wsUrl = "ws://<%=basePath2%>/websocket";
         var lockReconnect = false;  //避免ws重复连接
@@ -113,12 +112,12 @@
                     if(event.data.indexOf("add")!=-1){
                         location.reload();
                     }
-                    if(event.data=="deleteUser"+$("#userid").val()){
-                        var messageVary = confirm("最新通知：你的当前账号已被管理员禁用！");
-                        if (messageVary == true||messageVary==false) {
-                            logout();
-                        }
-                    }
+                   // if(event.data=="deleteUser"+$("#userid").val()){
+                   //      var messageVary = confirm("最新通知：你的当前账号已被管理员禁用！");
+                   //      if (messageVary == true||messageVary==false) {
+                   //          logout();
+                   //      }
+                   //  }
                 }
                 //连接关闭的回调方法
                 websocket.onclose = function () {
@@ -133,11 +132,6 @@
         window.onbeforeunload = function () {
             closeWebSocket();
         }
-
-        $(window).on('beforeunload unload', function() {
-            closeWebSocket();
-        });
-
         //将消息显示在网页上
         function setMessageInnerHTML(innerHTML) {
             $('message').innerHTML += innerHTML + '<br/>';
@@ -149,7 +143,7 @@
         function reconnect(wsUrl) {
             if(lockReconnect) return;
             lockReconnect = true;
-            if(reconnectcount>=10){
+              if(reconnectcount>=10){
                 websocket.close();//重连超过10次共30秒自动放弃连接请求
                 return;
             }
@@ -181,84 +175,129 @@
                 }, this.timeout)
             }
         }
-        function logout() {
-            // Ajax 异步请求退出登录
-            $.ajax({
-                url: "userServlet?action=logout",
-                type: "POST",
-                async: "true",
-                dataType: "json",
-                success: function (data) {
-                    if (data.res == 1) {
-                        alert("你已经被强制退出！");
-                        window.location.replace("login.jsp");
-                    }
-                }
-            });
-        }
-
-    </script>
+</script>
 </head>
 <body>
-<jsp:include flush="true" page="header.jsp"/>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-4">
-            <div
-                    style="overflow: auto; height: 60px; line-height: 40px; padding-top: 20px;">
-                <div style="float: left">
-                    <h3 style="display: inline">最新</h3>
-                </div>
-                <div style="float: right; vertical-align: bottom;">
-                    <a href="newmsg.jsp">更多>></a>
-                </div>
-            </div>
-            <div>
-                <ul class="list-group newList" style="list-style-type:none">
-                    <li class="list-group-item template">
-                        <span class="badge"></span>
-                        <a class="msgtile text-limit"></a>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-        <div class="col-sm-4">
-            <div
-                    style="overflow: auto; height: 60px; line-height: 40px; padding-top: 20px;">
-                <div style="float: left">
-                    <h3 style="display: inline">最热</h3>
-                </div>
-                <div style="float: right; vertical-align: bottom;">
-                    <a href="hotmsg.jsp">更多>></a>
-                </div>
-            </div>
-
-            <div>
-                <ul class="list-group hotList" style="list-style-type:none">
-                </ul>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div
-                    style="overflow: auto; height: 60px; line-height: 40px; padding-top: 20px;">
-                <div style="float: left">
-                    <h3 style="display: inline">话题</h3>
-                </div>
-                <div style="float: right; vertical-align: bottom;">
-                    <a href="thememsg.jsp">更多>></a>
-                </div>
-            </div>
-
-            <div>
-                <ul class="list-group themeList" style="list-style-type:none">
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<span id="message"></span>
+	<jsp:include flush="true" page="header.jsp" />
+	<div class="container">
+		
+		<div class="row">
+			<div class="col-sm-4">
+				<div
+					style="overflow: auto; height: 60px; line-height: 40px; padding-top: 20px;">
+					<div style="float: left">
+						<h3 style="display: inline">最新</h3>
+					</div>
+					<div style="float: right; vertical-align: bottom;">
+						<a href="newmsg.jsp">更多>></a>
+					</div>
+				</div>
+				<div>
+					<ul class="list-group newList" style="list-style-type:none">
+						<li class="list-group-item template">
+							<span class="badge"></span>
+							<a class="msgtile text-limit"></a>
+						</li>
+					<!-- 	<li class="list-group-item" display="block">
+							<span class="badge">8/29</span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=7">不错哦221133</a>
+						</li>
+						<li class="list-group-item" display="block">
+							<span class="badge">8/28</span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=6">网站Bug请在此留下</a>
+						</li>
+						<li class="list-group-item" display="block">
+							<span class="badge">8/28</span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=5">如何完全卸载MySQL数据库</a>
+						</li>
+						<li class="list-group-item" display="block">
+							<span class="badge">8/28</span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=4">盒子模型是怎么回事?</a>
+						</li>
+						<li class="list-group-item" display="block">
+							<span class="badge">8/28</span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=3">JDK配置环境变量</a>
+						</li> -->
+					</ul>
+				</div>
+				
+			</div>
+			<div class="col-sm-4">
+				<div
+					style="overflow: auto; height: 60px; line-height: 40px; padding-top: 20px;">
+					<div style="float: left">
+						<h3 style="display: inline">最热</h3>
+					</div>
+					<div style="float: right; vertical-align: bottom;">
+						<a href="hotmsg.jsp">更多>></a>
+					</div>
+				</div>
+			
+				 <div>
+					<ul class="list-group hotList" style="list-style-type:none">
+						<!-- <li class="list-group-item" display="block">
+							<span class="badge"></span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=5"></a>
+						</li> -->
+						<!--<li class="list-group-item" display="block">
+							<span class="badge">5</span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=3">JDK配置环境变量</a>
+						</li>
+						<li class="list-group-item" display="block">
+							<span class="badge">1</span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=4">盒子模型是怎么回事?</a>
+						</li>
+						<li class="list-group-item" display="block">
+							<span class="badge">1</span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=1">Java 命令行打印圣诞树</a>
+						</li>
+						<li class="list-group-item" display="block">
+							<span class="badge">0</span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=2">异步是啥东西</a>
+						</li>-->
+					</ul>
+				</div>
+			</div> 
+			<div class="col-sm-4">
+				<div
+					style="overflow: auto; height: 60px; line-height: 40px; padding-top: 20px;">
+					<div style="float: left">
+						<h3 style="display: inline">话题</h3>
+					</div>
+					<div style="float: right; vertical-align: bottom;">
+						<a href="thememsg.jsp">更多>></a>
+					</div>
+				</div>
+				
+				  <div>
+					<ul class="list-group themeList" style="list-style-type:none">
+						<!-- <li class="list-group-item" display="block">
+							<span class="badge"></span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=7"></a>
+						</li> -->
+			<!--			<li class="list-group-item" display="block">
+							<span class="badge">BUG反馈</span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=6">网站Bug请在此留下</a>
+						</li>
+						<li class="list-group-item" display="block">
+							<span class="badge">MySQL</span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=5">如何完全卸载MySQL数据库</a>
+						</li>
+						<li class="list-group-item" display="block">
+							<span class="badge">Web前端</span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=4">盒子模型是怎么回事?</a>
+						</li>
+						<li class="list-group-item" display="block">
+							<span class="badge">Java</span>
+							<a class="msgtile text-limit" href="message.jsp?msgid=3">JDK配置环境变量</a>
+						</li>-->
+					</ul>
+				</div>  
+			</div>
+		</div>
+	</div>
 <input type="hidden" id="userid" value="${sessionScope.user.userid}">
-<jsp:include flush="fasle" page="footer.jsp"/>
+	<jsp:include flush="fasle" page="footer.jsp" />
+	
 </body>
 </html>

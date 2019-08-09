@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%  
 String path = request.getContextPath();  
@@ -10,13 +10,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <base href="<%=basePath%>">  
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+<link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
 <link rel="stylesheet" href="bootstrapvalidator/css/bootstrapValidator.css">
 <link rel="stylesheet" href="css/site.css">
-<script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+<script src="https://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
 <!-- 表单验证 -->
-<script src="bootstrapvalidator/js/bootstrapValidator.js" type="text/javascript"></script>
+<script src="http://love.lidiwen.club/bootstrapValidator.min.js" type="text/javascript"></script>
 <title>爱之家网站答疑平台</title>
 <script type="text/javascript">
     $(function(){
@@ -120,7 +120,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     $(".text-warning").text("尊敬的用户:你输入的新密码不合法，不能包含特殊字符和空格，请重新输入！");
                     $("input[name='newpassword']").val("");
                 }
-
 				else {
                     alert("修改失败！");
 					$(".text-warning").text("修改失败！");
@@ -132,7 +131,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		});
 		return false;
 	}
-    function gg() {
+         function gg() {
         var bootstrapValidator=$("#modifyform").data("bootstrapValidator");
         //触发验证
         bootstrapValidator.validate();
@@ -144,7 +143,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </script>
 </head>
 <body>
-	<jsp:include flush="fasle" page="../header.jsp" />
+	<jsp:include flush="true" page="../header.jsp" />
 	<div class="container">		
 		<div class="row">
 			<div class="col-sm-offset-3 col-sm-6 text-center">
@@ -183,6 +182,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</form>
 	</div>
-	<jsp:include flush="fasle" page="../footer.jsp" />
+	<jsp:include flush="true" page="../footer.jsp" />
 </body>
 </html>

@@ -1,8 +1,8 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+         pageEncoding="UTF-8"%>
 <%
     String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <!DOCTYPE>
 <html>
@@ -10,26 +10,26 @@
     <base href="<%=basePath%>">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrapvalidator/css/bootstrapValidator.css">
     <link rel="stylesheet" href="css/site.css">
-    <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+    <script src="https://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
     <!-- 表单验证 -->
-    <script src="bootstrapvalidator/js/bootstrapValidator.js" type="text/javascript"></script>
+    <script src="http://love.lidiwen.club/bootstrapValidator.min.js" type="text/javascript"></script>
     <script src="jquery/autoMail.1.0.min.js"></script>
     <title>爱之家网站答疑平台</title>
     <script type="text/javascript">
-              function promot() {
-                   $('#mail').autoMail({
-                       emails: ['qq.com', '163.com', '126.com', 'sina.com', 'sohu.com','yahoo.com','hotmail.com','188.com']
-                   });
-               }
-        $(function () {
+         function promot() {
+           $('#mail').autoMail({
+                emails: ['qq.com', '163.com', '126.com', 'sina.com', 'sohu.com','yahoo.com','hotmail.com','188.com']
+           });
+        }
+        $(function(){
             validateForm();
         });
 
-        function validateForm() {
+         function validateForm() {
             // 验证表单
             $("#modifyform").bootstrapValidator({
                 message: 'This value is not valid',
@@ -118,16 +118,16 @@
                 alert("请输入邮箱");
                 apper("请输入邮箱");
             }else if(!mail.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)){
-                alert("请输入正确格式的邮箱");
-                apper("无效邮箱");
+               alert("请输入正确格式的邮箱");
+               apper("无效邮箱");
             }
             else
             {
-               sendCode(mail);
-               curCount = count;
-               $("#verificationss").attr("disabled", "disabled");
-               $("#verificationss").text(curCount + "秒后重新获取");
-               InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次请求后台发送验证码 TODO
+                sendCode(mail);
+                curCount = count;
+                $("#verificationss").attr("disabled", "disabled");
+                $("#verificationss").text(curCount + "秒后重新获取");
+                InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次请求后台发送验证码 TODO
             }
         }
 
@@ -146,7 +146,7 @@
                 },
                 success: function (data) {
                     if (data.res != 1) {
-                        curCount = 0;
+                       curCount = 0;
                     }
                     if (data.res == 1) {
                         alert(data.info);
@@ -210,15 +210,16 @@
     </script>
 </head>
 <body onload="promot()">
-<jsp:include flush="fasle" page="header.jsp"/>
+<jsp:include flush="fasle" page="header.jsp" />
 <div class="container">
     <div class="row">
         <div class="col-sm-offset-3 col-sm-6 text-center">
-            <h3>重置密码</h3>
+             <h3>重置密码</h3>
         </div>
     </div>
     <form class="form-horizontal col-sm-offset-3" id="modifyform" method="post">
-        <div class="form-group">
+
+         <div class="form-group">
             <label for="mail" class="col-sm-2 control-label">邮箱号：</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" name="mail" id="mail" placeholder="请输入你注册时的邮箱号码">
@@ -254,14 +255,12 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-4 col-xs-12">
-                <button type="submit" class="btn btn-success btn-block" onclick="gg();">提交</button>
-                <button type="button" class="btn btn-success btn-block"
-                        onclick="window.location.href='mailpassword.jsp'">邮箱找回
-                </button>
+                <button type="button" class="btn btn-success btn-block" onclick="gg();">提交</button>
+                <button type="button" class="btn btn-success btn-block" onclick="window.location.href='mailpassword.jsp'">邮箱找回</button>
             </div>
         </div>
     </form>
 </div>
-<jsp:include flush="fasle" page="footer.jsp"/>
+<jsp:include flush="fasle" page="footer.jsp" />
 </body>
 </html>

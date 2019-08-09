@@ -132,6 +132,8 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                         userid = message.userid;
                         $(".title").html(message.msgtopic);//帖子标题
                         $(".badge").html(message.thename);//主题名称
+                        $("#theid").val( message.theid);
+                        $("#autherid").val(message.userid);
                         var msg = $(".template").clone();//复制模版
                         msg.show();
                         msg.removeClass("template");
@@ -242,6 +244,10 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                                     }else {
                                         reply.find(".showWindow").attr("onclick", "showWindow(" + this.replyid + "," + this.msgid+ ")");
                                         reply.find(".reportButton").attr("style", "display:block;");
+                                        if($("#userid").val() == $("#autherid").val()){
+                                            reply.find(".delete_btn").attr("onclick", "deleteReply(" + this.replyid + ",'" + this.replytime + "','autherDelete')");
+                                            reply.find(".delete_btn").attr("style", "display:block;");
+                                        }
                                     }
                                     </c:if>
                                     </c:if>
@@ -475,6 +481,10 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                                 reply.find(".showWindow").attr("onclick", "showWindow(" + this.replyid + "," + this.msgid+ ")");
                                 reply.find(".reportButton").attr("style", "display:block;");
                             }
+                            if($("#userid").val() == $("#autherid").val()){
+                                reply.find(".delete_btn").attr("onclick", "deleteReply(" + this.replyid + ",'" + this.replytime + "','autherDelete')");
+                                reply.find(".delete_btn").attr("style", "display:block;");
+                            }
                             </c:if>
                             </c:if>
                             <c:if test="${sessionScope.admin!= null}">
@@ -600,8 +610,8 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                 }
               scrollEnd();
             }else if(page==pageNum){
-                // pageNum=pageNum-1;
-                getAuthorReply(1);
+                pageNum=pageNum-1;
+                getAuthorReply();
                  scrollEnd();
             }else {
                 getAuthorReply(1);
@@ -800,24 +810,43 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
             }
         }
 
-        function deleteReply(replyid, replytime) {
-            if (confirm("确认删除你于" + replytime + "时所发布的回复信息吗？")) {
-                $.ajax({
-                    url: "user/userMessageServlet",
-                    type: "post",
-                    data: {"action": "deleteReply", "replyid": replyid},
-                    dataType: "json",
-                    success: function (data) {
-                        if (data.res == 1) {
-                            alert(data.info);
-                            // location.reload();//重新加载页面
-                        } else {
-                            alert(data.info);
+        function deleteReply(replyid, replytime,autherDelete) {
+            if(autherDelete!=null){
+                if (confirm("尊敬的楼主：你确认删除这条" + replytime + "时所发布的回复信息吗？")) {
+                    $.ajax({
+                        url: "user/userMessageServlet",
+                        type: "post",
+                        data: {"action": "deleteReply", "replyid": replyid},
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.res == 1) {
+                                alert(data.info);
+                                // location.reload();//重新加载页面
+                            } else {
+                                alert(data.info);
+                            }
                         }
-                    }
-                });
+                    });
+                };
+            }else {
+                if (confirm("确认删除你于" + replytime + "时所发布的回复信息吗？")) {
+                    $.ajax({
+                        url: "user/userMessageServlet",
+                        type: "post",
+                        data: {"action": "deleteReply", "replyid": replyid},
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.res == 1) {
+                                alert(data.info);
+                                // location.reload();//重新加载页面
+                            } else {
+                                alert(data.info);
+                            }
+                        }
+                    });
+                };
+
             }
-            ;
         }
 
         function openReportMsg() {
@@ -874,8 +903,8 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                         // alert(event.data.split(",")[1]);
                         // location.reload();
                         var userid=event.data.split(",")[2];
-                        if($("#userid").val()==null||($("#userid").val()!=null&&$("#userid").val()!=userid)){
-                            var messageReply=confirm("该帖子有新消息回复了，是否查看最新回复w(゜Д゜)w");
+                        if(($("#userid").val()==null&&$("#autherid").val()==userid)||($("#userid").val()!=null&&$("#userid").val()!=userid&&$("#autherid").val()==userid)){
+                            var messageReply=confirm("该帖子楼主又有新消息回复了，是否查看楼主最新回复w(゜Д゜)w");
                             if(messageReply==true){
                                 getNewReply(event.data.split(",")[1]);
                             }
@@ -885,19 +914,20 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                         }
 
                     }
-                    if(event.data.split(",")[0]=="ReplyUpdate"+msgId||event.data.split(",")[0]=="ReplyDelete"+msgId){
+                    if(event.data.split(",")[0]=="ReplyUpdate"+msgId||event.data.split(",")[0]=="ReplyDelete"+msgId||event.data.split(",")[0]=="ReplyDeleteByAuther"+msgId){
                         // getReply(-1);更新和删除要得到该条回复在第几页第几个记录，然后获取到后重新加载
                         //event.data.split(",")[1]是第几页，event.data.split(",")[2]是第几条
                         var userid=event.data.split(",")[3];
-                        if($("#userid").val()==null||($("#userid").val()!=null&&$("#userid").val()!=userid)) {
+                        if($("#userid").val()==null||($("#userid").val()!=null&&$("#userid").val()!=userid&&event.data.split(",")[0]!="ReplyDeleteByAuther"+msgId)) {
                             var messageReplyVary = confirm("最新通知：该帖子之前的回复消息有改动(在第" + event.data.split(",")[1] + "页，第" + event.data.split(",")[2] + "条回复)，是否查看最新回复w(゜Д゜)w");
                             if (messageReplyVary == true) {
                                 location.reload();
                             }
                         }
-                        if($("#userid").val()!=null&&$("#userid").val()==userid) {
+                        if(($("#userid").val()!=null&&$("#userid").val()==userid)||event.data.split(",")[0]=="ReplyDeleteByAuther"+msgId) {
                             location.reload();
                         }
+
 
                     }else if(event.data.split(",")[0]=="Replyzan"+msgId){
                         var userid=event.data.split(",")[3];
@@ -946,13 +976,13 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                         <%--<c:if test="${sessionScope.user!= null&&sessionScope.user.userid==userid}">--%>
                         <%--location.reload();--%>
                         <%--</c:if>--%>
-                    } else if(event.data=="delete"+msgId||event.data=="addrestore"+msgId||event.data=="restore"+msgId)  {
+                    } else if(event.data=="adddelete"+msgId||event.data=="addrestore"+msgId||event.data=="addrestore"+msgId)  {
                         if(event.data=="addrestore"+msgId){
                             var messageVary=confirm("该帖子已经被楼主恢复，是否选择查看最新w(゜Д゜)w");
                             if(messageVary==true||messageVary==false){
                                 location.reload();
                             }
-                        }else if(event.data=="restore"+msgId){
+                        }else if(event.data=="addrestore"+msgId){
                             var messageVary=confirm("最新通知：该帖子已经被管理员恢复查看，是否选择查看最新w(゜Д゜)w");
                             if(messageVary==true||messageVary==false){
                                 location.reload();
@@ -1179,7 +1209,7 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
             <c:choose>
             <c:when test="${sessionScope.user!= null ||sessionScope.admin!=null }">
             <button id="loadmore" type="button" class="btn btn-default btn-lg btn-block"
-                    onclick="getReply()" disabled="disabled">加载更多...
+                    onclick="getAuthorReply()" disabled="disabled">加载更多...
                 <%--onclick="javascript:getReply();"--%>
                 <br/>
                 <%--<div id="cyReward" role="cylabs" data-use="reward" style="text-align: center"></div>--%>
@@ -1334,6 +1364,8 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
     </div>
 </c:if>
 <input type="hidden" id="userid" value="${sessionScope.user.userid}">
+<input type="hidden" id="autherid">
+<input type="hidden" id="theid">
 <span id="message"></span>
  <div id="backUp" title="返回顶部" style="z-index: 9999; position: fixed ! important; right: 5px; bottom: 70px;cursor: pointer">
         <img src="upload/top.png" />
@@ -1341,6 +1373,6 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
     <div id="backDown" title="返回底部" style="z-index: 9999; position: fixed ! important; right: 5px; bottom: 30px;cursor: pointer">
         <img style="transform:rotate(180deg);" src="upload/top.png" />
     </div>
-<jsp:include flush="false" page="footer.jsp"/>
+<jsp:include flush="true" page="footer.jsp"/>
 </body>
 </html>

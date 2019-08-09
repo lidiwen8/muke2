@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"  isELIgnored="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
@@ -22,12 +22,9 @@
     <meta name="keywords" content="爱之家网站答疑平台" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-    <%--<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>--%>
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
-    <%--https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css--%>
-    <link rel="stylesheet" href="semantic/semantic.min.css">
-    <%--<link rel="stylesheet" href="https://oj.bnuz.edu.cn/static/assets/semantic/semantic.min.css">--%>
+    <link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
+    <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://love.lidiwen.club/semantic.min.css">
     <link rel="stylesheet" href="semantic/app.css">
     <link rel="stylesheet" href="semantic/jquery.Jcrop.min.css">
     <link rel="stylesheet" href="css/site.css">
@@ -74,6 +71,7 @@
     </style>
     <script type="text/javascript" src="semantic/js/jquery.Jcrop.min.js"></script>
     <script type="text/javascript" src="semantic/js/jquery.particleground.min.js"></script>
+    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"0","bdPos":"right","bdTop":"100"},"image":{"viewList":["weixin","sqq","qzone","tsina","tqq","renren"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["weixin","sqq","qzone","tsina","tqq","renren"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
     <script type="text/javascript">
         var pageNum = 1;
         var pageNum2 = 1;
@@ -155,7 +153,7 @@
                     $("#sex").text(message.sex);
                     $("#hobbys").text(message.hobbys);
                     $("#k2").text("发布的帖子-"+message2.rows+"个");
-                    $("#k5").text("收藏的帖子-"+collectionMsg+"个");
+                     $("#k5").text("收藏的帖子-"+collectionMsg+"个");
                     if(collectionMsg==0){
                         $("#k6").html("这人很懒，没有收藏过一个帖子...");
                     }
@@ -238,7 +236,7 @@
                     }
 
                 } else {
-                    // alert(data.message);
+                    //alert(data.message);
                     window.location.href="index.jsp";
                 }
             }, "json");
@@ -266,9 +264,9 @@
                     pageNum2++;
                     $("#k4").text("收藏过的帖子-"+data.likeMsgCount+"个");
                 } else {
-                    $("#k4").text("收藏过的帖子-"+0+"个");
                     $("#loadmore4").html("这人很懒，没有收藏过一个帖子...");
                     $("#loadmore4").attr("disabled","disabled");
+                    $("#k4").text("收藏过的帖子-"+0+"个");
                 }
             }, "json");
         }
@@ -286,13 +284,12 @@
     </script>
 </head>
 <body>
-<%--<jsp:include flush="true" page="header.jsp" />--%>
 <div class="wj_page_container">
     <div id="bg_particles">
         <div class="space_head_container">
             <div class="ui stackable grid">
                 <div class="four wide column">
-                    <img class="ui centered aligned small circular image" id="img" src="">
+                    <img class="ui centered aligned small circular image" id="img" src="" style="height: 150px;">
                 </div>
                 <div class="twelve wide column space_username">
                     <h1 id="k1">
@@ -474,8 +471,7 @@
                             </div>
                         </div>
                     </div>
-
-                   <c:if test="${sessionScope.user == null||(sessionScope.user != null&&sessionScope.user.username!=param.username)}">
+                      <c:if test="${sessionScope.user == null||(sessionScope.user != null&&sessionScope.user.username!=param.username)}">
                        <br>
                        <div id="sv_container4">
                            <div class="row">
@@ -499,7 +495,7 @@
                        </div>
                    </c:if>
 
-                   <c:if test="${sessionScope.user != null&&sessionScope.user.username==param.username}">
+                    <c:if test="${sessionScope.user != null&&sessionScope.user.username==param.username}">
                     <br>
                     <div id="sv_container4">
                         <div class="row">
@@ -537,7 +533,7 @@
                             </div>
                         </div>
                     </div>
-                            </c:if>
+                 </c:if>
 
                 </div>
             </div>

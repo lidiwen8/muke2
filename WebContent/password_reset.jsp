@@ -1,4 +1,4 @@
-<%--
+﻿<%--
   Created by IntelliJ IDEA.
   User: 16320
   Date: 2019/4/4
@@ -15,9 +15,9 @@
     <base href="<%=basePath%>">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
     <link rel="stylesheet" href="css/site.css">
-    <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
+    <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
     <title>密码重置</title>
 </head>
 <script type="text/javascript">
@@ -42,7 +42,7 @@
 <body>
 <jsp:include flush="true" page="header.jsp"/>
 <div class="text-center">
-    <span class="text-warning" style="color: red"></span><br>
+   <span class="text-warning" style="color: red"></span><br>
     <div><a href="index.jsp"> 【如果您的浏览器没有自动跳转，请点击此链接】</a></div>
 </div>
 <jsp:include flush="true" page="footer.jsp"/>

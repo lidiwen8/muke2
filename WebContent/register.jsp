@@ -1,27 +1,27 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
+    pageEncoding="UTF-8"%>
+<%  
+String path = request.getContextPath();  
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";  
+%>  
 <!DOCTYPE>
 <html>
 <head>
-    <base href="<%=basePath%>">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
-    <link rel="stylesheet" href="bootstrapvalidator/css/bootstrapValidator.css">
-    <link rel="stylesheet" href="css/site.css">
-    <link rel="stylesheet" href="bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
-    <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
-    <script src="bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
-    <!-- 表单验证 -->
-    <script src="bootstrapvalidator/js/bootstrapValidator.js" type="text/javascript"></script>
-    <script src="jquery/autoMail.1.0.min.js"></script>
-    <script src="js/gt.js"></script>
+<base href="<%=basePath%>">  
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
+<link rel="stylesheet" href="bootstrapvalidator/css/bootstrapValidator.css">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+<script src="http://love.lidiwen.club/bootstrap.min.js" type="text/javascript"></script>
+<script src="bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+<!-- 表单验证 -->
+<script src="http://love.lidiwen.club/bootstrapValidator.min.js" type="text/javascript"></script>
+<script src="jquery/autoMail.1.0.min.js"></script>
+ <script src="js/gt.js"></script>
     <title>爱之家网站答疑平台</title>
     <style>
         .show1 {
@@ -167,9 +167,9 @@
                             notEmpty: {
                                 message: '邮箱不能为空'
                             },
-                            emailAddress: {
+                            /*emailAddress: {
                                 message: '邮箱地址格式有误'
-                            }
+                            }*/
 
                         }
                     },
@@ -239,7 +239,7 @@
                 $('#submit').click();
             }
         }
-        function apper(info){
+          function apper(info){
             $("#notice").text(info);
             $("#notice").show();
             setTimeout(function () {
@@ -368,14 +368,12 @@
                                 apper(data.info);
                             } else if (data.res == 30) {
                                 alert(data.info);
-                                // $(".text-warning").text(data.info);
                                 $("input[name='realname']").val("");
                                 $("input[name='realname']").focus();
                                 apper(data.info);
                             } else if (data.res == -2) {
                                 alert(data.info);
                                 apper(data.info);
-                                // location.reload();
                             }
                             else {
                                 alert(data.info);
@@ -534,7 +532,7 @@
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-4 col-xs-12">
                 <button class="btn btn-success btn-block" id="btn btn-success btn-block" onclick="gg();">注册</button>
-                <button class="btn btn-success btn-block" onclick="window.location.href='bindingmail.jsp'">绑定邮箱</button>
+               <!--<button class="btn btn-success btn-block" onclick="window.location.href='bindingmail.jsp'">绑定邮箱</button>-->
             </div>
         </div>
         <input class="btn" id="submit" type="hidden" value="提交">

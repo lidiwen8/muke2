@@ -1,4 +1,4 @@
-<%--
+﻿<%--
   Created by IntelliJ IDEA.
   User: DuanJiaNing
   Date: 2018/4/6
@@ -16,13 +16,13 @@
     <base href="<%=basePath%>">
     <link rel="stylesheet" href="css/help_feedback.css">
     <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrapvalidator/css/bootstrapValidator.css">
     <link rel="stylesheet" href="css/site.css">
-    <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+    <script src="https://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
     <!-- 表单验证 -->
-    <script src="bootstrapvalidator/js/bootstrapValidator.js" type="text/javascript"></script>
+    <script src="http://love.lidiwen.club/bootstrapValidator.min.js" type="text/javascript"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 要在最前面引入-->
     <script type="application/javascript" src="jquery/common.js"></script>
 
@@ -31,7 +31,7 @@
         function send() {
             var advise = $('#adviceOrOpinion').val();
             var number = $("input[name='number']").val();
-            var input  = /^[\s]*$/;
+   var input  = /^[\s]*$/;
             if (isStrEmpty(advise)||advise=="") {
                 error('请输入问题或建议', 'sendFeedbackErrorMsg', true, 3000);
                 return;
@@ -39,12 +39,12 @@
                 if (input.test(advise)){
                     error('请输入问题或建议', 'sendFeedbackErrorMsg', true, 3000);
                     return;
-                }
-				if(advise.trim().length<4){
+                } 
+if(advise.trim().length<4){
 					error('请输入至少四个字', 'sendFeedbackErrorMsg', true, 3000);
                     return;
 				}
-                if(number!="") {
+              if(number!="") {
                 var p1 = /^(13[0-9]\d{8}|15[0-35-9]\d{8}|18[0-9]\{8}|14[57]\d{8})$/;
                 var b = false;
                 if (p1.test(number) == b) {
@@ -53,7 +53,7 @@
                 }
             }
             disableButton(false, 'sendFeedbackBtn', '正在提交...', "button-disable");
-            // ajax 用户异步
+            // ajax 用户异步请求绑定邮箱
             $.ajax({
                 url: "userServlet?action=help",
                 type: "POST",

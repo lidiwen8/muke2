@@ -1,4 +1,4 @@
-<%--
+﻿<%--
   Created by IntelliJ IDEA.
   User: ASUS
   Date: 2018/8/6
@@ -8,10 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
-    <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
+    <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="css/site.css">
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
     <title>爱之家网站答疑平台</title>
 
 </head>

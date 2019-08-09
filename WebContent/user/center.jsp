@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -13,25 +13,25 @@
     <base href="<%=basePath%>">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+   <link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrapvalidator/css/bootstrapValidator.css">
     <link rel="stylesheet" href="css/site.css">
     <script src="layui/layui.js"></script>
     <link rel="stylesheet" href="layui/css/layui.css" media="all">
     <link rel="stylesheet" href="bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
-    <script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+    <script src="https://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
     <script src="bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
     <!-- 表单验证 -->
-    <script src="bootstrapvalidator/js/bootstrapValidator.js" type="text/javascript"></script>
+    <script src="http://love.lidiwen.club/bootstrapValidator.min.js" type="text/javascript"></script>
     <title>爱之家网站答疑平台</title>
     <script type="text/javascript">
-        var counts = 0;
+        var counts=0;
         $.fn.datetimepicker.dates['zh-CN'] = {
             days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
             daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-            daysMin: ["日", "一", "二", "三", "四", "五", "六", "日"],
+            daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
             months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
             monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "11月", "12月"],
             today: "今天",
@@ -40,15 +40,15 @@
         };
 
         $('#birthday').datetimepicker({
-            format: 'yyyy-mm-dd',
-            language: 'zh-CN',
-            weekStart: 1,
+            format:'yyyy-mm-dd',
+            language:'zh-CN',
+            weekStart:1,
             //todayBtn:1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            minView: 'month',
-            forceParse: 0
+            autoclose:1,
+            todayHighlight:1,
+            startView:2,
+            minView:'month',
+            forceParse:0
         });
         $(document).ready(function () {
             $("#picture").change(function () {
@@ -74,36 +74,32 @@
                 startDate: '1900-01-01',
                 todayBtn: true//显示今日按钮
             });
-
             getUser();
-
             validateForm();
             $("#province").click(function () {
                 counts++;
-                if (counts <= 1) {
+                if(counts<=1){
                     load();
                 }
             });
             $("#city").click(function () {
                 counts++;
-                if (counts <= 1) {
+                if(counts<=1){
                     load();
                 }
             });
         });
 
-        function load() {
+         function load() {
             var script = document.createElement("script");
             script.type = "text/javascript";
             script.src = "jquery/city2.js";
             document.body.appendChild(script)
         }
-
         function updaEmail() {
              $("input[name='email']").removeAttr("readonly");
              $("input[name='email']").focus();
         }
-
         function getUser() {
             $.ajax({
                 url: "user/userCenterServlet?action=getUser",// 请求地址
@@ -136,7 +132,12 @@
                         validators: {
                             notEmpty: {
                                 message: '真实姓名不能为空'
-                            }
+                            },
+                            stringLength : {
+                            min : 0,
+                            max : 10,
+                            message : '真实姓名总长度必须小于10'
+                          }
                         }
                     },
                     hobbys: {
@@ -145,18 +146,19 @@
                             notEmpty: {
                                 message: '爱好不能为空'
                             }
+                            
                         }
                     },
-                    description: {
-                        messaage: 'The descrption is not valid',
-                        validators: {
-                            stringLength: {
-                                min: 0,
-                                max: 50,
-                                message: '个人简介总长度必须小于50'
-                            }
+                     description:{
+                	messaage: 'The descrption is not valid',
+                 	validators : {
+                        stringLength : {
+                            min : 0,
+                            max : 50,
+                            message : '个人简介总长度必须小于50'
                         }
-                    },
+               	     }
+                  },
                     email: {
                         messaage: 'The email is not valid',
                         validators: {
@@ -216,9 +218,10 @@
                         alert(data.info);
                         $(".text-warning").text("你输入的邮箱号已经被注册了!修改失败，请换一个邮箱呗！");
                         $("input[name='email']").val("");
-                    } else if (data.res == 7) {
+                    }else if (data.res == 7) {
                         alert(data.info);
                     }
+
                     else {
                         $(".text-warning").text("更新失败！");
                         $("input[name='realname']").val("");
@@ -232,8 +235,7 @@
             });
             return false;
         }
-
-        layui.use('upload', function () {
+        layui.use('upload', function(){
             var upload = layui.upload;
             //执行实例
             var uploadInst = upload.render({
@@ -246,17 +248,17 @@
                         $('#demo1').attr('src', result);
                     });
                 },
-                done: function (data) {
-                    if (data.res == 1) {
+                done: function(data){
+                    if(data.res==1){
                         $("img").attr("src", data.src);
                         $("#userAvatar").attr("value", data.src);
                         return layer.msg(data.info);
                     }
-                    if (data.res != 1) {
+                    if(data.res!=1){
                         return layer.msg(data.info);
                     }
                 }
-                , error: function () {
+                ,error: function(){
                     var demoText = $('#demoText');
                     demoText.html('' +
                         '<span style="color: #FF5722;">上传失败</span>' +
@@ -268,19 +270,19 @@
             });
         });
 
-        function gg() {
-            var bootstrapValidator = $("#updateform").data("bootstrapValidator");
+     function gg() {
+            var bootstrapValidator=$("#updateform").data("bootstrapValidator");
             //触发验证
             bootstrapValidator.validate();
             //如果验证通过，则调用login方法
-            if (bootstrapValidator.isValid()) {
+            if(bootstrapValidator.isValid()){
                 update();
             }
         }
     </script>
 </head>
 <body>
-<jsp:include flush="fasle" page="../header.jsp"/>
+<jsp:include flush="true" page="../header.jsp"/>
 <div class="container">
     <div class="row">
         <div class="col-sm-offset-3 col-sm-6 text-center">
@@ -297,7 +299,7 @@
                 <br>
                 <%--<input type="file" name="uploadFile" id="picture" alt="点击图片上传">--%>
                 <%--<button class="btn btn-danger btn-sm delete_btn"--%>
-                <%--onclick="javascript:window.location.href='user/upload.jsp'">修改头像--%>
+                        <%--onclick="javascript:window.location.href='user/upload.jsp'">修改头像--%>
                 <%--</button>--%>
                 <button type="button" class="layui-btn" id="test1">
                     <i class="layui-icon">&#xe67c;</i>上传头像
@@ -371,20 +373,18 @@
         </div>
         <div class="form-group">
             <c:if test="${user.mailstate==1}">
-                <label for="email" class="col-sm-2 control-label">已绑定邮箱：</label>
-                <div class="col-sm-4">
-                    <input type="email" class="form-control" name="email" placeholder="请输入邮箱" value="${user.email}"
-                           readonly="readonly">
-                </div>
-                <button class="btn" onclick="updaEmail();">点击修改 </button>
+            <label for="email" class="col-sm-2 control-label">已绑定邮箱：</label>
+            <div class="col-sm-4">
+                <input type="email" class="form-control" name="email" placeholder="请输入邮箱" value="${user.email}" readonly="readonly">
+            </div>
+             <button class="btn" onclick="updaEmail();">点击修改 </button>
             </c:if>
             <c:if test="${user.mailstate==0}">
                 <label for="email" class="col-sm-2 control-label">邮箱未绑定：</label>
                 <div class="col-sm-4">
                     <input type="email" class="form-control" name="email" placeholder="请输入邮箱" value="${user.email}">
                 </div>
-                <button class="btn" onclick="javascript:window.location.href='<%=basePath%>/bindingmail.jsp'">点击绑定
-                </button>
+                <button class="btn" onclick="javascript:window.location.href='<%=basePath%>/bindingmail.jsp'">点击绑定</button>
             </c:if>
         </div>
         <div class="form-group">
@@ -396,8 +396,7 @@
         <div class="form-group">
             <label for="description" class="col-sm-2 control-label">个人简介：</label>
             <div class="col-sm-4">
-                <textarea name="description" rows="5" class="form-control" id="description"
-                          placeholder="请输入个人简介">${user.description}</textarea>
+                <textarea name="description" rows="5" class="form-control" id="description" placeholder="请输入个人简介">${user.description}</textarea>
             </div>
         </div>
         <div class="form-group has-error">
@@ -412,6 +411,6 @@
         </div>
     </form>
 </div>
-<jsp:include flush="fasle" page="../footer.jsp"/>
+<jsp:include flush="true" page="../footer.jsp"/>
 </body>
 </html>

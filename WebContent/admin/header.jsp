@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
@@ -12,7 +12,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <base href="<%=basePath%>">
 <title>头部</title>
-<%--<script type="text/javascript" src="jquery/jquery-2.2.4.min.js"></script>--%>
 <script type="text/javascript">
 	function logout(){
 		$.get("adminServlet",{"action":"logout"},function(data){
@@ -21,6 +20,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		},"text");
 	}
 </script>
+<script>(function(T,h,i,n,k,P,a,g,e){g=function(){P=h.createElement(i);a=h.getElementsByTagName(i)[0];P.src=k;P.charset="utf-8";P.async=1;a.parentNode.insertBefore(P,a)};T["ThinkPageWeatherWidgetObject"]=n;T[n]||(T[n]=function(){(T[n].q=T[n].q||[]).push(arguments)});T[n].l=+new Date();if(T.attachEvent){T.attachEvent("onload",g)}else{T.addEventListener("load",g,false)}}(window,document,"script","tpwidget","//widget.seniverse.com/widget/chameleon.js"))</script>
+<script>tpwidget("init", {
+    "flavor": "bubble",
+    "location": "WX4FBXXFKE4F",
+    "geolocation": "enabled",
+    "position": "top-right",
+    "margin": "50px 10px",
+    "language": "zh-chs",
+    "unit": "c",
+    "theme": "chameleon",
+    "uid": "U19A9ABF8C",
+    "hash": "21890f52f22e7df031617e096c53cb98"
+});
+tpwidget("show");</script>
 </head>
 <body>
 
@@ -45,9 +58,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<c:if test="${sessionScope.admin != null}">
 				<li><a href="admin/msgmanager.jsp">帖子管理</a></li>
 				<li><a href="admin/usermanager.jsp">用户管理</a></li>
-				<li><a href="admin/userlogmanager.jsp">用户登录日志</a></li>
+                                <li><a href="admin/userlogmanager.jsp">用户登录日志</a></li>
 				<li><a href="admin/thememanager.jsp">主题管理</a></li>
-				<li><a href="admin/advisemanager.jsp">建议管理</a></li>
+                                <li><a href="admin/advisemanager.jsp">建议管理</a></li>
 				<li class="dropdown">
 			    	<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 			        	${sessionScope.admin.name}<span class="caret"></span>

@@ -185,8 +185,8 @@ public class UserMessageServlet extends HttpServlet {
             }
             if (rs > 0) {
                 //发送帖子更新的信号
-                sendMessage("ReplyAdd"+msgId+","+page+","+userid);
                 response.getWriter().print("{\"res\":1,\"info\":\"回帖成功\",\"LastPage\":"+page+"}");
+                sendMessage("ReplyAdd"+msgId+","+page+","+userid);
             } else {
                 response.getWriter().print("{\"res\":-1,\"info\":\"回帖失败\"}");
             }
@@ -310,7 +310,7 @@ public class UserMessageServlet extends HttpServlet {
                 int res = messageservice.userdeleteMsg(finalMsgid);
                 if (res == 1) {
                     //发送更新信号
-                    sendMessage("delete"+msgid);
+                    sendMessage("adddelete"+msgid);
                     response.getWriter().print("{\"res\": 1, \"info\":\"删除成功\"}");
                     if (count > 0) {
                         Thread t = new Thread(new Runnable() {
@@ -701,7 +701,8 @@ public class UserMessageServlet extends HttpServlet {
             User user = (User) session.getAttribute("user");
             int userid = user.getUserid();
             if (reply != null) {
-                if (userid == reply.getUserid()) {//只有本人才有资格删除自己的回复信息
+                int autherid=messageservice.getMsgNoincreaseCount(reply.getMsgid()).getUserid();//楼主userid
+                if (userid == reply.getUserid()||userid==autherid) {//只有本人才有资格删除自己的回复信息或者楼主
                     int relpycout= (int) iReplyService.queryReplyConutInTotalByreplytime(reply.getMsgid(),reply.getReplytime());
                     int res = iReplyService.deleteReply(replyid);
                     int res2 = iCountService.updateReplyCount(reply.getMsgid());
@@ -718,7 +719,11 @@ public class UserMessageServlet extends HttpServlet {
                     }
                     if (res == 1 && res2 == 1) {
                         //发送更新信号
-                        sendMessage("ReplyDelete"+reply.getMsgid()+","+page+","+n+","+userid);
+                        if(userid != reply.getUserid()&&userid==autherid){//楼主删除别人的
+                            sendMessage("ReplyDeleteByAuther"+reply.getMsgid()+","+page+","+n+","+userid);
+                        }else {//楼主删除自己的
+                            sendMessage("ReplyDelete"+reply.getMsgid()+","+page+","+n+","+userid);
+                        }
                         response.getWriter().print("{\"res\": 1, \"info\":\"删除成功!\"}");
                     } else {
                         response.getWriter().print("{\"res\": " + res + ", \"info\":\"删除失败!\"}");

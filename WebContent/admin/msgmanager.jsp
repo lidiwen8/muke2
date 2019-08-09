@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%  
@@ -11,10 +11,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+<link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
 <link rel="stylesheet" href="css/site.css">
-<script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+<script src="https://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="page/pagetool.js" type="text/javascript"></script>
 <title>爱之家网站管理后台</title>
 <script type="text/javascript">
@@ -26,7 +26,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	function getMsg(pageNum){
 		$.ajax({
-			url : "admin/adminMessageServlet",
+			url : "admin/adminMessageServlet", 
 			type : "POST",
 			async : "true",
 			data : {"action" : "searchMsg", "pageNum": pageNum, "key" : key, "username" : username, "theid" : theid},
@@ -43,22 +43,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						msg.show();
 						msg.removeClass("template");
 						msg.find(".num").text(index+1);
-                        if(msgItem.state == 3){
-                            msg.find(".tit").text(msgItem.msgtopic+"<用户自屏>");
-                        }else{
-                            msg.find(".tit").text(msgItem.msgtopic);
+                                                if(msgItem.state == 3){
+                                                  msg.find(".tit").text(msgItem.msgtopic+"<用户自屏>");
+                                              }else{
+                                                 msg.find(".tit").text(msgItem.msgtopic);
 						}
+					
 						msg.find(".tit").attr("href", "message.jsp?msgid="+msgItem.msgid);
 						msg.find(".author").text(msgItem.realname);
 						msg.find(".time").text(msgItem.msgtime);
 						
 						msg.find(".delete").attr("onclick", "deleteMsg("+msgItem.msgid+")");
 						msg.find(".restore").attr("onclick", "restoreMsg("+msgItem.msgid+")");
+						
 						if (msgItem.state == -1){
-                            msg.find(".restore").show();
 							msg.find(".delete").hide();
+							msg.find(".restore").show();
 						}
 						else {
+
 							msg.find(".delete").show();
 							msg.find(".restore").hide();
 						}
@@ -124,7 +127,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	function getTheme(){
 		$.ajax({
-			url : "messageServlet",
+			url : "messageServlet", 
 			type : "POST",
 			async : "true",
 			data : {"action" : "getAllTheme"},
@@ -137,7 +140,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
 		});
 	}
-    function getInfo(){
+
+     function getInfo(){
         getTheme();
         $('#search').modal('show');
         $('#search').on('shown.bs.modal', function (e) {
@@ -147,7 +151,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	$(function(){
 		getMsg(page);
-
 	});
 </script>
 </head>

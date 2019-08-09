@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%  
@@ -11,10 +11,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+<link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
 <link rel="stylesheet" href="css/site.css">
-<script src="jquery/jquery-2.2.4.min.js" type="text/javascript"></script>
-<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+<script src="https://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="page/pagetool.js" type="text/javascript"></script>
 <title>爱之家网站管理后台</title>
 <script type="text/javascript">
@@ -38,7 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     window.location.replace("admin/login.jsp");
                 }
 				if (data.res==1){
-                    $("#usermanger").text("用户管理-"+data.data.rows);
+                                        $("#usermanger").text("用户管理-"+data.data.rows);
 					$(".list").html("");
 					$.each(data.data.data, function(index, userItem) {
 						var user = $(".template").clone();
@@ -46,8 +46,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						user.removeClass("template");
 						user.find(".num").text(index+1);
 						user.find(".name").text(userItem.username);
-						user.find(".name").attr("onclik", "jumpUsercenter("+userItem.username+")");
-                        user.find(".name").css("cursor","pointer");
+                                               	user.find(".name").attr("onclik", "jumpUsercenter("+userItem.username+")");
+                                                user.find(".name").css("cursor","pointer");
 						user.find(".realname").text(userItem.realname);
 						user.find(".name").text(userItem.username);
 						user.find(".sex").text(userItem.sex);
@@ -83,9 +83,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
 		});
 	}
-	function jumpUsercenter(username) {
-        window.location.href="user.jsp?username="+username;
-    }
+        function jumpUsercenter(username) {
+            window.location.replace("user.jsp?username="+username);
+        }
 	function deleteUser(userid) {
         if (confirm("确认禁用吗？")) {
             $.ajax({

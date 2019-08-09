@@ -31,9 +31,8 @@
             minsold=Math.floor((hrsold-e_hrsold)*-60);
             seconds=Math.floor((minsold-e_minsold)*-60);
             span_dt_dt.innerHTML=daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒" ;
-
         }
-         show_date_time();
+        show_date_time();
         //-->
   
 	</SCRIPT>
@@ -60,7 +59,7 @@
 						<h4>关于</h4>
 						<ul class="list-unstyled">
 							<li><a href="http://www.lidiwen.club/CustomerManagement-master_war/XieYi.html">关于我们</a></li>
-							<li><a href="http://www.lidiwen.club/CustomerManagement-master_war/assets/1/jianjie.html" _blank>个人简介</a></li>
+							<li><a href="https://www.500d.me/cvresume/5246633084/" _blank>个人简介</a></li>
 							 <li>
 								<a title="微信" id="weixin_btn" rel="external nofollow"  href="javascript:se()">
 								<i class="fa fa-weixin" id="weixin_code">广告合作</i>
@@ -86,6 +85,9 @@
 						<ul class="list-unstyled">
 							<li><a href="http://www.lidiwen.club/CustomerManagement-master_war/login.html" target="_blank">爱之家</a></li>
 							<li><a href="http://www.lidiwen.club/ForestBlog/" target="_blank">晓文博客</a></li>
+                                                        <li><a href="http://www.lidiwen.club/ForestBlog2.0/" target="_blank">晓文博客V2.0</a></li>
+                                                        <li><a href="http://www.lidiwen.club/mybaby/fore_login" target="_blank">相册集</a></li>
+                                                        <li><a href="http://lidiwen.club/LongBlog-v2.0-master/index.html" target="_blank">竹林听雨</a></li>
 							<li><a href="http://www.lidiwen.club/CustomerManagement-master_war/jumpGame.html" target="_blank">跳跃之战</a></li>
 						</ul>
 					</div>
@@ -120,15 +122,16 @@
 	</div>
 </div>
 
-   <script src="http://www.lidiwen.club/ForestBlog/plugin/layui/layer.js"></script>
+   <script src="http://love.lidiwen.club/layer.js"></script>
 <script>
     function se() {
         var img = "<img width='200px' height='200px' src='http://www.lidiwen.club/ForestBlog/img/weixin.jpg'/>";
         layer.open({
             type: 1,
+            title:'微信', //显示标题
             shadeClose:true,
-			title:'微信',
             closeBtn: 0,
+            area: '200px',
             skin: 'layui-layer-nobg', //没有背景色
             content: img, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
         });
@@ -137,11 +140,10 @@
         var img = "<img width='220px' height='350px' src='images/晓琪.jpg'/>";
         layer.open({
             type: 1,
-            title: false, //显示标题
+            title: false, //不显示标题
             shadeClose:true,
             closeBtn: 0,
-            anim: 6,
-            // area: '220px',
+            area: '220px',
             skin: 'layui-layer-nobg', //没有背景色
             content: img, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
         });
@@ -150,10 +152,9 @@ function se3() {
         var img = "<img width='220px' height='350px' src='images/李弟文.jpg'/>";
         layer.open({
             type: 1,
-            title: false, //显示标题
+            title: false, //不显示标题
             shadeClose:true,
             closeBtn: 0,
-            anim: 6,
             area: '220px',
             skin: 'layui-layer-nobg', //没有背景色
             content: img, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
