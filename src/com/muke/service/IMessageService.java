@@ -73,6 +73,8 @@ public interface IMessageService {
 
     Page searchUserMyMsg(MessageCriteria messageCriteria, Page page);
 
+    Page searchUserAllMyMsg(MessageCriteria messageCriteria, Page page);
+
     Page search1(MessageCriteria messageCriteria, Page page);
 
     Page searchUserCnterMsg(MessageCriteria messageCriteria, Page page);

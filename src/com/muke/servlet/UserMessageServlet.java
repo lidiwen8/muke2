@@ -196,6 +196,44 @@ public class UserMessageServlet extends HttpServlet {
         }
     }
 
+    //搜索我的问题，根据帖子标题
+    private void searchUserMyMsg(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String pageNum = request.getParameter("pageNum");
+        String theid = request.getParameter("theid");
+        String key = request.getParameter("key");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        int userid = user.getUserid();//用户ID
+        try {
+            if (pageNum == null || pageNum.equals("")) {
+                pageNum = "1";
+            }
+            if (theid == null || theid.equals("")) {
+                theid = "-1";
+            }
+            Page page = new Page();
+            page.setCurPage(Integer.parseInt(pageNum));
+            //创建封装查询条件对象
+            MessageCriteria messageCriteria = new MessageCriteria();
+            messageCriteria.setUserid(userid);
+            messageCriteria.setKey(key);
+            messageCriteria.setTheid(Integer.parseInt(theid));
+            messageCriteria.setOrderRule(MessageCriteria.OrderRuleEnum.ORDER_BY_MSG_TIME);//排序条件
+            messageCriteria.setState(0);//查询非禁用状态
+            page = messageservice.searchUserAllMyMsg(messageCriteria, page);
+            if (page == null) {
+                response.getWriter().print("{\"res\":-1,\"message\":不存在与'"+key+"'有关的帖子问题，请换个关键词试试！}");
+                return;
+            }
+            Gson gson = new GsonBuilder().setDateFormat("yy-MM-dd").create();
+            String json = gson.toJson(page);
+            response.getWriter().print("{\"res\":1,\"message\":" + json + "}");
+        } catch (NullPointerException e) {
+            response.getWriter().print("{\"res\":-1,\"message\":不存在与'"+key+"'有关的帖子问题，请换个关键词试试！}");
+            return;
+        }
+    }
+
     //修改问题
     private void updateMsg(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int msgId = Integer.parseInt(request.getParameter("msgid"));

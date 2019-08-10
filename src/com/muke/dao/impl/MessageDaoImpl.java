@@ -229,6 +229,64 @@ public class MessageDaoImpl implements IMessageDao {
     }
 
     @Override
+    public Page searchUserAllMyMsg(MessageCriteria messageCriteria, Page page) {
+        StringBuffer sBuffer = new StringBuffer();
+        sBuffer.append(" select a.msgid, msgtopic, msgtime,likecount, replyident,a.state, ");
+        sBuffer.append(" d.accessCount, d.replyCount ");
+        sBuffer.append(" FROM message a ");
+        sBuffer.append(" LEFT JOIN user b ON a.userid=b.userid ");
+        sBuffer.append(" LEFT JOIN theme c ON a.theid=c.theid ");
+        sBuffer.append(" LEFT JOIN count d ON a.msgid=d.msgid ");
+        /*		sBuffer.append(" LEFT JOIN reply e ON a.msgid=e.msgid ");*/
+        sBuffer.append(" WHERE 1=1 ");
+        List<Object> params = new ArrayList<Object>();
+        if (messageCriteria != null) {
+            // 根据查询条件拼接SQL语句
+            int userId = messageCriteria.getUserid();
+            if (userId > 0) {
+                sBuffer.append(" AND a.userid=? ");
+                params.add(userId);
+            }
+            int theid = messageCriteria.getTheid();
+            if (theid > 0) {
+                sBuffer.append(" AND a.theid=? ");
+                params.add(theid);
+            }
+            int state = messageCriteria.getState();
+            if (state >= -1) {
+                sBuffer.append(" AND a.state>=? ");
+                params.add(state);
+            }
+            String key = messageCriteria.getKey();
+            if (key != null && key.trim().length() > 0) {
+                sBuffer.append(" AND a.msgtopic LIKE ? ");
+                params.add("%" + key + "%");
+            }
+        }
+        sBuffer.append(" GROUP BY a.msgid ");
+        //排序规则
+        switch (messageCriteria.getOrderRule()) {
+            case ORDER_BY_ACCESS_COUNT:
+                sBuffer.append(" ORDER BY d.accessCount ");
+                break;
+            case ORDER_BY_MSG_TIME:
+                sBuffer.append(" ORDER BY msgtime ");
+                break;
+            default:
+                break;
+        }
+        //是否升序或者降序
+        if (!messageCriteria.isAsc()) {
+            sBuffer.append(" DESC ");
+        }
+
+        Page resPage = null;
+        resPage = dbutil.getQueryPage(ShortMessageInfo.class, sBuffer.toString(), params.toArray(), page);
+        return resPage;
+    }
+
+
+    @Override
     public Page searchUserMyMsg(MessageCriteria messageCriteria, Page page) {
         StringBuffer sBuffer = new StringBuffer();
         sBuffer.append(" select a.msgid, msgtopic, msgtime,likecount, replyident,a.state, ");

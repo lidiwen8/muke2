@@ -75,6 +75,8 @@ public interface IMessageDao {
 
     Page searchUserMyMsg(MessageCriteria messageCriteria, Page page);
 
+    Page searchUserAllMyMsg(MessageCriteria messageCriteria, Page page);
+
     Page query1(MessageCriteria messageCriteria, Page page);
 
 

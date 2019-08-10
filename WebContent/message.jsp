@@ -182,7 +182,7 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
             document.getElementsByTagName("head")[0].appendChild(script);
         }
 	function getReply(cout) {
-            if(cout){
+            if(cout!=null&&cout){
                 pageNum=pageNum-1;
             }
             pageNum++;
@@ -198,11 +198,12 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                         alert("未登录！");
                     }else {
                     $('.emoji').emoji();
-                    if(cout){
+                    if(cout!=null&&cout){
                         var k;
                         $.each(data.reply.data, function (index, element) {
-                            if(ViewReplyCout<index){
-                                ViewReplyCout=ViewReplyCout+1;
+                            if(ViewReplyCout==null||(ViewReplyCout!=null&&ViewReplyCout<index)){
+                                // ViewReplyCout=ViewReplyCout+1;
+                                k=index;
                                 var reply = $(".template").clone();
                                 reply.show();
                                 reply.removeClass("template");
@@ -368,8 +369,8 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                 }
                 scrollEnd();
             }else if(page==pageNum){
-                pageNum=pageNum-1;
-                getReply();
+                // pageNum=pageNum-1;
+                getReply(1);
                 scrollEnd();
             }else {
                 getReply(1);

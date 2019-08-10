@@ -102,6 +102,11 @@ public class MessageServiceImpl implements IMessageService {
     }
 
     @Override
+    public Page searchUserAllMyMsg(MessageCriteria messageCriteria, Page page){
+        return messagedao.searchUserAllMyMsg(messageCriteria, page);
+    }
+
+    @Override
     public Page search1(MessageCriteria messageCriteria, Page page) {
         return messagedao.query1(messageCriteria, page);
     }
