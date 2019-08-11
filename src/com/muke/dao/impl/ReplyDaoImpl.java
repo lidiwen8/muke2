@@ -71,6 +71,21 @@ public class ReplyDaoImpl implements IReplyDao {
     }
 
     @Override
+    public long queryAutherReplyConutBymsgid(int msgid,int userid){
+        String sql = "SELECT COUNT(*) as count FROM (SELECT r.userid FROM reply r INNER JOIN user u on r.userid=u.userid WHERE r.msgid=? ORDER BY replytime) as a WHERE a.userid=?";
+        Object[] params = {msgid,userid};
+        Map map = null;
+        try {
+            map = dbutil.getObject(sql, params);
+            long count = (Long) map.get("count");
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
     public long queryReplyConutInTotalByreplytime(int msgid,Date replytime){
         String sql = "SELECT COUNT(*) AS count FROM (SELECT replytime FROM reply r INNER JOIN user u on r.userid=u.userid WHERE r.msgid=? ORDER BY replytime) as a WHERE replytime<=?";
         Object[] params = {msgid,replytime};

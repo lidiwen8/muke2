@@ -33,6 +33,10 @@ public class IReplyServiceImpl implements IReplyService {
     public long queryReplyConutBymsgid(int msgid) {
         return replydao.queryReplyConutBymsgid(msgid);
     }
+    @Override
+    public long queryAutherReplyConutBymsgid(int msgid,int userid){
+        return replydao.queryAutherReplyConutBymsgid(msgid,userid);
+    }
 
     @Override
     public long queryReplyConutInTotalByreplytime(int msgid,Date replytime){

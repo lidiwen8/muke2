@@ -175,7 +175,19 @@ public class UserMessageServlet extends HttpServlet {
             reply.setReplyip(replyip);
             int rs = iReplyService.replyMsg(reply);
             int relpycout= (int) iReplyService.queryReplyConutBymsgid(Integer.parseInt(msgId));
-            int page;
+            int page,AutherPage;
+            if(Msguserid==userid){
+                int AutherRelpycout= (int) iReplyService.queryAutherReplyConutBymsgid(Integer.parseInt(msgId),Msguserid);
+                if(AutherRelpycout<=pageNumber){
+                    AutherPage=1;
+                }else if(AutherRelpycout%pageNumber==0){
+                    AutherPage=AutherRelpycout/pageNumber;
+                }else {
+                    AutherPage=AutherRelpycout/pageNumber+1;
+                }
+            }else {
+                AutherPage=-1;
+            }
             if(relpycout<=pageNumber){
                 page=1;
             }else if(relpycout%pageNumber==0){
@@ -186,7 +198,7 @@ public class UserMessageServlet extends HttpServlet {
             if (rs > 0) {
                 //发送帖子更新的信号
                 response.getWriter().print("{\"res\":1,\"info\":\"回帖成功\",\"LastPage\":"+page+"}");
-                sendMessage("ReplyAdd"+msgId+","+page+","+userid);
+                sendMessage("ReplyAdd"+msgId+","+page+","+userid+","+AutherPage);
             } else {
                 response.getWriter().print("{\"res\":-1,\"info\":\"回帖失败\"}");
             }
@@ -478,7 +490,18 @@ public class UserMessageServlet extends HttpServlet {
                 reply.setReplycontents(replycontent);
                 int rs = iReplyService.updateReply(reply);
                 int relpycout= (int) iReplyService.queryReplyConutInTotalByreplytime(reply.getMsgid(),reply.getReplytime());
-                int page,n;
+                int page,n,AutherPage,nAuther;
+                int AutherRelpycout= (int) iReplyService.queryAutherReplyConutBymsgid(reply.getMsgid(),reply.getUserid());
+                    if(AutherRelpycout<=pageNumber){
+                        AutherPage=1;
+                        nAuther=AutherRelpycout;//代表第几条
+                    }else if(AutherRelpycout%pageNumber==0){
+                        AutherPage=AutherRelpycout/pageNumber;
+                        nAuther=pageNumber;
+                    }else {
+                        AutherPage=AutherRelpycout/pageNumber+1;
+                        nAuther=AutherRelpycout%pageNumber;
+                    }
                 if(relpycout<=pageNumber){
                     page=1;
                     n=relpycout;//代表第几条
@@ -492,7 +515,7 @@ public class UserMessageServlet extends HttpServlet {
 //                int userFlag;//标记是否是本人修改回复1是-0不是
                 if (rs > 0) {
                     //发送更新信号
-                    sendMessage("ReplyUpdate"+reply.getMsgid()+","+page+","+n+","+userid);
+                    sendMessage("ReplyUpdate"+reply.getMsgid()+","+page+","+n+","+userid+","+AutherPage+","+nAuther+","+relpycout+","+AutherRelpycout);
                     response.getWriter().print("{\"res\":1,\"info\":\"编辑回复信息成功\"}");
                 } else {
                     response.getWriter().print("{\"res\":-1,\"info\":\"编辑回复信息失败\"}");
@@ -572,7 +595,7 @@ public class UserMessageServlet extends HttpServlet {
                 reply.setLikeuserid(user.getUserid() + ",");
                 if (iReplyService.updateReplylike(reply) > 0) {
                     //发送更新信号
-                    sendMessage("Replyzan"+iReplyService.queryid(replyid).getMsgid()+","+page+","+n+","+iReplyService.queryid(replyid).getUserid());
+                    sendMessage("Replyzan"+iReplyService.queryid(replyid).getMsgid()+","+page+","+n+","+iReplyService.queryid(replyid).getUserid()+","+relpycout);
                     response.getWriter().print("{\"res\":1,\"info\":\"操作成功\"}");
                 } else {
                     response.getWriter().print("{\"res\":-1,\"info\":\"操作失败\"}");
@@ -622,7 +645,7 @@ public class UserMessageServlet extends HttpServlet {
                     reply.setLikeuserid(newlikeuserid);
                     if (iReplyService.updateReplylike(reply) > 0) {
                         //发送更新信号
-                        sendMessage("Replycancelzan"+iReplyService.queryid(replyid).getMsgid()+","+page+","+n+","+iReplyService.queryid(replyid).getUserid());
+                        sendMessage("Replycancelzan"+iReplyService.queryid(replyid).getMsgid()+","+page+","+n+","+iReplyService.queryid(replyid).getUserid()+","+relpycout);
                         response.getWriter().print("{\"res\":1,\"info\":\"操作成功\"}");
                     } else {
                         response.getWriter().print("{\"res\":-1,\"info\":\"操作失败\"}");
@@ -742,9 +765,10 @@ public class UserMessageServlet extends HttpServlet {
                 int autherid=messageservice.getMsgNoincreaseCount(reply.getMsgid()).getUserid();//楼主userid
                 if (userid == reply.getUserid()||userid==autherid) {//只有本人才有资格删除自己的回复信息或者楼主
                     int relpycout= (int) iReplyService.queryReplyConutInTotalByreplytime(reply.getMsgid(),reply.getReplytime());
+                    int AutherRelpycout= (int) iReplyService.queryAutherReplyConutBymsgid(reply.getMsgid(),reply.getUserid());
                     int res = iReplyService.deleteReply(replyid);
                     int res2 = iCountService.updateReplyCount(reply.getMsgid());
-                    int page,n;
+                    int page,n,AutherPage,nAuther;
                     if(relpycout<=pageNumber){
                         page=1;
                         n=relpycout;//代表第几条
@@ -755,12 +779,22 @@ public class UserMessageServlet extends HttpServlet {
                         page=relpycout/pageNumber+1;
                         n=relpycout%pageNumber;
                     }
+                    if(AutherRelpycout<=pageNumber){
+                        AutherPage=1;
+                        nAuther=AutherRelpycout;//代表第几条
+                    }else if(AutherRelpycout%pageNumber==0){
+                        AutherPage=AutherRelpycout/pageNumber;
+                        nAuther=pageNumber;
+                    }else {
+                        AutherPage=AutherRelpycout/pageNumber+1;
+                        nAuther=AutherRelpycout%pageNumber;
+                    }
                     if (res == 1 && res2 == 1) {
                         //发送更新信号
                         if(userid != reply.getUserid()&&userid==autherid){//楼主删除别人的
-                            sendMessage("ReplyDeleteByAuther"+reply.getMsgid()+","+page+","+n+","+userid);
+                            sendMessage("ReplyDeleteByAuther"+reply.getMsgid()+","+page+","+n+","+userid+","+AutherPage+","+nAuther+","+relpycout+","+AutherRelpycout);
                         }else {//楼主删除自己的
-                            sendMessage("ReplyDelete"+reply.getMsgid()+","+page+","+n+","+userid);
+                            sendMessage("ReplyDelete"+reply.getMsgid()+","+page+","+n+","+userid+","+AutherPage+","+nAuther+","+relpycout+","+AutherRelpycout);
                         }
                         response.getWriter().print("{\"res\": 1, \"info\":\"删除成功!\"}");
                     } else {

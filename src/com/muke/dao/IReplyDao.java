@@ -28,6 +28,8 @@ public interface IReplyDao {
 
     long queryReplyConutBymsgid(int msgid);
 
+    long queryAutherReplyConutBymsgid(int msgid,int userid);
+
     long queryReplyConutInTotalByreplytime(int msgid,Date replytime);
 
     /**

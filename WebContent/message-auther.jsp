@@ -908,20 +908,29 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                         if(($("#userid").val()==null&&$("#autherid").val()==userid)||($("#userid").val()!=null&&$("#userid").val()!=userid&&$("#autherid").val()==userid)){
                             var messageReply=confirm("该帖子楼主又有新消息回复了，是否查看楼主最新回复w(゜Д゜)w");
                             if(messageReply==true){
-                                getNewReply(event.data.split(",")[1]);
+                                if(event.data.split(",")[3]==-1){
+                                    getNewReply(event.data.split(",")[1]);
+                                }else {
+                                    getNewReply(event.data.split(",")[3]);
+                                }
+
                             }
                         }
                         if($("#userid").val()!=null&&$("#userid").val()==userid) {
-                            getNewReply(event.data.split(",")[1]);
+                            if(event.data.split(",")[3]==-1){
+                                getNewReply(event.data.split(",")[1]);
+                            }else {
+                                getNewReply(event.data.split(",")[3]);
+                            }
                         }
 
                     }
                     if(event.data.split(",")[0]=="ReplyUpdate"+msgId||event.data.split(",")[0]=="ReplyDelete"+msgId||event.data.split(",")[0]=="ReplyDeleteByAuther"+msgId){
                         // getReply(-1);更新和删除要得到该条回复在第几页第几个记录，然后获取到后重新加载
-                        //event.data.split(",")[1]是第几页，event.data.split(",")[2]是第几条
+                        //event.data.split(",")[4]是第几页，event.data.split(",")[5]是第几条-楼主页
                         var userid=event.data.split(",")[3];
                         if($("#userid").val()==null||($("#userid").val()!=null&&$("#userid").val()!=userid&&event.data.split(",")[0]!="ReplyDeleteByAuther"+msgId)) {
-                            var messageReplyVary = confirm("最新通知：该帖子之前的回复消息有改动(在第" + event.data.split(",")[1] + "页，第" + event.data.split(",")[2] + "条回复)，是否查看最新回复w(゜Д゜)w");
+                            var messageReplyVary = confirm("最新通知：该帖子之前的回复消息有改动(在第" + event.data.split(",")[7] + "条回复)，是否查看最新回复w(゜Д゜)w");
                             if (messageReplyVary == true) {
                                 location.reload();
                             }
@@ -1002,12 +1011,6 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                             location.reload();
                         }
                     }
-                    if(event.data=="deleteUser"+$("#userid").val()){
-                        var messageVary = confirm("最新通知：你的当前账号已被管理员禁用！");
-                        if (messageVary == true||messageVary==false) {
-                            logout();
-                        }
-                    }
 
                 }
                 //连接关闭的回调方法
@@ -1076,21 +1079,6 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
         // e.scrollTop=e.scrollHeight;
 
     }
-        function logout() {
-            // Ajax 异步请求退出登录
-            $.ajax({
-                url: "userServlet?action=logout",
-                type: "POST",
-                async: "true",
-                dataType: "json",
-                success: function (data) {
-                    if (data.res == 1) {
-                        alert("你已经被强制退出！");
-                        window.location.replace("login.jsp");
-                    }
-                }
-            });
-        }
     </script>
 </head>
 <body>
