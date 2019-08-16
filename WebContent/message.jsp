@@ -786,17 +786,18 @@
                         }
 
                     }
-                    if (event.data.split(",")[0] == "ReplyUpdate" + msgId || event.data.split(",")[0] == "ReplyDelete" + msgId || event.data.split(",")[0] == "ReplyDeleteByAuther" + msgId) {
+                    if (event.data.split(",")[0] == "ReplyUpdate" + msgId || event.data.split(",")[0] == "ReplyDelete" + msgId || event.data.split(",")[0] == "ReplyDeleteByAuther" + msgId||event.data.split(",")[0]=="ReplyDeleteAuther"+msgId) {
                         // getReply(-1);更新和删除要得到该条回复在第几页第几个记录，然后获取到后重新加载
                         //event.data.split(",")[1]是第几页，event.data.split(",")[2]是第几条
                         var userid = event.data.split(",")[3];
-                        if ($("#userid").val() == null || ($("#userid").val() != null && $("#userid").val() != userid && event.data.split(",")[0] != "ReplyDeleteByAuther" + msgId)) {
+                        if ($("#userid").val() == null || ($("#userid").val() != null && $("#userid").val() != userid && (event.data.split(",")[0] != "ReplyDeleteByAuther" + msgId||event.data.split(",")[0]=="ReplyDeleteAuther"+msgId))) {
                             var messageReplyVary = confirm("最新通知：该帖子之前的回复消息有改动(在第" + event.data.split(",")[6] + "条回复)，是否查看最新回复w(゜Д゜)w");
                             if (messageReplyVary == true) {
-                                getNewReply(event.data.split(",")[1]);
+                                // getNewReply(event.data.split(",")[1]);//暂时未好
+                                location.reload();//暂时用这个
                             }
                         }
-                        if (($("#userid").val() != null && $("#userid").val() == userid) || event.data.split(",")[0] == "ReplyDeleteByAuther" + msgId) {
+                        if (($("#userid").val() != null && $("#userid").val() == userid) || (event.data.split(",")[0] != "ReplyDeleteByAuther" + msgId||event.data.split(",")[0]=="ReplyDeleteAuther"+msgId)) {
                             // $("#msgList").empty();//移除之前渲染的元素
                             // getNewReply2(event.data.split(",")[1],event.data.split(",")[2]);暂时还未修复
                              location.reload();//暂时用这个

@@ -793,8 +793,11 @@ public class UserMessageServlet extends HttpServlet {
                         //发送更新信号
                         if(userid != reply.getUserid()&&userid==autherid){//楼主删除别人的
                             sendMessage("ReplyDeleteByAuther"+reply.getMsgid()+","+page+","+n+","+userid+","+AutherPage+","+nAuther+","+relpycout+","+AutherRelpycout);
-                        }else {//楼主删除自己的
+                        }else if(userid == reply.getUserid()&&userid!=autherid){//该用户不是楼主，自己删除自己的回帖
                             sendMessage("ReplyDelete"+reply.getMsgid()+","+page+","+n+","+userid+","+AutherPage+","+nAuther+","+relpycout+","+AutherRelpycout);
+                        }
+                        else{//楼主删除自己的
+                            sendMessage("ReplyDeleteAuther"+reply.getMsgid()+","+page+","+n+","+userid+","+AutherPage+","+nAuther+","+relpycout+","+AutherRelpycout);
                         }
                         response.getWriter().print("{\"res\": 1, \"info\":\"删除成功!\"}");
                     } else {
