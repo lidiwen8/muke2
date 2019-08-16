@@ -12,6 +12,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="keywords" content="lidiwen, 爱之家, 答疑平台, 互动平台，发帖平台">
+	<meta name="Description" content="爱之家，爱之家网站是为了方便用户通过输入自己的相关信息来获取想要信息，主要提供一些基本的查询，爱之家网站的爱情宣言是 我爱黄晓琪 --(李弟文)。">
 <base href="<%=basePath%>">
 <title>头部</title>
 <script type="text/javascript">

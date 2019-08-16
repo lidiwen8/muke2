@@ -794,13 +794,12 @@
                             var messageReplyVary = confirm("最新通知：该帖子之前的回复消息有改动(在第" + event.data.split(",")[6] + "条回复)，是否查看最新回复w(゜Д゜)w");
                             if (messageReplyVary == true) {
                                 getNewReply(event.data.split(",")[1]);
-                                // location.reload();
                             }
                         }
                         if (($("#userid").val() != null && $("#userid").val() == userid) || event.data.split(",")[0] == "ReplyDeleteByAuther" + msgId) {
-                            $("#msgList").empty();//移除之前渲染的元素
-                            getNewReply2(event.data.split(",")[1],event.data.split(",")[2]);
-                            // location.reload();
+                            // $("#msgList").empty();//移除之前渲染的元素
+                            // getNewReply2(event.data.split(",")[1],event.data.split(",")[2]);暂时还未修复
+                             location.reload();//暂时用这个
                         }
 
                     } else if (event.data.split(",")[0] == "Replyzan" + msgId) {

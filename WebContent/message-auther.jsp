@@ -932,7 +932,8 @@ String basePath3 = request.getScheme() + "://" + request.getServerName() + path 
                         if($("#userid").val()==null||($("#userid").val()!=null&&$("#userid").val()!=userid&&event.data.split(",")[0]!="ReplyDeleteByAuther"+msgId)) {
                             var messageReplyVary = confirm("最新通知：该帖子之前的回复消息有改动(在第" + event.data.split(",")[7] + "条回复)，是否查看最新回复w(゜Д゜)w");
                             if (messageReplyVary == true) {
-                                location.reload();
+                                getNewReply(event.data.split(",")[4]);
+                                // location.reload();
                             }
                         }
                         if(($("#userid").val()!=null&&$("#userid").val()==userid)||event.data.split(",")[0]=="ReplyDeleteByAuther"+msgId) {
