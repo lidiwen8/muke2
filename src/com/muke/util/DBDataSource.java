@@ -76,8 +76,10 @@ public class DBDataSource {
 		cpDataSource = new ComboPooledDataSource();
 		cpDataSource.setDriverClass(DRIVER);
 		cpDataSource.setJdbcUrl(URL);
-		cpDataSource.setUser(DESUtils.getDecryptString(USER));
-		cpDataSource.setPassword(DESUtils.getDecryptString(PWD));
+//		cpDataSource.setUser(DESUtils.getDecryptString(USER));
+//		cpDataSource.setPassword(DESUtils.getDecryptString(PWD));
+		cpDataSource.setUser(USER);
+		cpDataSource.setPassword(PWD);
 		cpDataSource.setPreferredTestQuery(preferredTestQuery);
 		cpDataSource.setMaxPoolSize(maxPoolSize);
 		cpDataSource.setMinPoolSize(minPoolSize);
