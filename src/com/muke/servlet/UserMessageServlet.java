@@ -475,6 +475,7 @@ public class UserMessageServlet extends HttpServlet {
         try {
             User user = (User) session.getAttribute("user");
             int userid = user.getUserid();//用户ID
+            int autherid=messageservice.getMsgNoincreaseCount(reply.getMsgid()).getUserid();//楼主userid
             if (reply.getUserid() == userid) {
 //          String replyip = IPUtil.getIP(request);//编辑回复信息时不改变其发表时间以及回复ip地址
                 replycontent = EmojiUtil.resolveToByteFromEmoji(replycontent);//表情包转化为编码
@@ -515,7 +516,12 @@ public class UserMessageServlet extends HttpServlet {
 //                int userFlag;//标记是否是本人修改回复1是-0不是
                 if (rs > 0) {
                     //发送更新信号
-                    sendMessage("ReplyUpdate"+reply.getMsgid()+","+page+","+n+","+userid+","+AutherPage+","+nAuther+","+relpycout+","+AutherRelpycout);
+                    if(userid==autherid){//楼主更新自己的回复
+                        sendMessage("ReplyUpdateAuther"+reply.getMsgid()+","+page+","+n+","+userid+","+AutherPage+","+nAuther+","+relpycout+","+AutherRelpycout);
+                    }else{
+                        sendMessage("ReplyUpdate"+reply.getMsgid()+","+page+","+n+","+userid+","+AutherPage+","+nAuther+","+relpycout+","+AutherRelpycout);
+                    }
+
                     response.getWriter().print("{\"res\":1,\"info\":\"编辑回复信息成功\"}");
                 } else {
                     response.getWriter().print("{\"res\":-1,\"info\":\"编辑回复信息失败\"}");
