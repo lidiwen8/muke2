@@ -69,8 +69,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             },
                             stringLength: {/*长度提示*/
                                 min: 6,
-                                max: 20,
-                                message: '标题长度必须在6到20之间'
+                                max: 40,
+                                message: '标题长度必须在6到40之间'
                             }/*最后一个没有逗号*/
 
                         }
