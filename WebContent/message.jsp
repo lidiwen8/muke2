@@ -893,7 +893,7 @@
 
         //将消息显示在网页上
         function setMessageInnerHTML(innerHTML) {
-            $('message').innerHTML += innerHTML + '<br/>';
+            $('#message').innerHTML += innerHTML + '<br/>';
         }
 
         //关闭WebSocket连接
@@ -1071,9 +1071,9 @@
             <br/>
 
             <div id="cyReward" role="cylabs" style="text-align: center;" data-use="reward"></div>
-            <script type="text/javascript" charset="utf-8" src="https://changyan.itc.cn/js/lib/jquery.js"></script>
+            <script type="text/javascript" charset="utf-8" src="https://cy-cdn.kuaizhan.com/js/lib/jquery.js"></script>
             <script type="text/javascript" charset="utf-8"
-                    src="https://changyan.sohu.com/js/changyan.labs.https.js?appid=cytLOVtYY"></script>
+                    src="https://cy-cdn.kuaizhan.com/js/changyan.labs.https.js?appid=cytLOVtYY"></script>
         </div>
         <script>window._bd_share_config = {
             "common": {
