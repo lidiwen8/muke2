@@ -1,5 +1,6 @@
 package com.muke.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,53 +13,61 @@ public class DateUtil {
     private final static long month = 31 * day;// 月
     private final static long year = 12 * month;// 年
 
-    public static Date getToday(Date date) {
+    public static Date formDate(Date date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");    //格式化规则
+        String strDate= sdf.format(date); //格式化成yyyy-MM-dd格式的时间字符串
+        Date newDate =sdf.parse(strDate);
+        java.sql.Date resultDate = new java.sql.Date(newDate.getTime());
+        return resultDate;
+    }
+
+    public static Date getToday(Date date) throws ParseException {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
-        return calendar.getTime();
+        return formDate(calendar.getTime());
     }
 
-    public static Date getYestoday(Date date) {
+    public static Date getYestoday(Date date) throws ParseException {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         calendar.add(calendar.DATE, -1);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
-        return calendar.getTime();
+        return formDate(calendar.getTime());
     }
 
-    public static Date getTomorrow(Date date) {
+    public static Date getTomorrow(Date date) throws ParseException {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         calendar.add(calendar.DATE, 1);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
-        return calendar.getTime();
+        return formDate(calendar.getTime());
     }
 
-    public static Date getWeekAgo(Date date) {
+    public static Date getWeekAgo(Date date) throws ParseException {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         calendar.add(calendar.DATE, -7);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
-        return calendar.getTime();
+        return formDate(calendar.getTime());
     }
 
-    public static Date getMonthAgo(Date date) {
+    public static Date getMonthAgo(Date date) throws ParseException {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         calendar.add(calendar.DATE, -30);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
-        return calendar.getTime();
+        return formDate(calendar.getTime());
     }
 
     public static String getTimeFormatText(Long date) {
@@ -149,9 +158,13 @@ public class DateUtil {
         return aStrings[5] + "-" + aStrings[1] + "-" + aStrings[2] + " " + aStrings[3];
     }
 
-//    public static void main(String[] args) {
-//
-//        System.out.println(getTimeFormatText(Long.parseLong("1550505608078")));;
-//
-//    }
+    public static void main(String[] args) throws ParseException {
+        Date date = new Date();
+//        System.out.println(getTimeFormatText(Long.parseLong("1550505608078")));
+        System.out.println(DateUtil.getToday(date));
+        System.out.println( DateUtil.getTomorrow(date));
+        System.out.println( DateUtil.getWeekAgo(date));
+        System.out.println( DateUtil.getMonthAgo(date));
+
+    }
 }

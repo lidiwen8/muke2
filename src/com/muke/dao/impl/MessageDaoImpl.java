@@ -795,7 +795,7 @@ public class MessageDaoImpl implements IMessageDao {
     @Override
     public long queryCountByDate(Date startDate, Date endDate) {
         String sql = "SELECT COUNT(*) AS count FROM message WHERE msgtime > ? AND msgtime < ?";
-        Object[] params = {startDate, endDate};
+        Object[] params = {startDate+" 00:00:00", endDate+" 00:00:00"};
         Map map = null;
         try {
             map = dbutil.getObject(sql, params);

@@ -2,6 +2,7 @@ package com.muke.servlet;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -133,7 +134,7 @@ public class AdminServlet extends HttpServlet {
         }
     }
 
-    private void getReplyCount(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void getReplyCount(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException {
         Date date = new Date();
         // 本日发贴量
         long today = iReplyService.queryReplyCountByDate(DateUtil.getToday(date), DateUtil.getTomorrow(date));
@@ -145,7 +146,7 @@ public class AdminServlet extends HttpServlet {
         response.getWriter().print("{\"res\": 1, \"data\": {\"today\": " + today + ", \"week\": " + week + ", \"month\": " + month + ", \"replytotal\": " + replytotal + ", \"visits\": " + visits + "}}");
     }
 
-    private void getMsgCount(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void getMsgCount(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException {
         Date date = new Date();
         // 本日发贴量
         long today = iMessageService.queryMsgCountByDate(DateUtil.getToday(date), DateUtil.getTomorrow(date));
