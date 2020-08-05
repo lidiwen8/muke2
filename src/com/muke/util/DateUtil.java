@@ -158,13 +158,13 @@ public class DateUtil {
         return aStrings[5] + "-" + aStrings[1] + "-" + aStrings[2] + " " + aStrings[3];
     }
 
-    public static void main(String[] args) throws ParseException {
-        Date date = new Date();
-//        System.out.println(getTimeFormatText(Long.parseLong("1550505608078")));
-        System.out.println(DateUtil.getToday(date));
-        System.out.println( DateUtil.getTomorrow(date));
-        System.out.println( DateUtil.getWeekAgo(date));
-        System.out.println( DateUtil.getMonthAgo(date));
-
-    }
+//    public static void main(String[] args) throws ParseException {
+//        Date date = new Date();
+////        System.out.println(getTimeFormatText(Long.parseLong("1550505608078")));
+//        System.out.println(DateUtil.getToday(date));
+//        System.out.println( DateUtil.getTomorrow(date));
+//        System.out.println( DateUtil.getWeekAgo(date));
+//        System.out.println( DateUtil.getMonthAgo(date));
+//
+//    }
 }
