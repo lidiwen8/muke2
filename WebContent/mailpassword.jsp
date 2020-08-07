@@ -237,8 +237,13 @@
             <label for="input1" class="col-sm-2 control-label">验证码：</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control"  name="verifyCode" id="input1" placeholder="请输入验证码"/>
-                <img src="VerifyCodeServlet" id="imgVerifyCode" class="form-control" style="width: 117px;"/>
-                <a href="javascript:_hyz()">换一张</a>
+                <div style="display:inline-block;vertical-align:middle;align-items: center;justify-content: center;">
+                    <img src="VerifyCodeServlet" id="imgVerifyCode" class="form-control" style="float:left;width: 117px;margin-top: 15px;"/>
+                   <%--<span style="float: right;margin-left: 120px;">--%>
+                         <a href="javascript:_hyz()" style=" float: left; display: inline;margin-top: 22px;margin-left: 10px;text-decoration: none">【换一张】</a>
+                   <%--</span>--%>
+                </div>
+
             </div>
         </div>
         <div class="form-group has-error">
