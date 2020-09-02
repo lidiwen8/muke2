@@ -30,9 +30,10 @@ public class PlaceUtil {
     }
 
     public static String baiduGetCityCode(String ip) throws JSONException, IOException {
-
-        ip="14.118.141.134";//开发环境写死，线上环境务必要删除
         //百度ak，自己去申请就可以
+        if(ip.equals("0:0:0:0:0:0:0:1")){
+          ip="14.118.141.134";//开发环境写死，线上环境务必要删除
+        }
         String ak = "t89iFPNcq0sqOCuzlMwdRVTzGcSWgVoI";
         //这里调用百度的ip定位api服务 详见 http://api.map.baidu.com/lbsapi/cloud/ip-location-api.htm
         JSONObject json = readJsonFromUrl("http://api.map.baidu.com/location/ip?ip=" + ip + "&ak=" + ak + "&coor=bd09ll");
