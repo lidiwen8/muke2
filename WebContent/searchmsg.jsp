@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="http://love.lidiwen.club/bootstrap.min.css">
     <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="jquery/emoji.js"></script>
+    <link href="http://love.lidiwen.club/monokai_sublime.min.css" rel="stylesheet">
+    <script src="http://love.lidiwen.club/highlight.min.js"></script>
     <link rel="stylesheet" href="css/site.css">
     <script src="https://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js" type="text/javascript"></script>
     <title>爱之家网站答疑平台</title>
@@ -32,6 +34,24 @@
             $('.emoji').emoji();
             searchMsg2();
         });
+        function loadscript(url, callback) {
+            var script = document.createElement("script")
+            script.type = "text/javascript";
+            if (script.readyState) {
+                script.onreadystatechange = function () {
+                    if (script.readyState == "loaded" || script.readyState == "complete") {
+                        script.onreadystatechange = null;
+                        callback();
+                    }
+                };
+            } else {
+                script.onload = function () {
+                    callback();
+                };
+            }
+            script.src = url;
+            document.getElementsByTagName("head")[0].appendChild(script);
+        }
         function searchMsg2() {
             if("${param.key}"!=null||"${param.key}"!=""){
                 key = "${param.key}";
@@ -59,6 +79,7 @@
                             msg.find(".author").text(msgItem.realname + " •  " + msgItem.msgtime);
                             $('.emoji').emoji();
                             msg.find(".msgcontent").html(msgItem.msgcontents);
+                            hljs.initHighlightingOnLoad();
                             $('.emoji').emoji();
                             msg.find(".count").text(msgItem.accessCount + "次浏览 • " + msgItem.replyCount + "个回复 • " + msgItem.likecount + "个赞 • ");
                             msg.find(".msglink").attr("href", "message.jsp?msgid=" + msgItem.msgid);
@@ -68,6 +89,13 @@
                         $('.emoji').emoji();
                         pageNum++;
                         // 加载更多
+                        if (pageNum > 1) {
+                            loadscript("https://cdn.bootcss.com/highlight.js/8.0/highlight.min.js", function () {
+                                hljs.initHighlighting();
+                            });
+                        } else {
+                            hljs.initHighlightingOnLoad();
+                        }
                         if (parseInt(data.data.totalPage) >= parseInt(pageNum)) {
                             $("#loadmore").html("加载更多...");
                             $("#loadmore").removeAttr("disabled");
