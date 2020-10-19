@@ -170,24 +170,25 @@
 			});
 		}
 	</script>
-	<script>(function(T,h,i,n,k,P,a,g,e){g=function(){P=h.createElement(i);a=h.getElementsByTagName(i)[0];P.src=k;P.charset="utf-8";P.async=1;a.parentNode.insertBefore(P,a)};T["ThinkPageWeatherWidgetObject"]=n;T[n]||(T[n]=function(){(T[n].q=T[n].q||[]).push(arguments)});T[n].l=+new Date();if(T.attachEvent){T.attachEvent("onload",g)}else{T.addEventListener("load",g,false)}}(window,document,"script","tpwidget","//widget.seniverse.com/widget/chameleon.js"))</script>
-	<script>tpwidget("init", {
-		"flavor": "bubble",
-		"location": "WX4FBXXFKE4F",
-		"geolocation": "enabled",
-		"position": "top-right",
-		"margin": "50px 10px",
-		"language": "zh-chs",
-		"unit": "c",
-		"theme": "chameleon",
-		"uid": "U19A9ABF8C",
-		"hash": "21890f52f22e7df031617e096c53cb98"
-	});
-	tpwidget("show");</script>
+    <script>
+        (function(a,h,g,f,e,d,c,b){b=function(){d=h.createElement(g);c=h.getElementsByTagName(g)[0];d.src=e;d.charset="utf-8";d.async=1;c.parentNode.insertBefore(d,c)};a["SeniverseWeatherWidgetObject"]=f;a[f]||(a[f]=function(){(a[f].q=a[f].q||[]).push(arguments)});a[f].l=+new Date();if(a.attachEvent){a.attachEvent("onload",b)}else{a.addEventListener("load",b,false)}}(window,document,"script","SeniverseWeatherWidget","//cdn.sencdn.com/widget2/static/js/bundle.js?t="+parseInt((new Date().getTime() / 100000000).toString(),10)));
+        window.SeniverseWeatherWidget('show', {
+            flavor: "bubble",
+            location: "WM6N2PM3WY2K",
+            geolocation: true,
+            language: "zh-Hans",
+            unit: "c",
+            theme: "auto",
+            token: "058f35bc-18a0-4a03-ab84-62cbcb75d799",
+            hover: "enabled",
+            container: "tp-weather-widget"
+        })
+    </script>
 	<script src="js/baidu_statistics.js" type="text/javascript"></script>
 	<script src="http://love.lidiwen.club/bootstrap-hover-dropdown.min.js"></script>
 </head>
 <body>
+<div id="tp-weather-widget"></div>
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 	<div class="container">
 		<div class="container-fluid">
