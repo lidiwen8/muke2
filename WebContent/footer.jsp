@@ -68,6 +68,7 @@
 							<li><a href="http://www.lidiwen.club/ForestBlog/applyLink">申请友链</a></li>
 							<li><a href="sponsor.jsp">赞助</a></li>
 							<li><a href="http://www.lidiwen.club/CustomerManagement-master_war/aiqing.html">照片墙</a></li>
+							<li><a href="http://www.lidiwen.club/css-3d/index.html">旋转相册</a></li>
 						</ul>
 					</div>
 					<div class="col-xs-3">
