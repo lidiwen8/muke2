@@ -153,6 +153,7 @@ if (msgId == null || msgId.equals("")){
         String password = "";
         //获取当前站点的所有Cookie
         Cookie[] cookies = request.getCookies();
+	if(cookies!=null){
         for (int i = 0; i < cookies.length; i++) {//对cookies中的数据进行遍历，找到用户名、密码的数据
             if ("username".equals(cookies[i].getName())) {
                 username = cookies[i].getValue();
@@ -160,6 +161,7 @@ if (msgId == null || msgId.equals("")){
                 password = cookies[i].getValue();
             }
         }
+     }
     %>
     <form class="form-horizontal col-sm-offset-3" id="loginform" method="post">
         <div class="form-group">
